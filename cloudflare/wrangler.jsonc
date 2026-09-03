@@ -4,6 +4,7 @@
   "main": "src/index.js",
   "compatibility_date": "2026-09-01",
   "workers_dev": true,
+  "keep_vars": true,
   "vars": {
     "TIMEZONE": "Asia/Novokuznetsk",
     "SCHEDULE_URL": "https://raw.githubusercontent.com/dariafreshovich-coder/college-schedule-bot/main/cloudflare/data/schedule.json"
@@ -16,6 +17,12 @@
     }
   ],
   "triggers": {
-    "crons": ["0 0 * * *"]
+    "crons": ["*/15 * * * *"]
+  },
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    }
   }
 }

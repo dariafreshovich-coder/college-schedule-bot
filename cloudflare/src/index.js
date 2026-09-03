@@ -11,6 +11,23 @@ const DAY_NAMES = [
   "суббота",
 ];
 const PAGE_SIZE = 10;
+const SEARCH_RESULT_LIMIT = 20;
+const BELL_SCHEDULES = {
+  regular: {
+    1: "08:30–10:00",
+    2: "10:40–12:10",
+    3: "12:25–13:55",
+    4: "14:25–15:55",
+    5: "16:05–17:35",
+  },
+  monday: {
+    1: "08:30–09:40",
+    2: "11:00–12:10",
+    3: "12:25–13:35",
+    4: "14:05–15:15",
+    5: "16:05–17:15",
+  },
+};
 
 export default {
   async fetch(request, env, ctx) {
@@ -43,9 +60,10 @@ export default {
     return new Response("not found", { status: 404 });
   },
 
-  async scheduled(_controller, env, ctx) {
-    // 00:00 UTC is 07:00 in Novokuznetsk.
-    ctx.waitUntil(sendMorningNotifications(env));
+  async scheduled(controller, env, ctx) {
+    if (controller.cron === "*/15 * * * *") {
+      ctx.waitUntil(checkForScheduleChanges(env));
+    }
   },
 };
 
@@ -90,13 +108,18 @@ async function handleMessage(message, env) {
     if (group) {
       await showSchedule(env, chatId, userId, data, 0);
     } else {
-      await sendMessage(env, chatId, "Привет! Сначала выбери свою группу:", groupsKeyboard(data.groups));
+      await sendMessage(env, chatId, "Привет! Напиши часть названия группы или выбери её из списка:", groupsKeyboard(data.groups));
     }
     return;
   }
 
   if (command === "/group" || command === "/groups") {
-    await sendMessage(env, chatId, "Выбери свою группу:", groupsKeyboard(data.groups));
+    await sendMessage(
+      env,
+      chatId,
+      "Напиши часть названия группы, например <b>ПКД1-25</b>, или выбери группу из списка:",
+      groupsKeyboard(data.groups),
+    );
     return;
   }
 
@@ -111,19 +134,32 @@ async function handleMessage(message, env) {
   }
 
   if (command === "/notify") {
-    await toggleNotifications(env, userId);
-    await showSchedule(env, chatId, userId, data, 0);
+    const enabled = await toggleNotifications(env, userId);
+    const notice = enabled
+      ? "🔔 <b>Уведомления включены.</b>\nБуду присылать новые изменения по этой группе с 07:00 до 00:00."
+      : "🔕 <b>Уведомления выключены.</b>";
+    await showSchedule(env, chatId, userId, data, 0, notice);
     return;
   }
 
   const typedGroup = findGroup(data, text);
   if (typedGroup) {
     await setGroup(env, userId, typedGroup);
-    await showSchedule(env, chatId, userId, data, 0);
+    const notice = `✅ <b>Группа сохранена: ${escapeHtml(typedGroup)}</b>`;
+    await showSchedule(env, chatId, userId, data, 0, notice);
     return;
   }
 
-  await sendMessage(env, chatId, "Выбери действие кнопками ниже или введи /help.");
+  const matches = findGroups(data, text);
+  if (matches.length) {
+    const message = matches.length === 1
+      ? `Нашла группу: <b>${escapeHtml(matches[0].group)}</b>. Нажми на неё, чтобы сохранить выбор.`
+      : `Нашла подходящие группы: <b>${matches.length}</b>. ${matches.length > SEARCH_RESULT_LIMIT ? `Показываю первые ${SEARCH_RESULT_LIMIT}, уточни запрос. ` : ""}Выбери нужную:`;
+    await sendMessage(env, chatId, message, searchGroupsKeyboard(data.groups, matches));
+    return;
+  }
+
+  await sendMessage(env, chatId, "Не нашла такую группу. Напиши часть названия или введи /group.");
 }
 
 async function handleCallback(callback, env) {
@@ -156,7 +192,8 @@ async function handleCallback(callback, env) {
       return;
     }
     await setGroup(env, userId, group);
-    await editSchedule(env, chatId, messageId, userId, data, 0);
+    const notice = `✅ <b>Группа сохранена: ${escapeHtml(group)}</b>`;
+    await editSchedule(env, chatId, messageId, userId, data, 0, notice);
     return;
   }
 
@@ -167,13 +204,16 @@ async function handleCallback(callback, env) {
   }
 
   if (callbackData === "m:g") {
-    await editMessage(env, chatId, messageId, "Выбери свою группу:", groupsKeyboard(data.groups));
+    await editMessage(env, chatId, messageId, "Напиши часть названия группы или выбери её из списка:", groupsKeyboard(data.groups));
     return;
   }
 
   if (callbackData === "m:n") {
-    await toggleNotifications(env, userId);
-    await editSchedule(env, chatId, messageId, userId, data, 0);
+    const enabled = await toggleNotifications(env, userId);
+    const notice = enabled
+      ? "🔔 <b>Уведомления включены.</b>\nБуду присылать новые изменения по этой группе с 07:00 до 00:00."
+      : "🔕 <b>Уведомления выключены.</b>";
+    await editSchedule(env, chatId, messageId, userId, data, 0, notice);
     return;
   }
 
@@ -183,25 +223,27 @@ async function handleCallback(callback, env) {
   }
 }
 
-async function showSchedule(env, chatId, userId, data, offset) {
+async function showSchedule(env, chatId, userId, data, offset, notice = "") {
   const user = await getUser(env, userId);
   const group = findGroup(data, user?.group_name);
   if (!group) {
     await sendMessage(env, chatId, "Сначала выбери группу:", groupsKeyboard(data.groups));
     return;
   }
-  const text = formatSchedule(data, group, offset, env.TIMEZONE || "Asia/Novokuznetsk");
+  const scheduleText = formatSchedule(data, group, offset, env.TIMEZONE || "Asia/Novokuznetsk");
+  const text = notice ? `${notice}\n\n${scheduleText}` : scheduleText;
   await sendMessage(env, chatId, text, mainKeyboard(Boolean(user?.notifications)));
 }
 
-async function editSchedule(env, chatId, messageId, userId, data, offset) {
+async function editSchedule(env, chatId, messageId, userId, data, offset, notice = "") {
   const user = await getUser(env, userId);
   const group = findGroup(data, user?.group_name);
   if (!group) {
     await editMessage(env, chatId, messageId, "Сначала выбери группу:", groupsKeyboard(data.groups));
     return;
   }
-  const text = formatSchedule(data, group, offset, env.TIMEZONE || "Asia/Novokuznetsk");
+  const scheduleText = formatSchedule(data, group, offset, env.TIMEZONE || "Asia/Novokuznetsk");
+  const text = notice ? `${notice}\n\n${scheduleText}` : scheduleText;
   await editMessage(env, chatId, messageId, text, mainKeyboard(Boolean(user?.notifications)));
 }
 
@@ -213,7 +255,7 @@ async function sendHelp(env, chatId) {
       "👥 выбрать и сохранить группу\n" +
       "📅 смотреть сегодня или завтра\n" +
       "🔄 учитывать изменения и отмены\n" +
-      "🔔 включить утреннее уведомление\n\n" +
+      "🔔 получать уведомления о новых изменениях с 07:00 до 00:00\n\n" +
       "Команды: /today, /tomorrow, /group, /notify, /refresh",
   );
 }
@@ -235,13 +277,30 @@ async function loadSchedule(env, forceRefresh) {
 }
 
 function normalizeKey(value) {
-  return String(value || "").trim().toLowerCase().replace(/ё/g, "е").replace(/\s+/g, " ");
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/ё/g, "е")
+    .replace(/[‐‑‒–—−]/g, "-")
+    .replace(/\s+/g, " ");
+}
+
+function searchKey(value) {
+  return normalizeKey(value).replace(/[^a-zа-я0-9]/g, "");
 }
 
 function findGroup(data, value) {
   const key = normalizeKey(value);
   if (!key) return null;
   return data.groups.find((group) => normalizeKey(group) === key) || null;
+}
+
+function findGroups(data, value) {
+  const key = searchKey(value);
+  if (!key) return [];
+  return data.groups
+    .map((group, index) => ({ group, index }))
+    .filter(({ group }) => searchKey(group).includes(key));
 }
 
 function localDate(offset, timezone) {
@@ -305,6 +364,7 @@ function getLessons(data, group, offset, timezone) {
 
 function formatSchedule(data, group, offset, timezone) {
   const { lessons, selected } = getLessons(data, group, offset, timezone);
+  const bellTimes = bellTimesForWeekday(selected.weekday);
   const lines = [
     `📚 <b>${escapeHtml(group)}</b>`,
     `🗓 ${selected.display}, ${DAY_NAMES[selected.weekday]}`,
@@ -317,27 +377,75 @@ function formatSchedule(data, group, offset, timezone) {
   } else {
     for (const pair of pairs) {
       const lesson = lessons[pair];
+      const time = bellTimes[pair] ? ` · ${bellTimes[pair]}` : "";
       if (lesson.cancelled) {
-        lines.push(`<b>${pair}-я пара — отмена</b>`);
-        if (lesson.change_from) lines.push(`🔄 Было: ${escapeHtml(lesson.change_from)}`);
+        lines.push(`<b>${pair}-я пара${time} — отмена</b>`);
+        if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
+        if (data.generated_at) lines.push(`🕒 Замена загружена: ${escapeHtml(formatGeneratedAt(data.generated_at, timezone))}`);
         lines.push("");
         continue;
       }
-      lines.push(`<b>${pair}-я пара: ${escapeHtml(lesson.subject || "Занятие")}</b>`);
-      if (lesson.teacher) lines.push(`👨‍🏫 ${escapeHtml(lesson.teacher)}`);
-      if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
+
       if (lesson.changed) {
-        lines.push("🔄 <i>Замена по актуальному уведомлению</i>");
-        if (lesson.change_from) lines.push(`Было: ${escapeHtml(lesson.change_from)}`);
+        lines.push(`<b>${pair}-я пара${time}</b>`);
+        if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
+        lines.push(`Стало: ${formatLessonTitle(lesson)}`);
+        if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
+        if (data.generated_at) lines.push(`🕒 Замена загружена: ${escapeHtml(formatGeneratedAt(data.generated_at, timezone))}`);
+      } else {
+        lines.push(`<b>${pair}-я пара${time}: ${escapeHtml(lesson.subject || "Занятие")}</b>`);
+        if (lesson.teacher) lines.push(`👨‍🏫 ${escapeHtml(lesson.teacher)}`);
+        if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
       }
       lines.push("");
     }
   }
 
   if (data.generated_at) {
-    lines.push(`<i>Данные обновлены: ${escapeHtml(String(data.generated_at).replace("T", " ").replace("Z", " UTC"))}</i>`);
+    lines.push("");
+    lines.push(`<i>🕒 Файл расписания обновлён: ${escapeHtml(formatGeneratedAt(data.generated_at, timezone))}.</i>`);
+    lines.push("<i>🔎 Новые изменения проверяются каждые 15 минут.</i>");
   }
   return lines.join("\n").trim();
+}
+
+function bellTimesForWeekday(weekday) {
+  return weekday === 1 ? BELL_SCHEDULES.monday : BELL_SCHEDULES.regular;
+}
+
+function weekdayFromIso(value) {
+  const [year, month, day] = String(value).split("-").map(Number);
+  if (![year, month, day].every(Number.isFinite)) return null;
+  return new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+}
+
+function formatLessonTitle(lesson) {
+  const subject = escapeHtml(lesson.subject || "Занятие");
+  return lesson.teacher ? `${subject} (${escapeHtml(lesson.teacher)})` : subject;
+}
+
+function formatGeneratedAt(value, timezone) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value);
+  return new Intl.DateTimeFormat("ru-RU", {
+    timeZone: timezone,
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date) + " по Новокузнецку";
+}
+
+function formatDateOnly(value) {
+  const [year, month, day] = String(value).split("-").map(Number);
+  if (![year, month, day].every(Number.isFinite)) return String(value);
+  return new Intl.DateTimeFormat("ru-RU", {
+    timeZone: "UTC",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(Date.UTC(year, month - 1, day)));
 }
 
 function escapeHtml(value) {
@@ -349,18 +457,30 @@ function escapeHtml(value) {
 }
 
 function groupsKeyboard(groups, page = 0) {
-  const pageCount = Math.max(1, Math.ceil(groups.length / PAGE_SIZE));
+  return groupsKeyboardForIndices(groups, groups.map((_, index) => index), page);
+}
+
+function groupsKeyboardForIndices(groups, indices, page = 0) {
+  const pageCount = Math.max(1, Math.ceil(indices.length / PAGE_SIZE));
   const safePage = Math.max(0, Math.min(page, pageCount - 1));
   const start = safePage * PAGE_SIZE;
   const rows = [];
-  for (let index = start; index < Math.min(start + PAGE_SIZE, groups.length); index += 1) {
-    rows.push([{ text: groups[index], callback_data: `g:${index}` }]);
+  for (let position = start; position < Math.min(start + PAGE_SIZE, indices.length); position += 1) {
+    const originalIndex = indices[position];
+    rows.push([{ text: groups[originalIndex], callback_data: `g:${originalIndex}` }]);
   }
   const navigation = [];
   if (safePage > 0) navigation.push({ text: "⬅️", callback_data: `p:${safePage - 1}` });
   navigation.push({ text: `${safePage + 1}/${pageCount}`, callback_data: "noop" });
   if (safePage + 1 < pageCount) navigation.push({ text: "➡️", callback_data: `p:${safePage + 1}` });
   rows.push(navigation);
+  return { inline_keyboard: rows };
+}
+
+function searchGroupsKeyboard(groups, matches) {
+  const rows = matches.slice(0, SEARCH_RESULT_LIMIT).map(({ group, index }) => [
+    { text: group, callback_data: `g:${index}` },
+  ]);
   return { inline_keyboard: rows };
 }
 
@@ -403,32 +523,159 @@ async function toggleNotifications(env, userId) {
   return Boolean(next);
 }
 
-async function sendMorningNotifications(env) {
-  const data = await loadSchedule(env, true);
-  const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
-  const today = localDate(0, timezone).iso;
-  const result = await env.DB.prepare(
-    "SELECT telegram_id, group_name FROM users WHERE notifications = 1 AND group_name IS NOT NULL AND (last_notification IS NULL OR last_notification <> ?)",
-  )
-    .bind(today)
-    .all();
+async function ensureChangeTables(env) {
+  await env.DB.batch([
+    env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS schedule_change_notifications (
+        change_key TEXT PRIMARY KEY,
+        change_date TEXT NOT NULL,
+        group_name TEXT NOT NULL,
+        pair TEXT NOT NULL,
+        payload TEXT NOT NULL,
+        detected_at TEXT NOT NULL,
+        sent_at TEXT
+      )
+    `),
+    env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS schedule_notification_state (
+        id INTEGER PRIMARY KEY,
+        initialized INTEGER NOT NULL DEFAULT 0
+      )
+    `),
+  ]);
+}
 
-  for (const user of result.results || []) {
-    const group = findGroup(data, user.group_name);
-    if (!group) continue;
-    const text = formatSchedule(data, group, 0, timezone);
-    const response = await telegram(env, "sendMessage", {
-      chat_id: user.telegram_id,
-      text,
-      parse_mode: "HTML",
-      reply_markup: mainKeyboard(true),
-    });
-    if (response?.ok) {
-      await env.DB.prepare("UPDATE users SET last_notification = ? WHERE telegram_id = ?")
-        .bind(today, user.telegram_id)
-        .run();
+function flattenChanges(data) {
+  const changes = [];
+  for (const [date, groups] of Object.entries(data.changes || {})) {
+    for (const [groupName, pairs] of Object.entries(groups || {})) {
+      for (const [pair, change] of Object.entries(pairs || {})) {
+        const payload = JSON.stringify(change);
+        changes.push({
+          key: `${date}|${groupName}|${pair}|${payload}`,
+          date,
+          groupName,
+          pair,
+          payload,
+        });
+      }
     }
   }
+  return changes;
+}
+
+async function checkForScheduleChanges(env) {
+  await ensureChangeTables(env);
+  const data = await loadSchedule(env, true);
+  const now = new Date();
+  const detectedAt = now.toISOString();
+  const changes = flattenChanges(data);
+  const state = await env.DB.prepare("SELECT initialized FROM schedule_notification_state WHERE id = 1").first();
+
+  if (!state) {
+    await env.DB.prepare("INSERT INTO schedule_notification_state(id, initialized) VALUES (1, 0)").run();
+  }
+
+  if (!state || !state.initialized) {
+    if (changes.length) {
+      await env.DB.batch(changes.map((change) => env.DB.prepare(
+        "INSERT OR IGNORE INTO schedule_change_notifications(change_key, change_date, group_name, pair, payload, detected_at, sent_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      ).bind(change.key, change.date, change.groupName, change.pair, change.payload, detectedAt, detectedAt)));
+    }
+    await env.DB.prepare("UPDATE schedule_notification_state SET initialized = 1 WHERE id = 1").run();
+    return;
+  }
+
+  if (changes.length) {
+    await env.DB.batch(changes.map((change) => env.DB.prepare(
+      "INSERT OR IGNORE INTO schedule_change_notifications(change_key, change_date, group_name, pair, payload, detected_at) VALUES (?, ?, ?, ?, ?, ?)",
+    ).bind(change.key, change.date, change.groupName, change.pair, change.payload, detectedAt)));
+  }
+
+  const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
+  if (!isNotificationWindow(timezone)) return;
+
+  const pending = await env.DB.prepare(
+    "SELECT change_key, change_date, group_name, pair, payload FROM schedule_change_notifications WHERE sent_at IS NULL ORDER BY change_date, group_name, CAST(pair AS INTEGER)",
+  ).all();
+  if (!pending.results?.length) return;
+
+  const users = await env.DB.prepare(
+    "SELECT telegram_id, group_name FROM users WHERE notifications = 1 AND group_name IS NOT NULL",
+  ).all();
+  if (!users.results?.length) return;
+
+  const pendingByGroup = new Map();
+  for (const change of pending.results) {
+    const key = normalizeKey(change.group_name);
+    if (!pendingByGroup.has(key)) pendingByGroup.set(key, []);
+    pendingByGroup.get(key).push(change);
+  }
+
+  const sentKeys = new Set();
+  for (const [groupKey, groupChanges] of pendingByGroup) {
+    const groupUsers = users.results.filter((user) => normalizeKey(user.group_name) === groupKey);
+    if (!groupUsers.length) continue;
+
+    const groupName = groupUsers[0].group_name;
+    const text = formatChangeNotification(groupName, groupChanges, timezone);
+    let delivered = false;
+    for (const user of groupUsers) {
+      const result = await sendMessage(env, user.telegram_id, text, mainKeyboard(true));
+      if (result?.ok) delivered = true;
+    }
+    if (delivered) {
+      for (const change of groupChanges) sentKeys.add(change.change_key);
+    }
+  }
+
+  if (sentKeys.size) {
+    await env.DB.batch([...sentKeys].map((key) => env.DB.prepare(
+      "UPDATE schedule_change_notifications SET sent_at = ? WHERE change_key = ?",
+    ).bind(detectedAt, key)));
+  }
+}
+
+function isNotificationWindow(timezone) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: timezone,
+    hour: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(new Date());
+  const hour = Number(parts.find((part) => part.type === "hour")?.value);
+  return hour >= 7 && hour < 24;
+}
+
+function formatChangeNotification(groupName, changes, timezone) {
+  const lines = [
+    "⚠️ <b>Изменения в расписании</b>",
+    `📚 <b>${escapeHtml(groupName)}</b>`,
+    "",
+  ];
+
+  for (const change of changes) {
+    let payload;
+    try {
+      payload = JSON.parse(change.payload);
+    } catch {
+      payload = {};
+    }
+    const lesson = payload.lesson || {};
+    const weekday = weekdayFromIso(change.change_date);
+    const bellTimes = weekday === null ? {} : bellTimesForWeekday(weekday);
+    const time = bellTimes[change.pair] ? ` · ${bellTimes[change.pair]}` : "";
+    lines.push(`<b>🗓 ${escapeHtml(formatDateOnly(change.change_date))}, ${escapeHtml(change.pair)}-я пара${time}</b>`);
+    if (payload.old_description) lines.push(`Было: <s>${escapeHtml(payload.old_description)}</s>`);
+    if (payload.cancelled || lesson.cancelled) {
+      lines.push("❌ Пара отменена");
+    } else {
+      lines.push(`Стало: ${formatLessonTitle(lesson)}`);
+      if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
+    }
+    if (change.detected_at) lines.push(`🕒 Обнаружено ботом: ${escapeHtml(formatGeneratedAt(change.detected_at, timezone))}`);
+    lines.push("");
+  }
+  return lines.join("\n").trim();
 }
 
 async function telegram(env, method, body) {
