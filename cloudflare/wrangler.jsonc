@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "college-schedule-bot",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-04",
+  "workers_dev": true,
+  "vars": {
+    "TIMEZONE": "Asia/Novokuznetsk",
+    "SCHEDULE_URL": "https://raw.githubusercontent.com/REPLACE_USERNAME/REPLACE_REPOSITORY/main/cloudflare/data/schedule.json"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "college-schedule-bot",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+    }
+  ],
+  "triggers": {
+    "crons": ["0 0 * * *"]
+  }
+}
