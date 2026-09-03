@@ -6,13 +6,13 @@
   "workers_dev": true,
   "vars": {
     "TIMEZONE": "Asia/Novokuznetsk",
-    "SCHEDULE_URL": "https://raw.githubusercontent.com/REPLACE_USERNAME/REPLACE_REPOSITORY/main/cloudflare/data/schedule.json"
+    "SCHEDULE_URL": "https://raw.githubusercontent.com/dariafreshovich-coder/college-schedule-bot/main/cloudflare/data/schedule.json"
   },
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "college-schedule-bot",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+      "database_id": "ea5165c3-2e14-4c4b-afcf-f97591748b27"
     }
   ],
   "triggers": {
