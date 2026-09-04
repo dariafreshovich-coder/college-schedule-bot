@@ -412,12 +412,9 @@ function formatSchedule(data, group, offset, timezone, checkedAt = null) {
     }
   }
 
-  if (data.generated_at) {
-    lines.push("");
-    lines.push(`<i>🕒 Файл расписания обновлён: ${escapeHtml(formatGeneratedAt(data.generated_at, timezone))}.</i>`);
-  }
   if (checkedAt) {
-    lines.push(`<i>🔎 Проверено ботом: ${escapeHtml(formatGeneratedAt(checkedAt, timezone))}.</i>`);
+    lines.push("");
+    lines.push(`<i>🕒 Сообщение обновлено: ${escapeHtml(formatGeneratedAt(checkedAt, timezone))}.</i>`);
   }
   return lines.join("\n").trim();
 }
