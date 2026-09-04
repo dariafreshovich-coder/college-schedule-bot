@@ -12,6 +12,8 @@ const DAY_NAMES = [
 ];
 const PAGE_SIZE = 10;
 const SEARCH_RESULT_LIMIT = 20;
+let userColumnsReady = false;
+
 const BELL_SCHEDULES = {
   regular: {
     1: "08:30–10:00",
@@ -69,6 +71,7 @@ export default {
 
 async function handleUpdate(update, env) {
   try {
+    await ensureUserScheduleColumns(env);
     if (update.callback_query) {
       await handleCallback(update.callback_query, env);
       return;
@@ -230,9 +233,13 @@ async function showSchedule(env, chatId, userId, data, offset, notice = "") {
     await sendMessage(env, chatId, "Сначала выбери группу:", groupsKeyboard(data.groups));
     return;
   }
-  const scheduleText = formatSchedule(data, group, offset, env.TIMEZONE || "Asia/Novokuznetsk");
+  const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
+  const scheduleText = formatSchedule(data, group, offset, timezone, new Date().toISOString());
   const text = notice ? `${notice}\n\n${scheduleText}` : scheduleText;
-  await sendMessage(env, chatId, text, mainKeyboard(Boolean(user?.notifications)));
+  const result = await sendMessage(env, chatId, text, mainKeyboard(Boolean(user?.notifications)));
+  if (result?.ok && result.result?.message_id) {
+    await saveScheduleMessage(env, userId, result.result.message_id, offset);
+  }
 }
 
 async function editSchedule(env, chatId, messageId, userId, data, offset, notice = "") {
@@ -242,9 +249,13 @@ async function editSchedule(env, chatId, messageId, userId, data, offset, notice
     await editMessage(env, chatId, messageId, "Сначала выбери группу:", groupsKeyboard(data.groups));
     return;
   }
-  const scheduleText = formatSchedule(data, group, offset, env.TIMEZONE || "Asia/Novokuznetsk");
+  const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
+  const scheduleText = formatSchedule(data, group, offset, timezone, new Date().toISOString());
   const text = notice ? `${notice}\n\n${scheduleText}` : scheduleText;
-  await editMessage(env, chatId, messageId, text, mainKeyboard(Boolean(user?.notifications)));
+  const result = await editMessage(env, chatId, messageId, text, mainKeyboard(Boolean(user?.notifications)));
+  if (result?.ok) {
+    await saveScheduleMessage(env, userId, messageId, offset);
+  }
 }
 
 async function sendHelp(env, chatId) {
@@ -256,7 +267,7 @@ async function sendHelp(env, chatId) {
       "📅 смотреть сегодня или завтра\n" +
       "🔄 учитывать изменения и отмены\n" +
       "🔔 получать уведомления о новых изменениях с 07:00 до 00:00\n\n" +
-      "Команды: /today, /tomorrow, /group, /notify, /refresh",
+      "Команды: /today, /tomorrow, /group, /notify",
   );
 }
 
@@ -362,7 +373,7 @@ function getLessons(data, group, offset, timezone) {
   return { lessons: result, selected };
 }
 
-function formatSchedule(data, group, offset, timezone) {
+function formatSchedule(data, group, offset, timezone, checkedAt = null) {
   const { lessons, selected } = getLessons(data, group, offset, timezone);
   const bellTimes = bellTimesForWeekday(selected.weekday);
   const lines = [
@@ -404,7 +415,9 @@ function formatSchedule(data, group, offset, timezone) {
   if (data.generated_at) {
     lines.push("");
     lines.push(`<i>🕒 Файл расписания обновлён: ${escapeHtml(formatGeneratedAt(data.generated_at, timezone))}.</i>`);
-    lines.push("<i>🔎 Новые изменения проверяются каждые 15 минут.</i>");
+  }
+  if (checkedAt) {
+    lines.push(`<i>🔎 Проверено ботом: ${escapeHtml(formatGeneratedAt(checkedAt, timezone))}.</i>`);
   }
   return lines.join("\n").trim();
 }
@@ -491,7 +504,6 @@ function mainKeyboard(notifications) {
         { text: "📅 Сегодня", callback_data: "d:0" },
         { text: "📆 Завтра", callback_data: "d:1" },
       ],
-      [{ text: "🔁 Обновить данные", callback_data: "m:r" }],
       [{ text: notifications ? "🔕 Выключить уведомления" : "🔔 Включить уведомления", callback_data: "m:n" }],
       [{ text: "👥 Сменить группу", callback_data: "m:g" }],
     ],
@@ -523,21 +535,62 @@ async function toggleNotifications(env, userId) {
   return Boolean(next);
 }
 
+async function ensureUserScheduleColumns(env) {
+  if (userColumnsReady) return;
+  const statements = [
+    "ALTER TABLE users ADD COLUMN schedule_message_id TEXT",
+    "ALTER TABLE users ADD COLUMN schedule_offset INTEGER NOT NULL DEFAULT 0",
+  ];
+  for (const sql of statements) {
+    try {
+      await env.DB.prepare(sql).run();
+    } catch (error) {
+      const message = String(error?.message || error).toLowerCase();
+      if (!message.includes("duplicate column")) throw error;
+    }
+  }
+  userColumnsReady = true;
+}
+
+async function saveScheduleMessage(env, userId, messageId, offset) {
+  await env.DB.prepare(
+    "UPDATE users SET schedule_message_id = ?, schedule_offset = ? WHERE telegram_id = ?",
+  )
+    .bind(String(messageId), Number(offset) === 1 ? 1 : 0, String(userId))
+    .run();
+}
+
 async function ensureChangeTables(env) {
   await env.DB.batch([
     env.DB.prepare(`
-      CREATE TABLE IF NOT EXISTS schedule_change_notifications (
-        change_key TEXT PRIMARY KEY,
-        change_date TEXT NOT NULL,
+      CREATE TABLE IF NOT EXISTS schedule_event_baseline (
+        snapshot_key TEXT PRIMARY KEY,
+        kind TEXT NOT NULL,
+        change_date TEXT,
+        weekday TEXT,
         group_name TEXT NOT NULL,
         pair TEXT NOT NULL,
         payload TEXT NOT NULL,
+        source_updated_at TEXT
+      )
+    `),
+    env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS schedule_event_notifications (
+        event_key TEXT PRIMARY KEY,
+        kind TEXT NOT NULL,
+        change_date TEXT,
+        weekday TEXT,
+        group_name TEXT NOT NULL,
+        pair TEXT NOT NULL,
+        payload TEXT,
+        previous_payload TEXT,
         detected_at TEXT NOT NULL,
+        source_updated_at TEXT,
         sent_at TEXT
       )
     `),
     env.DB.prepare(`
-      CREATE TABLE IF NOT EXISTS schedule_notification_state (
+      CREATE TABLE IF NOT EXISTS schedule_event_state (
         id INTEGER PRIMARY KEY,
         initialized INTEGER NOT NULL DEFAULT 0
       )
@@ -545,58 +598,167 @@ async function ensureChangeTables(env) {
   ]);
 }
 
-function flattenChanges(data) {
-  const changes = [];
-  for (const [date, groups] of Object.entries(data.changes || {})) {
+async function executeBatches(env, statements, batchSize = 100) {
+  for (let start = 0; start < statements.length; start += batchSize) {
+    await env.DB.batch(statements.slice(start, start + batchSize));
+  }
+}
+
+function flattenScheduleSnapshots(data) {
+  const snapshots = [];
+  const sourceUpdatedAt = data.generated_at || null;
+
+  for (const [weekday, groups] of Object.entries(data.lessons || {})) {
     for (const [groupName, pairs] of Object.entries(groups || {})) {
-      for (const [pair, change] of Object.entries(pairs || {})) {
-        const payload = JSON.stringify(change);
-        changes.push({
-          key: `${date}|${groupName}|${pair}|${payload}`,
-          date,
+      for (const [pair, lesson] of Object.entries(pairs || {})) {
+        snapshots.push({
+          key: `lesson|${weekday}|${groupName}|${pair}`,
+          kind: "lesson",
+          changeDate: null,
+          weekday,
           groupName,
-          pair,
-          payload,
+          pair: String(pair),
+          payload: JSON.stringify(lesson),
+          sourceUpdatedAt,
         });
       }
     }
   }
-  return changes;
+
+  for (const [date, groups] of Object.entries(data.changes || {})) {
+    for (const [groupName, pairs] of Object.entries(groups || {})) {
+      for (const [pair, change] of Object.entries(pairs || {})) {
+        snapshots.push({
+          key: `change|${date}|${groupName}|${pair}`,
+          kind: "change",
+          changeDate: date,
+          weekday: null,
+          groupName,
+          pair: String(pair),
+          payload: JSON.stringify(change),
+          sourceUpdatedAt,
+        });
+      }
+    }
+  }
+
+  return snapshots;
 }
 
 async function checkForScheduleChanges(env) {
+  await ensureUserScheduleColumns(env);
   await ensureChangeTables(env);
   const data = await loadSchedule(env, true);
   const now = new Date();
   const detectedAt = now.toISOString();
-  const changes = flattenChanges(data);
-  const state = await env.DB.prepare("SELECT initialized FROM schedule_notification_state WHERE id = 1").first();
+  const snapshots = flattenScheduleSnapshots(data);
+  const state = await env.DB.prepare("SELECT initialized FROM schedule_event_state WHERE id = 1").first();
+  const previousResult = await env.DB.prepare(
+    "SELECT snapshot_key, kind, change_date, weekday, group_name, pair, payload, source_updated_at FROM schedule_event_baseline",
+  ).all();
+  const previous = new Map((previousResult.results || []).map((row) => [row.snapshot_key, row]));
+  const current = new Map(snapshots.map((snapshot) => [snapshot.key, snapshot]));
 
   if (!state) {
-    await env.DB.prepare("INSERT INTO schedule_notification_state(id, initialized) VALUES (1, 0)").run();
+    await env.DB.prepare("INSERT INTO schedule_event_state(id, initialized) VALUES (1, 0)").run();
   }
 
   if (!state || !state.initialized) {
-    if (changes.length) {
-      await env.DB.batch(changes.map((change) => env.DB.prepare(
-        "INSERT OR IGNORE INTO schedule_change_notifications(change_key, change_date, group_name, pair, payload, detected_at, sent_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      ).bind(change.key, change.date, change.groupName, change.pair, change.payload, detectedAt, detectedAt)));
-    }
-    await env.DB.prepare("UPDATE schedule_notification_state SET initialized = 1 WHERE id = 1").run();
+    await executeBatches(env, snapshots.map((snapshot) => env.DB.prepare(
+      "INSERT OR REPLACE INTO schedule_event_baseline(snapshot_key, kind, change_date, weekday, group_name, pair, payload, source_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    ).bind(
+      snapshot.key,
+      snapshot.kind,
+      snapshot.changeDate,
+      snapshot.weekday,
+      snapshot.groupName,
+      snapshot.pair,
+      snapshot.payload,
+      snapshot.sourceUpdatedAt,
+    )));
+    await env.DB.prepare("UPDATE schedule_event_state SET initialized = 1 WHERE id = 1").run();
+    await refreshSavedScheduleMessages(env, data, detectedAt);
     return;
   }
 
-  if (changes.length) {
-    await env.DB.batch(changes.map((change) => env.DB.prepare(
-      "INSERT OR IGNORE INTO schedule_change_notifications(change_key, change_date, group_name, pair, payload, detected_at) VALUES (?, ?, ?, ?, ?, ?)",
-    ).bind(change.key, change.date, change.groupName, change.pair, change.payload, detectedAt)));
+  const events = [];
+  const baselineWrites = [];
+  const baselineDeletes = [];
+
+  for (const snapshot of snapshots) {
+    const old = previous.get(snapshot.key);
+    if (!old || old.payload !== snapshot.payload) {
+      events.push({
+        key: `${snapshot.key}|${snapshot.payload}`,
+        kind: snapshot.kind,
+        changeDate: snapshot.changeDate,
+        weekday: snapshot.weekday,
+        groupName: snapshot.groupName,
+        pair: snapshot.pair,
+        payload: snapshot.payload,
+        previousPayload: old?.payload || null,
+        sourceUpdatedAt: snapshot.sourceUpdatedAt,
+      });
+      baselineWrites.push(env.DB.prepare(
+        "INSERT OR REPLACE INTO schedule_event_baseline(snapshot_key, kind, change_date, weekday, group_name, pair, payload, source_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      ).bind(
+        snapshot.key,
+        snapshot.kind,
+        snapshot.changeDate,
+        snapshot.weekday,
+        snapshot.groupName,
+        snapshot.pair,
+        snapshot.payload,
+        snapshot.sourceUpdatedAt,
+      ));
+    }
   }
+
+  for (const [snapshotKey, old] of previous) {
+    if (current.has(snapshotKey)) continue;
+    baselineDeletes.push(env.DB.prepare("DELETE FROM schedule_event_baseline WHERE snapshot_key = ?").bind(snapshotKey));
+    // A lesson disappearing from the XLSX is a real schedule change.
+    // A DOCX change disappearing is normally just an expired notice, so do not notify for it.
+    if (old.kind === "lesson") {
+      events.push({
+        key: `${snapshotKey}|null`,
+        kind: old.kind,
+        changeDate: old.change_date,
+        weekday: old.weekday,
+        groupName: old.group_name,
+        pair: old.pair,
+        payload: null,
+        previousPayload: old.payload,
+        sourceUpdatedAt: data.generated_at || detectedAt,
+      });
+    }
+  }
+
+  if (events.length) {
+    await executeBatches(env, events.map((event) => env.DB.prepare(
+      "INSERT OR IGNORE INTO schedule_event_notifications(event_key, kind, change_date, weekday, group_name, pair, payload, previous_payload, detected_at, source_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    ).bind(
+      event.key,
+      event.kind,
+      event.changeDate,
+      event.weekday,
+      event.groupName,
+      event.pair,
+      event.payload,
+      event.previousPayload,
+      detectedAt,
+      event.sourceUpdatedAt,
+    )));
+  }
+  await executeBatches(env, baselineWrites);
+  await executeBatches(env, baselineDeletes);
+  await refreshSavedScheduleMessages(env, data, detectedAt);
 
   const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
   if (!isNotificationWindow(timezone)) return;
 
   const pending = await env.DB.prepare(
-    "SELECT change_key, change_date, group_name, pair, payload FROM schedule_change_notifications WHERE sent_at IS NULL ORDER BY change_date, group_name, CAST(pair AS INTEGER)",
+    "SELECT event_key, kind, change_date, weekday, group_name, pair, payload, previous_payload, detected_at, source_updated_at FROM schedule_event_notifications WHERE sent_at IS NULL ORDER BY COALESCE(change_date, weekday), group_name, CAST(pair AS INTEGER)",
   ).all();
   if (!pending.results?.length) return;
 
@@ -606,33 +768,64 @@ async function checkForScheduleChanges(env) {
   if (!users.results?.length) return;
 
   const pendingByGroup = new Map();
-  for (const change of pending.results) {
-    const key = normalizeKey(change.group_name);
+  for (const event of pending.results) {
+    const key = normalizeKey(event.group_name);
     if (!pendingByGroup.has(key)) pendingByGroup.set(key, []);
-    pendingByGroup.get(key).push(change);
+    pendingByGroup.get(key).push(event);
   }
 
   const sentKeys = new Set();
-  for (const [groupKey, groupChanges] of pendingByGroup) {
+  for (const [groupKey, groupEvents] of pendingByGroup) {
     const groupUsers = users.results.filter((user) => normalizeKey(user.group_name) === groupKey);
     if (!groupUsers.length) continue;
 
     const groupName = groupUsers[0].group_name;
-    const text = formatChangeNotification(groupName, groupChanges, timezone);
+    const text = formatEventNotification(groupName, groupEvents, timezone);
     let delivered = false;
     for (const user of groupUsers) {
       const result = await sendMessage(env, user.telegram_id, text, mainKeyboard(true));
       if (result?.ok) delivered = true;
     }
     if (delivered) {
-      for (const change of groupChanges) sentKeys.add(change.change_key);
+      for (const event of groupEvents) sentKeys.add(event.event_key);
     }
   }
 
   if (sentKeys.size) {
-    await env.DB.batch([...sentKeys].map((key) => env.DB.prepare(
-      "UPDATE schedule_change_notifications SET sent_at = ? WHERE change_key = ?",
+    await executeBatches(env, [...sentKeys].map((key) => env.DB.prepare(
+      "UPDATE schedule_event_notifications SET sent_at = ? WHERE event_key = ?",
     ).bind(detectedAt, key)));
+  }
+}
+
+async function refreshSavedScheduleMessages(env, data, checkedAt) {
+  const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
+  const users = await env.DB.prepare(
+    "SELECT telegram_id, group_name, notifications, schedule_message_id, schedule_offset FROM users WHERE group_name IS NOT NULL AND schedule_message_id IS NOT NULL",
+  ).all();
+  if (!users.results?.length) return;
+
+  for (const user of users.results) {
+    const group = findGroup(data, user.group_name);
+    if (!group) continue;
+    const offset = Number(user.schedule_offset) === 1 ? 1 : 0;
+    const text = formatSchedule(data, group, offset, timezone, checkedAt);
+    try {
+      const result = await editMessage(
+        env,
+        user.telegram_id,
+        user.schedule_message_id,
+        text,
+        mainKeyboard(Boolean(user.notifications)),
+      );
+      if (!result?.ok && result?.error_code === 400 && /message.*(not found|can't be edited|cannot be edited)/i.test(result.description || "")) {
+        await env.DB.prepare("UPDATE users SET schedule_message_id = NULL WHERE telegram_id = ?")
+          .bind(String(user.telegram_id))
+          .run();
+      }
+    } catch (error) {
+      console.error("schedule message refresh error", error);
+    }
   }
 }
 
@@ -646,33 +839,70 @@ function isNotificationWindow(timezone) {
   return hour >= 7 && hour < 24;
 }
 
-function formatChangeNotification(groupName, changes, timezone) {
+function parsePayload(value) {
+  if (!value) return null;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+
+function dayNameFromKey(weekday) {
+  const index = DAY_KEYS.indexOf(weekday);
+  return index >= 0 ? DAY_NAMES[index] : weekday || "день";
+}
+
+function oldLessonTitle(previousPayload, fallback) {
+  const previous = parsePayload(previousPayload);
+  if (previous) return formatLessonTitle(previous);
+  return fallback || "занятие";
+}
+
+function formatEventNotification(groupName, events, timezone) {
   const lines = [
     "⚠️ <b>Изменения в расписании</b>",
     `📚 <b>${escapeHtml(groupName)}</b>`,
     "",
   ];
 
-  for (const change of changes) {
-    let payload;
-    try {
-      payload = JSON.parse(change.payload);
-    } catch {
-      payload = {};
-    }
-    const lesson = payload.lesson || {};
-    const weekday = weekdayFromIso(change.change_date);
-    const bellTimes = weekday === null ? {} : bellTimesForWeekday(weekday);
-    const time = bellTimes[change.pair] ? ` · ${bellTimes[change.pair]}` : "";
-    lines.push(`<b>🗓 ${escapeHtml(formatDateOnly(change.change_date))}, ${escapeHtml(change.pair)}-я пара${time}</b>`);
-    if (payload.old_description) lines.push(`Было: <s>${escapeHtml(payload.old_description)}</s>`);
-    if (payload.cancelled || lesson.cancelled) {
-      lines.push("❌ Пара отменена");
+  for (const event of events) {
+    const payload = parsePayload(event.payload);
+    const previous = parsePayload(event.previous_payload);
+
+    if (event.kind === "lesson") {
+      const dayIndex = DAY_KEYS.indexOf(event.weekday);
+      const bellTimes = dayIndex >= 0 ? bellTimesForWeekday(dayIndex) : {};
+      const time = bellTimes[event.pair] ? ` · ${bellTimes[event.pair]}` : "";
+      lines.push(`<b>📅 ${escapeHtml(dayNameFromKey(event.weekday))}, ${escapeHtml(event.pair)}-я пара${time}</b>`);
+      if (previous) lines.push(`Было: <s>${oldLessonTitle(event.previous_payload)}</s>`);
+      if (payload) {
+        lines.push(`Стало: ${formatLessonTitle(payload)}`);
+        if (payload.room) lines.push(`📍 ${escapeHtml(payload.room)}`);
+      } else {
+        lines.push("Стало: ❌ занятие убрано из расписания");
+      }
     } else {
-      lines.push(`Стало: ${formatLessonTitle(lesson)}`);
-      if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
+      const lesson = payload?.lesson || null;
+      const previousLesson = previous?.lesson || null;
+      const weekday = weekdayFromIso(event.change_date);
+      const bellTimes = weekday === null ? {} : bellTimesForWeekday(weekday);
+      const time = bellTimes[event.pair] ? ` · ${bellTimes[event.pair]}` : "";
+      lines.push(`<b>🗓 ${escapeHtml(formatDateOnly(event.change_date))}, ${escapeHtml(event.pair)}-я пара${time}</b>`);
+      const oldDescription = payload?.old_description || (previousLesson ? formatLessonTitle(previousLesson) : "");
+      if (oldDescription) lines.push(`Было: <s>${escapeHtml(oldDescription)}</s>`);
+      if (payload?.cancelled || lesson?.cancelled) {
+        lines.push("Стало: ❌ пара отменена");
+      } else if (lesson) {
+        lines.push(`Стало: ${formatLessonTitle(lesson)}`);
+        if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
+      } else {
+        lines.push("Стало: ❌ изменение отменено");
+      }
     }
-    if (change.detected_at) lines.push(`🕒 Обнаружено ботом: ${escapeHtml(formatGeneratedAt(change.detected_at, timezone))}`);
+
+    const updatedAt = event.source_updated_at || event.detected_at;
+    if (updatedAt) lines.push(`🕒 Изменение появилось в файле: ${escapeHtml(formatGeneratedAt(updatedAt, timezone))}`);
     lines.push("");
   }
   return lines.join("\n").trim();
