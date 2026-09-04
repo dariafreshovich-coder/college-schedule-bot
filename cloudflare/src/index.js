@@ -392,7 +392,6 @@ function formatSchedule(data, group, offset, timezone, checkedAt = null) {
       if (lesson.cancelled) {
         lines.push(`<b>${pair}-я пара${time} — отмена</b>`);
         if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
-        if (data.generated_at) lines.push(`🕒 Замена загружена: ${escapeHtml(formatGeneratedAt(data.generated_at, timezone))}`);
         lines.push("");
         continue;
       }
@@ -402,7 +401,6 @@ function formatSchedule(data, group, offset, timezone, checkedAt = null) {
         if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
         lines.push(`Стало: ${formatLessonTitle(lesson)}`);
         if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
-        if (data.generated_at) lines.push(`🕒 Замена загружена: ${escapeHtml(formatGeneratedAt(data.generated_at, timezone))}`);
       } else {
         lines.push(`<b>${pair}-я пара${time}: ${escapeHtml(lesson.subject || "Занятие")}</b>`);
         if (lesson.teacher) lines.push(`👨‍🏫 ${escapeHtml(lesson.teacher)}`);
@@ -674,7 +672,7 @@ async function checkForScheduleChanges(env) {
       snapshot.sourceUpdatedAt,
     )));
     await env.DB.prepare("UPDATE schedule_event_state SET initialized = 1 WHERE id = 1").run();
-    await refreshSavedScheduleMessages(env, data, detectedAt);
+    await refreshSavedScheduleMessages(env, data, detectedAt, []);
     return;
   }
 
@@ -749,44 +747,11 @@ async function checkForScheduleChanges(env) {
   }
   await executeBatches(env, baselineWrites);
   await executeBatches(env, baselineDeletes);
-  await refreshSavedScheduleMessages(env, data, detectedAt);
-
-  const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
-  if (!isNotificationWindow(timezone)) return;
 
   const pending = await env.DB.prepare(
     "SELECT event_key, kind, change_date, weekday, group_name, pair, payload, previous_payload, detected_at, source_updated_at FROM schedule_event_notifications WHERE sent_at IS NULL ORDER BY COALESCE(change_date, weekday), group_name, CAST(pair AS INTEGER)",
   ).all();
-  if (!pending.results?.length) return;
-
-  const users = await env.DB.prepare(
-    "SELECT telegram_id, group_name FROM users WHERE notifications = 1 AND group_name IS NOT NULL",
-  ).all();
-  if (!users.results?.length) return;
-
-  const pendingByGroup = new Map();
-  for (const event of pending.results) {
-    const key = normalizeKey(event.group_name);
-    if (!pendingByGroup.has(key)) pendingByGroup.set(key, []);
-    pendingByGroup.get(key).push(event);
-  }
-
-  const sentKeys = new Set();
-  for (const [groupKey, groupEvents] of pendingByGroup) {
-    const groupUsers = users.results.filter((user) => normalizeKey(user.group_name) === groupKey);
-    if (!groupUsers.length) continue;
-
-    const groupName = groupUsers[0].group_name;
-    const text = formatEventNotification(groupName, groupEvents, timezone);
-    let delivered = false;
-    for (const user of groupUsers) {
-      const result = await sendMessage(env, user.telegram_id, text, mainKeyboard(true));
-      if (result?.ok) delivered = true;
-    }
-    if (delivered) {
-      for (const event of groupEvents) sentKeys.add(event.event_key);
-    }
-  }
+  const sentKeys = await refreshSavedScheduleMessages(env, data, detectedAt, pending.results || []);
 
   if (sentKeys.size) {
     await executeBatches(env, [...sentKeys].map((key) => env.DB.prepare(
@@ -795,17 +760,54 @@ async function checkForScheduleChanges(env) {
   }
 }
 
-async function refreshSavedScheduleMessages(env, data, checkedAt) {
+function eventMatchesSelectedDay(event, selected) {
+  if (event.kind === "change") return event.change_date === selected.iso;
+  return event.weekday === DAY_KEYS[selected.weekday];
+}
+
+async function refreshSavedScheduleMessages(env, data, checkedAt, pendingEvents) {
   const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
   const users = await env.DB.prepare(
-    "SELECT telegram_id, group_name, notifications, schedule_message_id, schedule_offset FROM users WHERE group_name IS NOT NULL AND schedule_message_id IS NOT NULL",
+    "SELECT telegram_id, group_name, notifications, schedule_message_id, schedule_offset FROM users WHERE group_name IS NOT NULL",
   ).all();
-  if (!users.results?.length) return;
+  if (!users.results?.length) return new Set();
+
+  const canNotify = isNotificationWindow(timezone);
+  const sentKeys = new Set();
 
   for (const user of users.results) {
     const group = findGroup(data, user.group_name);
     if (!group) continue;
     const offset = Number(user.schedule_offset) === 1 ? 1 : 0;
+    const selected = localDate(offset, timezone);
+    const relevantEvents = canNotify && Boolean(user.notifications)
+      ? pendingEvents.filter((event) => (
+        normalizeKey(event.group_name) === normalizeKey(user.group_name) &&
+        eventMatchesSelectedDay(event, selected)
+      ))
+      : [];
+
+    if (relevantEvents.length) {
+      const notice = formatEventNotification(user.group_name, relevantEvents, timezone);
+      const scheduleText = formatSchedule(data, group, offset, timezone, checkedAt);
+      const result = await sendMessage(
+        env,
+        user.telegram_id,
+        `${notice}\n\n${scheduleText}`,
+        mainKeyboard(true),
+      );
+      if (result?.ok && result.result?.message_id) {
+        if (user.schedule_message_id) {
+          await deleteMessage(env, user.telegram_id, user.schedule_message_id);
+        }
+        await saveScheduleMessage(env, user.telegram_id, result.result.message_id, offset);
+        for (const event of relevantEvents) sentKeys.add(event.event_key);
+        continue;
+      }
+    }
+
+    if (!user.schedule_message_id) continue;
+
     const text = formatSchedule(data, group, offset, timezone, checkedAt);
     try {
       const result = await editMessage(
@@ -824,6 +826,8 @@ async function refreshSavedScheduleMessages(env, data, checkedAt) {
       console.error("schedule message refresh error", error);
     }
   }
+
+  return sentKeys;
 }
 
 function isNotificationWindow(timezone) {
@@ -898,8 +902,6 @@ function formatEventNotification(groupName, events, timezone) {
       }
     }
 
-    const updatedAt = event.source_updated_at || event.detected_at;
-    if (updatedAt) lines.push(`🕒 Изменение появилось в файле: ${escapeHtml(formatGeneratedAt(updatedAt, timezone))}`);
     lines.push("");
   }
   return lines.join("\n").trim();
@@ -931,6 +933,10 @@ async function editMessage(env, chatId, messageId, text, replyMarkup) {
   const payload = { chat_id: chatId, message_id: messageId, text, parse_mode: "HTML" };
   if (replyMarkup) payload.reply_markup = replyMarkup;
   return telegram(env, "editMessageText", payload);
+}
+
+async function deleteMessage(env, chatId, messageId) {
+  return telegram(env, "deleteMessage", { chat_id: chatId, message_id: messageId });
 }
 
 async function answerCallback(env, callbackId, text) {
