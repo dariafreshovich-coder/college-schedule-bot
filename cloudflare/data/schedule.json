@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T04:32:04.928901Z",
+  "generated_at": "2026-09-06T08:53:57.910200Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -189,7 +189,7 @@
         },
         "3": {
           "subject": "Русский язык",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -223,7 +223,7 @@
         },
         "4": {
           "subject": "Литература",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -585,7 +585,7 @@
       "пкд1-26/2": {
         "1": {
           "subject": "Русский язык",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -1113,7 +1113,7 @@
         },
         "2": {
           "subject": "Разговоры о важном",
-          "room": "210/2",
+          "room": "а.зал",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -1735,7 +1735,7 @@
         },
         "4": {
           "subject": "Русский язык",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -1913,7 +1913,7 @@
         },
         "6": {
           "subject": "Литература",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -11341,6 +11341,64 @@
             "change_from": ""
           },
           "old_description": "МДК 05.01 (Серебрякова Е.Н.)"
+        }
+      },
+      "пк1-26/3": {
+        "2": {
+          "lesson": {
+            "subject": "Орг.обслуживания",
+            "room": "Уч.р",
+            "teacher": "Кудрявцев А.П.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Русский язык (Новосельцева Л.А.)"
+        }
+      },
+      "пк1-25/1": {
+        "3": {
+          "cancelled": true,
+          "old_description": "Литература (Новосельцева Л.А.)"
+        }
+      },
+      "пк1-24/3": {
+        "5": {
+          "lesson": {
+            "subject": "Математика",
+            "room": "403",
+            "teacher": "Головина И.А.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Литература (Новосельцева Л.А.)"
+        }
+      },
+      "пкд1-26/2": {
+        "1": {
+          "lesson": {
+            "subject": "Орг.хранения",
+            "room": "210/2",
+            "teacher": "Панина Н.Б.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Русский язык (Новосельцева Л.А.)"
+        }
+      },
+      "тдк1-26/1": {
+        "4": {
+          "lesson": {
+            "subject": "Биология",
+            "room": "301",
+            "teacher": "Гальцева Н.В.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Русский язык (Новосельцева Л.А.)"
         }
       }
     }
