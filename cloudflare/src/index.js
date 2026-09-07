@@ -12,6 +12,7 @@ const DAY_NAMES = [
 ];
 const PAGE_SIZE = 10;
 const SEARCH_RESULT_LIMIT = 20;
+const ERROR_REPORT_PROMPT = "📝 Опиши ошибку одним сообщением и отправь его ответом на это сообщение.";
 let userColumnsReady = false;
 
 const BELL_SCHEDULES = {
@@ -126,6 +127,11 @@ async function handleMessage(message, env) {
   const text = (message.text || "").trim();
   const command = text.split(/\s+/, 1)[0].split("@")[0].toLowerCase();
 
+  if (message.reply_to_message?.from?.is_bot && message.reply_to_message.text === ERROR_REPORT_PROMPT) {
+    await submitErrorReport(env, message, text);
+    return;
+  }
+
   if (command === "/help") {
     await sendHelp(env, chatId);
     return;
@@ -210,6 +216,27 @@ async function handleCallback(callback, env) {
 
   if (callbackData === "noop") return;
 
+  if (callbackData === "m:s") {
+    const user = await getUser(env, userId);
+    await editMessage(env, chatId, messageId, "⚙️ <b>Настройки</b>", settingsKeyboard());
+    return;
+  }
+
+  if (callbackData === "s:g") {
+    await editMessage(env, chatId, messageId, "Напиши часть названия группы или выбери её из списка:", groupsKeyboard(data.groups));
+    return;
+  }
+
+  if (callbackData === "s:e") {
+    await startErrorReport(env, chatId);
+    return;
+  }
+
+  if (callbackData === "s:b") {
+    await editSavedSchedule(env, chatId, messageId, userId, data);
+    return;
+  }
+
   if (callbackData.startsWith("p:")) {
     const page = Number(callbackData.slice(2)) || 0;
     await editMessage(env, chatId, messageId, "Выбери свою группу:", groupsKeyboard(data.groups, page));
@@ -286,6 +313,61 @@ async function editSchedule(env, chatId, messageId, userId, data, offset, notice
   const result = await editMessage(env, chatId, messageId, text, mainKeyboard(Boolean(user?.notifications)));
   if (result?.ok) {
     await saveScheduleMessage(env, userId, messageId, offset, selected.iso);
+  }
+}
+
+async function editSavedSchedule(env, chatId, messageId, userId, data) {
+  const user = await getUser(env, userId);
+  const group = findGroup(data, user?.group_name);
+  if (!group) {
+    await editMessage(env, chatId, messageId, "Сначала выбери группу:", groupsKeyboard(data.groups));
+    return;
+  }
+  const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
+  const offset = Number(user?.schedule_offset) === 1 ? 1 : 0;
+  const selected = dateFromIso(user?.schedule_selected_date) || localDate(offset, timezone);
+  const text = formatSchedule(data, group, selected, timezone, new Date().toISOString());
+  const result = await editMessage(env, chatId, messageId, text, mainKeyboard(Boolean(user?.notifications)));
+  if (result?.ok) {
+    await saveScheduleMessage(env, userId, messageId, offset, selected.iso);
+  }
+}
+
+async function startErrorReport(env, chatId) {
+  await sendMessage(env, chatId, ERROR_REPORT_PROMPT, {
+    force_reply: true,
+    selective: true,
+    input_field_placeholder: "Опишите ошибку",
+  });
+}
+
+async function submitErrorReport(env, message, text) {
+  if (!text) {
+    await sendMessage(env, message.chat.id, "Напиши, что именно работает неправильно, и отправь сообщение ещё раз.");
+    return;
+  }
+
+  const adminChatId = env.ERROR_REPORT_CHAT_ID;
+  if (!adminChatId) {
+    console.error("ERROR_REPORT_CHAT_ID is not configured");
+    await sendMessage(env, message.chat.id, "Сообщение подготовлено, но адрес администратора ещё не настроен.");
+    return;
+  }
+
+  const sender = [message.from?.first_name, message.from?.last_name].filter(Boolean).join(" ") || "пользователь";
+  const username = message.from?.username ? `@${message.from.username}` : "без username";
+  const report = [
+    "🆘 <b>Сообщение об ошибке</b>",
+    `👤 ${escapeHtml(sender)} (${escapeHtml(username)})`,
+    `🆔 <code>${escapeHtml(message.from?.id ?? message.chat.id)}</code>`,
+    "",
+    escapeHtml(text),
+  ].join("\n");
+  const result = await sendMessage(env, adminChatId, report);
+  if (result?.ok) {
+    await sendMessage(env, message.chat.id, "✅ Спасибо! Сообщение об ошибке отправлено.");
+  } else {
+    await sendMessage(env, message.chat.id, "Не удалось отправить сообщение об ошибке. Попробуй ещё раз позже.");
   }
 }
 
@@ -614,13 +696,23 @@ function mainKeyboard(notifications) {
         { text: "📆 Завтра", callback_data: "d:1" },
       ],
       [{ text: notifications ? "🔕 Выключить уведомления" : "🔔 Включить уведомления", callback_data: "m:n" }],
-      [{ text: "👥 Сменить группу", callback_data: "m:g" }],
+      [{ text: "⚙️ Настройки", callback_data: "m:s" }],
+    ],
+  };
+}
+
+function settingsKeyboard() {
+  return {
+    inline_keyboard: [
+      [{ text: "👥 Сменить группу", callback_data: "s:g" }],
+      [{ text: "📝 Заметили ошибку?", callback_data: "s:e" }],
+      [{ text: "⬅️ Назад к расписанию", callback_data: "s:b" }],
     ],
   };
 }
 
 async function getUser(env, userId) {
-  return env.DB.prepare("SELECT telegram_id, group_name, notifications, last_notification FROM users WHERE telegram_id = ?")
+  return env.DB.prepare("SELECT telegram_id, group_name, notifications, last_notification, schedule_message_id, schedule_offset, schedule_selected_date FROM users WHERE telegram_id = ?")
     .bind(String(userId))
     .first();
 }
