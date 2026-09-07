@@ -234,11 +234,12 @@ async function showSchedule(env, chatId, userId, data, offset, notice = "") {
     return;
   }
   const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
-  const scheduleText = formatSchedule(data, group, offset, timezone, new Date().toISOString());
+  const selected = localDate(offset, timezone);
+  const scheduleText = formatSchedule(data, group, selected, timezone, new Date().toISOString());
   const text = notice ? `${notice}\n\n${scheduleText}` : scheduleText;
   const result = await sendMessage(env, chatId, text, mainKeyboard(Boolean(user?.notifications)));
   if (result?.ok && result.result?.message_id) {
-    await saveScheduleMessage(env, userId, result.result.message_id, offset);
+    await saveScheduleMessage(env, userId, result.result.message_id, offset, selected.iso);
   }
 }
 
@@ -250,11 +251,12 @@ async function editSchedule(env, chatId, messageId, userId, data, offset, notice
     return;
   }
   const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
-  const scheduleText = formatSchedule(data, group, offset, timezone, new Date().toISOString());
+  const selected = localDate(offset, timezone);
+  const scheduleText = formatSchedule(data, group, selected, timezone, new Date().toISOString());
   const text = notice ? `${notice}\n\n${scheduleText}` : scheduleText;
   const result = await editMessage(env, chatId, messageId, text, mainKeyboard(Boolean(user?.notifications)));
   if (result?.ok) {
-    await saveScheduleMessage(env, userId, messageId, offset);
+    await saveScheduleMessage(env, userId, messageId, offset, selected.iso);
   }
 }
 
@@ -326,19 +328,34 @@ function localDate(offset, timezone) {
   const year = current.getUTCFullYear();
   const month = String(current.getUTCMonth() + 1).padStart(2, "0");
   const day = String(current.getUTCDate()).padStart(2, "0");
+  return dateFromIso(`${year}-${month}-${day}`);
+}
+
+function dateFromIso(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value || ""));
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) return null;
   return {
-    iso: `${year}-${month}-${day}`,
-    display: `${day}.${month}.${year}`,
-    weekday: current.getUTCDay(),
+    iso: `${match[1]}-${match[2]}-${match[3]}`,
+    display: `${match[3]}.${match[2]}.${match[1]}`,
+    weekday: date.getUTCDay(),
   };
 }
 
-function getLessons(data, group, offset, timezone) {
-  const selected = localDate(offset, timezone);
-  const weekday = DAY_KEYS[selected.weekday];
+function getLessons(data, group, selected, timezone) {
+  const targetDate = selected || localDate(0, timezone);
+  const weekday = DAY_KEYS[targetDate.weekday];
   const groupKey = normalizeKey(group);
   const base = data.lessons?.[weekday]?.[groupKey] || {};
-  const changes = data.changes?.[selected.iso]?.[groupKey] || {};
+  const changes = data.changes?.[targetDate.iso]?.[groupKey] || {};
   const pairs = [...new Set([...Object.keys(base), ...Object.keys(changes)])]
     .map(Number)
     .filter(Number.isFinite)
@@ -370,15 +387,15 @@ function getLessons(data, group, offset, timezone) {
       };
     }
   }
-  return { lessons: result, selected };
+  return { lessons: result, selected: targetDate };
 }
 
-function formatSchedule(data, group, offset, timezone, checkedAt = null) {
-  const { lessons, selected } = getLessons(data, group, offset, timezone);
-  const bellTimes = bellTimesForWeekday(selected.weekday);
+function formatSchedule(data, group, selected, timezone, checkedAt = null) {
+  const { lessons, selected: targetDate } = getLessons(data, group, selected, timezone);
+  const bellTimes = bellTimesForWeekday(targetDate.weekday);
   const lines = [
     `📚 <b>${escapeHtml(group)}</b>`,
-    `🗓 ${selected.display}, ${DAY_NAMES[selected.weekday]}`,
+    `🗓 ${targetDate.display}, ${DAY_NAMES[targetDate.weekday]}`,
     "",
   ];
   const pairs = Object.keys(lessons).map(Number).sort((a, b) => a - b);
@@ -535,6 +552,7 @@ async function ensureUserScheduleColumns(env) {
   const statements = [
     "ALTER TABLE users ADD COLUMN schedule_message_id TEXT",
     "ALTER TABLE users ADD COLUMN schedule_offset INTEGER NOT NULL DEFAULT 0",
+    "ALTER TABLE users ADD COLUMN schedule_selected_date TEXT",
   ];
   for (const sql of statements) {
     try {
@@ -547,11 +565,16 @@ async function ensureUserScheduleColumns(env) {
   userColumnsReady = true;
 }
 
-async function saveScheduleMessage(env, userId, messageId, offset) {
+async function saveScheduleMessage(env, userId, messageId, offset, selectedDate) {
   await env.DB.prepare(
-    "UPDATE users SET schedule_message_id = ?, schedule_offset = ? WHERE telegram_id = ?",
+    "UPDATE users SET schedule_message_id = ?, schedule_offset = ?, schedule_selected_date = ? WHERE telegram_id = ?",
   )
-    .bind(String(messageId), Number(offset) === 1 ? 1 : 0, String(userId))
+    .bind(
+      String(messageId),
+      Number(offset) === 1 ? 1 : 0,
+      selectedDate || null,
+      String(userId),
+    )
     .run();
 }
 
@@ -768,7 +791,7 @@ function eventMatchesSelectedDay(event, selected) {
 async function refreshSavedScheduleMessages(env, data, checkedAt, pendingEvents) {
   const timezone = env.TIMEZONE || "Asia/Novokuznetsk";
   const users = await env.DB.prepare(
-    "SELECT telegram_id, group_name, notifications, schedule_message_id, schedule_offset FROM users WHERE group_name IS NOT NULL",
+    "SELECT telegram_id, group_name, notifications, schedule_message_id, schedule_offset, schedule_selected_date FROM users WHERE group_name IS NOT NULL",
   ).all();
   if (!users.results?.length) return new Set();
 
@@ -779,7 +802,13 @@ async function refreshSavedScheduleMessages(env, data, checkedAt, pendingEvents)
     const group = findGroup(data, user.group_name);
     if (!group) continue;
     const offset = Number(user.schedule_offset) === 1 ? 1 : 0;
-    const selected = localDate(offset, timezone);
+    const fallbackDate = localDate(offset, timezone);
+    const selected = dateFromIso(user.schedule_selected_date) || fallbackDate;
+    if (!user.schedule_selected_date) {
+      await env.DB.prepare("UPDATE users SET schedule_selected_date = ? WHERE telegram_id = ?")
+        .bind(selected.iso, String(user.telegram_id))
+        .run();
+    }
     const relevantEvents = canNotify && Boolean(user.notifications)
       ? pendingEvents.filter((event) => (
         normalizeKey(event.group_name) === normalizeKey(user.group_name) &&
@@ -789,7 +818,7 @@ async function refreshSavedScheduleMessages(env, data, checkedAt, pendingEvents)
 
     if (relevantEvents.length) {
       const notice = formatEventNotification(user.group_name, relevantEvents, timezone);
-      const scheduleText = formatSchedule(data, group, offset, timezone, checkedAt);
+      const scheduleText = formatSchedule(data, group, selected, timezone, checkedAt);
       const result = await sendMessage(
         env,
         user.telegram_id,
@@ -800,7 +829,7 @@ async function refreshSavedScheduleMessages(env, data, checkedAt, pendingEvents)
         if (user.schedule_message_id) {
           await deleteMessage(env, user.telegram_id, user.schedule_message_id);
         }
-        await saveScheduleMessage(env, user.telegram_id, result.result.message_id, offset);
+        await saveScheduleMessage(env, user.telegram_id, result.result.message_id, offset, selected.iso);
         for (const event of relevantEvents) sentKeys.add(event.event_key);
         continue;
       }
@@ -808,7 +837,7 @@ async function refreshSavedScheduleMessages(env, data, checkedAt, pendingEvents)
 
     if (!user.schedule_message_id) continue;
 
-    const text = formatSchedule(data, group, offset, timezone, checkedAt);
+    const text = formatSchedule(data, group, selected, timezone, checkedAt);
     try {
       const result = await editMessage(
         env,
