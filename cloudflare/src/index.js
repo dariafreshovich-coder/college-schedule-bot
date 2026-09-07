@@ -31,6 +31,23 @@ const BELL_SCHEDULES = {
   },
 };
 
+const BELL_EXTRAS = {
+  regular: [
+    "🍽 Обед · 10:00–10:40",
+    "🧹 Уборка кабинетов после 2-й пары",
+    "🍽 Обед · 13:55–14:25",
+    "🧹 Уборка кабинетов после 5-й пары",
+  ],
+  monday: [
+    "⭐ Уроки о важном · 09:50–10:20",
+    "🍽 Обед · 10:20–11:00",
+    "🧹 Уборка кабинетов после 2-й пары",
+    "🍽 Обед · 13:35–14:05",
+    "⭐ Уроки о важном · 15:25–15:55",
+    "🧹 Уборка кабинетов после 5-й пары",
+  ],
+};
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -427,6 +444,13 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
     }
   }
 
+  const bellExtras = bellExtrasForWeekday(targetDate.weekday);
+  if (bellExtras.length) {
+    lines.push("");
+    lines.push("<b>⏱ Дополнительно по расписанию звонков:</b>");
+    for (const extra of bellExtras) lines.push(escapeHtml(extra));
+  }
+
   if (checkedAt) {
     lines.push("");
     lines.push(`<i>🕒 Сообщение обновлено: ${escapeHtml(formatGeneratedAt(checkedAt, timezone))}.</i>`);
@@ -436,6 +460,10 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
 
 function bellTimesForWeekday(weekday) {
   return weekday === 1 ? BELL_SCHEDULES.monday : BELL_SCHEDULES.regular;
+}
+
+function bellExtrasForWeekday(weekday) {
+  return weekday === 1 ? BELL_EXTRAS.monday : BELL_EXTRAS.regular;
 }
 
 function weekdayFromIso(value) {
