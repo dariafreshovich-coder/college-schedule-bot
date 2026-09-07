@@ -35,39 +35,28 @@ const BELL_SCHEDULES = {
     3: "11:00–12:10",
     4: "12:25–13:35",
     5: "14:05–15:15",
+    6: "16:05–17:15",
   },
 };
 
-const BELL_TIMELINES = {
+const BELL_EXTRA_RULES = {
   regular: [
-    { type: "pair", pair: 1 },
-    { type: "extra", afterPair: 1, beforePair: 2, text: "🍽 Обед · 10:00–10:40" },
-    { type: "pair", pair: 2 },
-    { type: "extra", afterPair: 2, beforePair: 3, text: "🧹 Уборка кабинетов" },
-    { type: "pair", pair: 3 },
-    { type: "extra", afterPair: 3, beforePair: 4, text: "🍽 Обед · 13:55–14:25" },
-    { type: "pair", pair: 4 },
-    { type: "pair", pair: 5 },
+    { afterPair: 1, beforePair: 2, start: "10:00", end: "10:40", text: "🍽 Обед · 10:00–10:40" },
+    { afterPair: 2, beforePair: 3, start: "12:10", end: "12:25", text: "🧹 Уборка кабинетов" },
+    { afterPair: 3, beforePair: 4, start: "13:55", end: "14:25", text: "🍽 Обед · 13:55–14:25" },
+    { afterPair: 5, start: "17:35", end: "17:45", text: "🧹 Уборка кабинетов" },
   ],
   monday: [
-    { type: "pair", pair: 1 },
-    { type: "extra", afterPair: 1, beforePair: 2, text: "🍽 Обед · 10:20–11:00" },
-    { type: "pair", pair: 2 },
-    { type: "extra", afterPair: 2, beforePair: 3, text: "🧹 Уборка кабинетов" },
-    { type: "pair", pair: 3 },
-    { type: "extra", afterPair: 3, beforePair: 4, text: "🍽 Обед · 13:35–14:05" },
-    { type: "pair", pair: 4 },
-    { type: "pair", pair: 5 },
+    { afterPair: 1, beforePair: 2, start: "09:40", end: "11:00", text: "🍽 Обед · 10:20–11:00" },
+    { afterPair: 2, beforePair: 3, start: "12:10", end: "12:25", text: "🧹 Уборка кабинетов" },
+    { afterPair: 3, beforePair: 4, start: "13:35", end: "14:05", text: "🍽 Обед · 13:35–14:05" },
+    { afterPair: 5, start: "17:15", end: "17:25", text: "🧹 Уборка кабинетов" },
   ],
   mondayImportantPair: [
-    { type: "pair", pair: 1 },
-    { type: "pair", pair: 2 },
-    { type: "extra", afterPair: 2, beforePair: 3, text: "🍽 Обед · 10:20–11:00" },
-    { type: "extra", afterPair: 2, beforePair: 3, text: "🧹 Уборка кабинетов" },
-    { type: "pair", pair: 3 },
-    { type: "pair", pair: 4 },
-    { type: "extra", afterPair: 4, text: "🍽 Обед · 13:35–14:05" },
-    { type: "pair", pair: 5 },
+    { afterPair: 2, beforePair: 3, start: "10:20", end: "11:00", text: "🍽 Обед · 10:20–11:00" },
+    { afterPair: 2, beforePair: 3, start: "11:00", end: "11:05", text: "🧹 Уборка кабинетов" },
+    { afterPair: 4, beforePair: 5, start: "13:35", end: "14:05", text: "🍽 Обед · 13:35–14:05" },
+    { afterPair: 6, start: "17:15", end: "17:25", text: "🧹 Уборка кабинетов" },
   ],
 };
 
@@ -433,38 +422,23 @@ function getLessons(data, group, selected, timezone) {
 function formatSchedule(data, group, selected, timezone, checkedAt = null) {
   const { lessons, selected: targetDate } = getLessons(data, group, selected, timezone);
   const importantLessonIsSecondPair = targetDate.weekday === 1 && /важн/i.test(lessons[2]?.subject || "");
-  const bellTimes = bellTimesForWeekday(targetDate.weekday, importantLessonIsSecondPair);
   const lines = [
     `📚 <b>${escapeHtml(group)}</b>`,
     `🗓 ${targetDate.display}, ${DAY_NAMES[targetDate.weekday]}`,
     "",
   ];
-  const pairs = Object.keys(lessons).map(Number).sort((a, b) => a - b);
+  const entries = buildScheduleEntries(lessons, targetDate.weekday, importantLessonIsSecondPair);
 
-  if (!pairs.length) {
+  if (!entries.length) {
     lines.push("📭 На этот день занятий нет.");
   } else {
-    const timeline = bellTimelineForWeekday(targetDate.weekday, importantLessonIsSecondPair);
-    const renderedPairs = new Set();
-
-    for (const item of timeline) {
-      if (item.type === "extra") {
-        if (!lessons[item.afterPair] || (item.beforePair && !lessons[item.beforePair])) continue;
-        lines.push(`<i>${escapeHtml(item.text)}</i>`);
+    for (const entry of entries) {
+      if (entry.type === "extra") {
+        lines.push(`<i>${escapeHtml(entry.text)}</i>`);
         lines.push("");
         continue;
       }
-
-      const lesson = lessons[item.pair];
-      if (!lesson) continue;
-      appendLessonToSchedule(lines, item.pair, lesson, bellTimes);
-      renderedPairs.add(item.pair);
-    }
-
-    // Keep any unexpected pair numbers visible even if they are not in the official timetable.
-    for (const pair of pairs) {
-      if (renderedPairs.has(pair)) continue;
-      appendLessonToSchedule(lines, pair, lessons[pair], bellTimes);
+      appendLessonToSchedule(lines, entry.pair, entry.lesson, entry.time);
     }
   }
 
@@ -475,8 +449,8 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
   return lines.join("\n").trim();
 }
 
-function appendLessonToSchedule(lines, pair, lesson, bellTimes) {
-  const time = bellTimes[pair] ? ` · ${bellTimes[pair]}` : "";
+function appendLessonToSchedule(lines, pair, lesson, timeText = "") {
+  const time = timeText ? ` · ${timeText}` : "";
   if (lesson.cancelled) {
     lines.push(`<b>${pair}-я пара${time} — отмена</b>`);
     if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
@@ -502,9 +476,63 @@ function bellTimesForWeekday(weekday, importantLessonIsSecondPair = false) {
   return importantLessonIsSecondPair ? BELL_SCHEDULES.mondayImportantPair : BELL_SCHEDULES.monday;
 }
 
-function bellTimelineForWeekday(weekday, importantLessonIsSecondPair = false) {
-  if (weekday !== 1) return BELL_TIMELINES.regular;
-  return importantLessonIsSecondPair ? BELL_TIMELINES.mondayImportantPair : BELL_TIMELINES.monday;
+function extraRulesForWeekday(weekday, importantLessonIsSecondPair = false) {
+  if (weekday !== 1) return BELL_EXTRA_RULES.regular;
+  return importantLessonIsSecondPair ? BELL_EXTRA_RULES.mondayImportantPair : BELL_EXTRA_RULES.monday;
+}
+
+function buildScheduleEntries(lessons, weekday, importantLessonIsSecondPair = false) {
+  const bellTimes = bellTimesForWeekday(weekday, importantLessonIsSecondPair);
+  const entries = [];
+  const pairNumbers = Object.keys(lessons)
+    .map(Number)
+    .filter(Number.isFinite)
+    .sort((a, b) => a - b);
+  const existingPairs = new Set(pairNumbers);
+
+  for (const pair of pairNumbers) {
+    const timeText = bellTimes[pair] || "";
+    const range = parseTimeRange(timeText);
+    entries.push({
+      type: "lesson",
+      pair,
+      lesson: lessons[pair],
+      time: timeText,
+      start: range?.start ?? Number.POSITIVE_INFINITY,
+      end: range?.end ?? Number.POSITIVE_INFINITY,
+    });
+  }
+
+  for (const rule of extraRulesForWeekday(weekday, importantLessonIsSecondPair)) {
+    if (!existingPairs.has(rule.afterPair)) continue;
+    if (rule.beforePair && !existingPairs.has(rule.beforePair)) continue;
+    entries.push({
+      type: "extra",
+      text: rule.text,
+      start: timeToMinutes(rule.start),
+      end: timeToMinutes(rule.end),
+    });
+  }
+
+  return entries.sort((left, right) => (
+    left.start - right.start ||
+    (left.type === "extra" ? 0 : 1) - (right.type === "extra" ? 0 : 1) ||
+    (left.pair || 0) - (right.pair || 0)
+  ));
+}
+
+function parseTimeRange(value) {
+  const match = /^(\d{1,2}):(\d{2})[–-](\d{1,2}):(\d{2})$/.exec(String(value || ""));
+  if (!match) return null;
+  return {
+    start: Number(match[1]) * 60 + Number(match[2]),
+    end: Number(match[3]) * 60 + Number(match[4]),
+  };
+}
+
+function timeToMinutes(value) {
+  const match = /^(\d{1,2}):(\d{2})$/.exec(String(value || ""));
+  return match ? Number(match[1]) * 60 + Number(match[2]) : Number.POSITIVE_INFINITY;
 }
 
 function weekdayFromIso(value) {
