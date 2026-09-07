@@ -31,20 +31,30 @@ const BELL_SCHEDULES = {
   },
 };
 
-const BELL_EXTRAS = {
+const BELL_TIMELINES = {
   regular: [
-    "🍽 Обед · 10:00–10:40",
-    "🧹 Уборка кабинетов после 2-й пары",
-    "🍽 Обед · 13:55–14:25",
-    "🧹 Уборка кабинетов после 5-й пары",
+    { type: "pair", pair: 1 },
+    { type: "extra", text: "🍽 Обед · 10:00–10:40" },
+    { type: "pair", pair: 2 },
+    { type: "extra", text: "🧹 Уборка кабинетов" },
+    { type: "pair", pair: 3 },
+    { type: "extra", text: "🍽 Обед · 13:55–14:25" },
+    { type: "pair", pair: 4 },
+    { type: "pair", pair: 5 },
+    { type: "extra", text: "🧹 Уборка кабинетов" },
   ],
   monday: [
-    "⭐ Уроки о важном · 09:50–10:20",
-    "🍽 Обед · 10:20–11:00",
-    "🧹 Уборка кабинетов после 2-й пары",
-    "🍽 Обед · 13:35–14:05",
-    "⭐ Уроки о важном · 15:25–15:55",
-    "🧹 Уборка кабинетов после 5-й пары",
+    { type: "pair", pair: 1 },
+    { type: "extra", text: "⭐ Уроки о важном · 09:50–10:20" },
+    { type: "extra", text: "🍽 Обед · 10:20–11:00" },
+    { type: "pair", pair: 2 },
+    { type: "extra", text: "🧹 Уборка кабинетов" },
+    { type: "pair", pair: 3 },
+    { type: "extra", text: "🍽 Обед · 13:35–14:05" },
+    { type: "pair", pair: 4 },
+    { type: "extra", text: "⭐ Уроки о важном · 15:25–15:55" },
+    { type: "pair", pair: 5 },
+    { type: "extra", text: "🧹 Уборка кабинетов" },
   ],
 };
 
@@ -420,35 +430,27 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
   if (!pairs.length) {
     lines.push("📭 На этот день занятий нет.");
   } else {
-    for (const pair of pairs) {
-      const lesson = lessons[pair];
-      const time = bellTimes[pair] ? ` · ${bellTimes[pair]}` : "";
-      if (lesson.cancelled) {
-        lines.push(`<b>${pair}-я пара${time} — отмена</b>`);
-        if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
+    const timeline = bellTimelineForWeekday(targetDate.weekday);
+    const renderedPairs = new Set();
+
+    for (const item of timeline) {
+      if (item.type === "extra") {
+        lines.push(`<i>${escapeHtml(item.text)}</i>`);
         lines.push("");
         continue;
       }
 
-      if (lesson.changed) {
-        lines.push(`<b>${pair}-я пара${time}</b>`);
-        if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
-        lines.push(`Стало: ${formatLessonTitle(lesson)}`);
-        if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
-      } else {
-        lines.push(`<b>${pair}-я пара${time}: ${escapeHtml(lesson.subject || "Занятие")}</b>`);
-        if (lesson.teacher) lines.push(`👨‍🏫 ${escapeHtml(lesson.teacher)}`);
-        if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
-      }
-      lines.push("");
+      const lesson = lessons[item.pair];
+      if (!lesson) continue;
+      appendLessonToSchedule(lines, item.pair, lesson, bellTimes);
+      renderedPairs.add(item.pair);
     }
-  }
 
-  const bellExtras = bellExtrasForWeekday(targetDate.weekday);
-  if (bellExtras.length) {
-    lines.push("");
-    lines.push("<b>⏱ Дополнительно по расписанию звонков:</b>");
-    for (const extra of bellExtras) lines.push(escapeHtml(extra));
+    // Keep any unexpected pair numbers visible even if they are not in the official timetable.
+    for (const pair of pairs) {
+      if (renderedPairs.has(pair)) continue;
+      appendLessonToSchedule(lines, pair, lessons[pair], bellTimes);
+    }
   }
 
   if (checkedAt) {
@@ -458,12 +460,34 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
   return lines.join("\n").trim();
 }
 
+function appendLessonToSchedule(lines, pair, lesson, bellTimes) {
+  const time = bellTimes[pair] ? ` · ${bellTimes[pair]}` : "";
+  if (lesson.cancelled) {
+    lines.push(`<b>${pair}-я пара${time} — отмена</b>`);
+    if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
+    lines.push("");
+    return;
+  }
+
+  if (lesson.changed) {
+    lines.push(`<b>${pair}-я пара${time}</b>`);
+    if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
+    lines.push(`Стало: ${formatLessonTitle(lesson)}`);
+    if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
+  } else {
+    lines.push(`<b>${pair}-я пара${time}: ${escapeHtml(lesson.subject || "Занятие")}</b>`);
+    if (lesson.teacher) lines.push(`👨‍🏫 ${escapeHtml(lesson.teacher)}`);
+    if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
+  }
+  lines.push("");
+}
+
 function bellTimesForWeekday(weekday) {
   return weekday === 1 ? BELL_SCHEDULES.monday : BELL_SCHEDULES.regular;
 }
 
-function bellExtrasForWeekday(weekday) {
-  return weekday === 1 ? BELL_EXTRAS.monday : BELL_EXTRAS.regular;
+function bellTimelineForWeekday(weekday) {
+  return weekday === 1 ? BELL_TIMELINES.monday : BELL_TIMELINES.regular;
 }
 
 function weekdayFromIso(value) {
