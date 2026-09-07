@@ -347,6 +347,16 @@ async function submitErrorReport(env, message, text) {
     return;
   }
 
+  const userId = String(message.from?.id ?? message.chat.id);
+  const user = await getUser(env, userId);
+  const cooldownMs = 5 * 60 * 1000;
+  const lastReportAt = Date.parse(user?.last_error_report_at || "");
+  if (Number.isFinite(lastReportAt) && Date.now() - lastReportAt < cooldownMs) {
+    const minutesLeft = Math.ceil((cooldownMs - (Date.now() - lastReportAt)) / 60000);
+    await sendMessage(env, message.chat.id, `⏳ Повторно отправить жалобу можно через ${minutesLeft} мин.`);
+    return;
+  }
+
   const adminChatId = env.ERROR_REPORT_CHAT_ID;
   if (!adminChatId) {
     console.error("ERROR_REPORT_CHAT_ID is not configured");
@@ -365,6 +375,12 @@ async function submitErrorReport(env, message, text) {
   ].join("\n");
   const result = await sendMessage(env, adminChatId, report);
   if (result?.ok) {
+    const reportedAt = new Date().toISOString();
+    await env.DB.prepare(
+      "INSERT INTO users(telegram_id, notifications, last_error_report_at) VALUES (?, 0, ?) ON CONFLICT(telegram_id) DO UPDATE SET last_error_report_at = excluded.last_error_report_at",
+    )
+      .bind(userId, reportedAt)
+      .run();
     await sendMessage(env, message.chat.id, "✅ Спасибо! Сообщение об ошибке отправлено.");
   } else {
     await sendMessage(env, message.chat.id, "Не удалось отправить сообщение об ошибке. Попробуй ещё раз позже.");
@@ -712,7 +728,7 @@ function settingsKeyboard() {
 }
 
 async function getUser(env, userId) {
-  return env.DB.prepare("SELECT telegram_id, group_name, notifications, last_notification, schedule_message_id, schedule_offset, schedule_selected_date FROM users WHERE telegram_id = ?")
+  return env.DB.prepare("SELECT telegram_id, group_name, notifications, last_notification, schedule_message_id, schedule_offset, schedule_selected_date, last_error_report_at FROM users WHERE telegram_id = ?")
     .bind(String(userId))
     .first();
 }
@@ -742,6 +758,7 @@ async function ensureUserScheduleColumns(env) {
     "ALTER TABLE users ADD COLUMN schedule_message_id TEXT",
     "ALTER TABLE users ADD COLUMN schedule_offset INTEGER NOT NULL DEFAULT 0",
     "ALTER TABLE users ADD COLUMN schedule_selected_date TEXT",
+    "ALTER TABLE users ADD COLUMN last_error_report_at TEXT",
   ];
   for (const sql of statements) {
     try {
