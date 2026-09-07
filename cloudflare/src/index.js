@@ -41,36 +41,33 @@ const BELL_SCHEDULES = {
 const BELL_TIMELINES = {
   regular: [
     { type: "pair", pair: 1 },
-    { type: "extra", text: "🍽 Обед · 10:00–10:40" },
+    { type: "extra", afterPair: 1, beforePair: 2, text: "🍽 Обед · 10:00–10:40" },
     { type: "pair", pair: 2 },
-    { type: "extra", text: "🧹 Уборка кабинетов" },
+    { type: "extra", afterPair: 2, beforePair: 3, text: "🧹 Уборка кабинетов" },
     { type: "pair", pair: 3 },
-    { type: "extra", text: "🍽 Обед · 13:55–14:25" },
+    { type: "extra", afterPair: 3, beforePair: 4, text: "🍽 Обед · 13:55–14:25" },
     { type: "pair", pair: 4 },
     { type: "pair", pair: 5 },
-    { type: "extra", text: "🧹 Уборка кабинетов" },
   ],
   monday: [
     { type: "pair", pair: 1 },
-    { type: "extra", text: "🍽 Обед · 10:20–11:00" },
+    { type: "extra", afterPair: 1, beforePair: 2, text: "🍽 Обед · 10:20–11:00" },
     { type: "pair", pair: 2 },
-    { type: "extra", text: "🧹 Уборка кабинетов" },
+    { type: "extra", afterPair: 2, beforePair: 3, text: "🧹 Уборка кабинетов" },
     { type: "pair", pair: 3 },
-    { type: "extra", text: "🍽 Обед · 13:35–14:05" },
+    { type: "extra", afterPair: 3, beforePair: 4, text: "🍽 Обед · 13:35–14:05" },
     { type: "pair", pair: 4 },
     { type: "pair", pair: 5 },
-    { type: "extra", text: "🧹 Уборка кабинетов" },
   ],
   mondayImportantPair: [
     { type: "pair", pair: 1 },
     { type: "pair", pair: 2 },
-    { type: "extra", text: "🍽 Обед · 10:20–11:00" },
-    { type: "extra", text: "🧹 Уборка кабинетов" },
+    { type: "extra", afterPair: 2, beforePair: 3, text: "🍽 Обед · 10:20–11:00" },
+    { type: "extra", afterPair: 2, beforePair: 3, text: "🧹 Уборка кабинетов" },
     { type: "pair", pair: 3 },
-    { type: "extra", text: "🍽 Обед · 13:35–14:05" },
+    { type: "extra", afterPair: 3, beforePair: 4, text: "🍽 Обед · 13:35–14:05" },
     { type: "pair", pair: 4 },
     { type: "pair", pair: 5 },
-    { type: "extra", text: "🧹 Уборка кабинетов" },
   ],
 };
 
@@ -452,6 +449,7 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
 
     for (const item of timeline) {
       if (item.type === "extra") {
+        if (!lessons[item.afterPair] || !lessons[item.beforePair]) continue;
         lines.push(`<i>${escapeHtml(item.text)}</i>`);
         lines.push("");
         continue;
