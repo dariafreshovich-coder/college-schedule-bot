@@ -29,6 +29,13 @@ const BELL_SCHEDULES = {
     4: "14:05–15:15",
     5: "16:05–17:15",
   },
+  mondayImportantPair: {
+    1: "08:30–09:40",
+    2: "09:50–10:20",
+    3: "11:00–12:10",
+    4: "12:25–13:35",
+    5: "14:05–15:15",
+  },
 };
 
 const BELL_TIMELINES = {
@@ -429,10 +436,7 @@ function getLessons(data, group, selected, timezone) {
 function formatSchedule(data, group, selected, timezone, checkedAt = null) {
   const { lessons, selected: targetDate } = getLessons(data, group, selected, timezone);
   const importantLessonIsSecondPair = targetDate.weekday === 1 && /важн/i.test(lessons[2]?.subject || "");
-  const bellTimes = {
-    ...bellTimesForWeekday(targetDate.weekday),
-    ...(importantLessonIsSecondPair ? { 2: "09:50–10:20" } : {}),
-  };
+  const bellTimes = bellTimesForWeekday(targetDate.weekday, importantLessonIsSecondPair);
   const lines = [
     `📚 <b>${escapeHtml(group)}</b>`,
     `🗓 ${targetDate.display}, ${DAY_NAMES[targetDate.weekday]}`,
@@ -495,8 +499,9 @@ function appendLessonToSchedule(lines, pair, lesson, bellTimes) {
   lines.push("");
 }
 
-function bellTimesForWeekday(weekday) {
-  return weekday === 1 ? BELL_SCHEDULES.monday : BELL_SCHEDULES.regular;
+function bellTimesForWeekday(weekday, importantLessonIsSecondPair = false) {
+  if (weekday !== 1) return BELL_SCHEDULES.regular;
+  return importantLessonIsSecondPair ? BELL_SCHEDULES.mondayImportantPair : BELL_SCHEDULES.monday;
 }
 
 function bellTimelineForWeekday(weekday, importantLessonIsSecondPair = false) {
