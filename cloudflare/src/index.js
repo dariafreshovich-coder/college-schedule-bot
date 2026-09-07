@@ -45,14 +45,23 @@ const BELL_TIMELINES = {
   ],
   monday: [
     { type: "pair", pair: 1 },
-    { type: "extra", text: "⭐ Уроки о важном · 09:50–10:20" },
     { type: "extra", text: "🍽 Обед · 10:20–11:00" },
     { type: "pair", pair: 2 },
     { type: "extra", text: "🧹 Уборка кабинетов" },
     { type: "pair", pair: 3 },
     { type: "extra", text: "🍽 Обед · 13:35–14:05" },
     { type: "pair", pair: 4 },
-    { type: "extra", text: "⭐ Уроки о важном · 15:25–15:55" },
+    { type: "pair", pair: 5 },
+    { type: "extra", text: "🧹 Уборка кабинетов" },
+  ],
+  mondayImportantPair: [
+    { type: "pair", pair: 1 },
+    { type: "pair", pair: 2 },
+    { type: "extra", text: "🍽 Обед · 10:20–11:00" },
+    { type: "extra", text: "🧹 Уборка кабинетов" },
+    { type: "pair", pair: 3 },
+    { type: "extra", text: "🍽 Обед · 13:35–14:05" },
+    { type: "pair", pair: 4 },
     { type: "pair", pair: 5 },
     { type: "extra", text: "🧹 Уборка кабинетов" },
   ],
@@ -419,7 +428,11 @@ function getLessons(data, group, selected, timezone) {
 
 function formatSchedule(data, group, selected, timezone, checkedAt = null) {
   const { lessons, selected: targetDate } = getLessons(data, group, selected, timezone);
-  const bellTimes = bellTimesForWeekday(targetDate.weekday);
+  const importantLessonIsSecondPair = targetDate.weekday === 1 && /важн/i.test(lessons[2]?.subject || "");
+  const bellTimes = {
+    ...bellTimesForWeekday(targetDate.weekday),
+    ...(importantLessonIsSecondPair ? { 2: "09:50–10:20" } : {}),
+  };
   const lines = [
     `📚 <b>${escapeHtml(group)}</b>`,
     `🗓 ${targetDate.display}, ${DAY_NAMES[targetDate.weekday]}`,
@@ -430,7 +443,7 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
   if (!pairs.length) {
     lines.push("📭 На этот день занятий нет.");
   } else {
-    const timeline = bellTimelineForWeekday(targetDate.weekday);
+    const timeline = bellTimelineForWeekday(targetDate.weekday, importantLessonIsSecondPair);
     const renderedPairs = new Set();
 
     for (const item of timeline) {
@@ -486,8 +499,9 @@ function bellTimesForWeekday(weekday) {
   return weekday === 1 ? BELL_SCHEDULES.monday : BELL_SCHEDULES.regular;
 }
 
-function bellTimelineForWeekday(weekday) {
-  return weekday === 1 ? BELL_TIMELINES.monday : BELL_TIMELINES.regular;
+function bellTimelineForWeekday(weekday, importantLessonIsSecondPair = false) {
+  if (weekday !== 1) return BELL_TIMELINES.regular;
+  return importantLessonIsSecondPair ? BELL_TIMELINES.mondayImportantPair : BELL_TIMELINES.monday;
 }
 
 function weekdayFromIso(value) {
