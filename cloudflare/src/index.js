@@ -65,8 +65,8 @@ const BELL_TIMELINES = {
     { type: "extra", afterPair: 2, beforePair: 3, text: "🍽 Обед · 10:20–11:00" },
     { type: "extra", afterPair: 2, beforePair: 3, text: "🧹 Уборка кабинетов" },
     { type: "pair", pair: 3 },
-    { type: "extra", afterPair: 3, beforePair: 4, text: "🍽 Обед · 13:35–14:05" },
     { type: "pair", pair: 4 },
+    { type: "extra", afterPair: 4, text: "🍽 Обед · 13:35–14:05" },
     { type: "pair", pair: 5 },
   ],
 };
@@ -449,7 +449,7 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
 
     for (const item of timeline) {
       if (item.type === "extra") {
-        if (!lessons[item.afterPair] || !lessons[item.beforePair]) continue;
+        if (!lessons[item.afterPair] || (item.beforePair && !lessons[item.beforePair])) continue;
         lines.push(`<i>${escapeHtml(item.text)}</i>`);
         lines.push("");
         continue;
