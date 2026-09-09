@@ -425,6 +425,34 @@ function normalizeKey(value) {
     .replace(/\s+/g, " ");
 }
 
+function cleanScheduleText(value) {
+  return String(value || "").trim().replace(/\s+/g, " ");
+}
+
+function canonicalLesson(lesson) {
+  if (!lesson) return null;
+  return {
+    subject: cleanScheduleText(lesson.subject),
+    teacher: cleanScheduleText(lesson.teacher),
+    room: cleanScheduleText(lesson.room),
+    cancelled: Boolean(lesson.cancelled),
+  };
+}
+
+function canonicalEventPayload(kind, value) {
+  if (value === null || value === undefined) return null;
+  const parsed = typeof value === "string" ? parsePayload(value) : value;
+  if (!parsed) return String(value);
+  if (kind === "lesson") return JSON.stringify(canonicalLesson(parsed));
+  if (kind === "change") {
+    return JSON.stringify({
+      cancelled: Boolean(parsed.cancelled),
+      lesson: canonicalLesson(parsed.lesson),
+    });
+  }
+  return JSON.stringify(parsed);
+}
+
 function searchKey(value) {
   return normalizeKey(value).replace(/[^a-zа-я0-9]/g, "");
 }
@@ -842,7 +870,7 @@ function flattenScheduleSnapshots(data) {
           weekday,
           groupName,
           pair: String(pair),
-          payload: JSON.stringify(lesson),
+          payload: canonicalEventPayload("lesson", lesson),
           sourceUpdatedAt,
         });
       }
@@ -859,7 +887,7 @@ function flattenScheduleSnapshots(data) {
           weekday: null,
           groupName,
           pair: String(pair),
-          payload: JSON.stringify(change),
+          payload: canonicalEventPayload("change", change),
           sourceUpdatedAt,
         });
       }
@@ -880,7 +908,10 @@ async function checkForScheduleChanges(env) {
   const previousResult = await env.DB.prepare(
     "SELECT snapshot_key, kind, change_date, weekday, group_name, pair, payload, source_updated_at FROM schedule_event_baseline",
   ).all();
-  const previous = new Map((previousResult.results || []).map((row) => [row.snapshot_key, row]));
+  const previous = new Map((previousResult.results || []).map((row) => [
+    row.snapshot_key,
+    { ...row, payload: canonicalEventPayload(row.kind, row.payload) },
+  ]));
   const current = new Map(snapshots.map((snapshot) => [snapshot.key, snapshot]));
 
   if (!state) {
@@ -980,7 +1011,19 @@ async function checkForScheduleChanges(env) {
   const pending = await env.DB.prepare(
     "SELECT event_key, kind, change_date, weekday, group_name, pair, payload, previous_payload, detected_at, source_updated_at FROM schedule_event_notifications WHERE sent_at IS NULL ORDER BY COALESCE(change_date, weekday), group_name, CAST(pair AS INTEGER)",
   ).all();
-  const sentKeys = await refreshSavedScheduleMessages(env, data, detectedAt, pending.results || []);
+  const pendingRows = pending.results || [];
+  const stalePending = pendingRows.filter((event) => (
+    event.previous_payload !== null &&
+    event.previous_payload !== undefined &&
+    canonicalEventPayload(event.kind, event.payload) === canonicalEventPayload(event.kind, event.previous_payload)
+  ));
+  if (stalePending.length) {
+    await executeBatches(env, stalePending.map((event) => env.DB.prepare(
+      "UPDATE schedule_event_notifications SET sent_at = ? WHERE event_key = ? AND sent_at IS NULL",
+    ).bind(detectedAt, event.event_key)));
+  }
+  const pendingEvents = pendingRows.filter((event) => !stalePending.includes(event));
+  const sentKeys = await refreshSavedScheduleMessages(env, data, detectedAt, pendingEvents);
 
   if (sentKeys.size) {
     await executeBatches(env, [...sentKeys].map((key) => env.DB.prepare(
