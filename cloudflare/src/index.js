@@ -1025,18 +1025,30 @@ async function refreshSavedScheduleMessages(env, data, checkedAt, pendingEvents)
     if (relevantEvents.length) {
       const notice = formatEventNotification(user.group_name, relevantEvents, timezone);
       const scheduleText = formatSchedule(data, group, selected, timezone, checkedAt);
-      const result = await sendMessage(
-        env,
-        user.telegram_id,
-        `${notice}\n\n${scheduleText}`,
-        mainKeyboard(true),
-      );
+      let result = null;
+      try {
+        result = await sendMessage(
+          env,
+          user.telegram_id,
+          `${notice}\n\n${scheduleText}`,
+          mainKeyboard(true),
+        );
+      } catch (error) {
+        console.error("schedule notification send error", error);
+      }
+
       if (result?.ok && result.result?.message_id) {
-        if (user.schedule_message_id) {
-          await deleteMessage(env, user.telegram_id, user.schedule_message_id);
-        }
-        await saveScheduleMessage(env, user.telegram_id, result.result.message_id, offset, selected.iso);
+        // Mark the event for this check immediately after Telegram accepted the message.
+        // A later DB/delete error must not make the same notification repeat next time.
         for (const event of relevantEvents) sentKeys.add(event.event_key);
+        try {
+          await saveScheduleMessage(env, user.telegram_id, result.result.message_id, offset, selected.iso);
+          if (user.schedule_message_id) {
+            await deleteMessage(env, user.telegram_id, user.schedule_message_id);
+          }
+        } catch (error) {
+          console.error("schedule notification bookkeeping error", error);
+        }
         continue;
       }
     }
