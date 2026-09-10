@@ -426,7 +426,11 @@ function normalizeKey(value) {
 }
 
 function cleanScheduleText(value) {
-  return String(value || "").trim().replace(/\s+/g, " ");
+  return String(value || "")
+    .normalize("NFKC")
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .trim()
+    .replace(/\s+/g, " ");
 }
 
 function canonicalLesson(lesson) {
@@ -451,6 +455,45 @@ function canonicalEventPayload(kind, value) {
     });
   }
   return JSON.stringify(parsed);
+}
+
+function comparableScheduleText(value) {
+  return cleanScheduleText(value)
+    .toLowerCase()
+    .replace(/ё/g, "е")
+    .replace(/[‐‑‒–—−]/g, "-");
+}
+
+function comparableEventPayload(kind, value) {
+  if (value === null || value === undefined) return null;
+  const parsed = typeof value === "string" ? parsePayload(value) : value;
+  if (!parsed) return String(value);
+  if (kind === "lesson") {
+    return JSON.stringify({
+      subject: comparableScheduleText(parsed.subject),
+      teacher: comparableScheduleText(parsed.teacher),
+      room: comparableScheduleText(parsed.room),
+      cancelled: Boolean(parsed.cancelled),
+    });
+  }
+  if (kind === "change") {
+    return JSON.stringify({
+      cancelled: Boolean(parsed.cancelled),
+      lesson: parsed.lesson
+        ? {
+            subject: comparableScheduleText(parsed.lesson.subject),
+            teacher: comparableScheduleText(parsed.lesson.teacher),
+            room: comparableScheduleText(parsed.lesson.room),
+            cancelled: Boolean(parsed.lesson.cancelled),
+          }
+        : null,
+    });
+  }
+  return JSON.stringify(parsed);
+}
+
+function sameEventPayload(kind, left, right) {
+  return comparableEventPayload(kind, left) === comparableEventPayload(kind, right);
 }
 
 function searchKey(value) {
@@ -942,7 +985,7 @@ async function checkForScheduleChanges(env) {
 
   for (const snapshot of snapshots) {
     const old = previous.get(snapshot.key);
-    if (!old || old.payload !== snapshot.payload) {
+    if (!old || !sameEventPayload(snapshot.kind, old.payload, snapshot.payload)) {
       events.push({
         key: `${snapshot.key}|${snapshot.payload}`,
         kind: snapshot.kind,
@@ -1015,7 +1058,7 @@ async function checkForScheduleChanges(env) {
   const stalePending = pendingRows.filter((event) => (
     event.previous_payload !== null &&
     event.previous_payload !== undefined &&
-    canonicalEventPayload(event.kind, event.payload) === canonicalEventPayload(event.kind, event.previous_payload)
+    sameEventPayload(event.kind, event.payload, event.previous_payload)
   ));
   if (stalePending.length) {
     await executeBatches(env, stalePending.map((event) => env.DB.prepare(
