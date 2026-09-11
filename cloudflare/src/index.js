@@ -715,6 +715,11 @@ function formatLessonTitle(lesson) {
   return lesson.teacher ? `${subject} (${escapeHtml(lesson.teacher)})` : subject;
 }
 
+function formatLessonNotificationTitle(lesson) {
+  const title = formatLessonTitle(lesson);
+  return lesson?.room ? `${title} · 📍 ${escapeHtml(lesson.room)}` : title;
+}
+
 function formatGeneratedAt(value, timezone) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return String(value);
@@ -1187,12 +1192,6 @@ function dayNameFromKey(weekday) {
   return index >= 0 ? DAY_NAMES[index] : weekday || "день";
 }
 
-function oldLessonTitle(previousPayload, fallback) {
-  const previous = parsePayload(previousPayload);
-  if (previous) return formatLessonTitle(previous);
-  return fallback || "занятие";
-}
-
 function formatEventNotification(groupName, events, timezone) {
   const lines = [
     "⚠️ <b>Изменения в расписании</b>",
@@ -1209,10 +1208,9 @@ function formatEventNotification(groupName, events, timezone) {
       const bellTimes = dayIndex >= 0 ? bellTimesForWeekday(dayIndex) : {};
       const time = bellTimes[event.pair] ? ` · ${bellTimes[event.pair]}` : "";
       lines.push(`<b>📅 ${escapeHtml(dayNameFromKey(event.weekday))}, ${escapeHtml(event.pair)}-я пара${time}</b>`);
-      if (previous) lines.push(`Было: <s>${oldLessonTitle(event.previous_payload)}</s>`);
+      if (previous) lines.push(`Было: <s>${formatLessonNotificationTitle(previous)}</s>`);
       if (payload) {
-        lines.push(`Стало: ${formatLessonTitle(payload)}`);
-        if (payload.room) lines.push(`📍 ${escapeHtml(payload.room)}`);
+        lines.push(`Стало: ${formatLessonNotificationTitle(payload)}`);
       } else {
         lines.push("Стало: ❌ занятие убрано из расписания");
       }
@@ -1223,13 +1221,12 @@ function formatEventNotification(groupName, events, timezone) {
       const bellTimes = weekday === null ? {} : bellTimesForWeekday(weekday);
       const time = bellTimes[event.pair] ? ` · ${bellTimes[event.pair]}` : "";
       lines.push(`<b>🗓 ${escapeHtml(formatDateOnly(event.change_date))}, ${escapeHtml(event.pair)}-я пара${time}</b>`);
-      const oldDescription = payload?.old_description || (previousLesson ? formatLessonTitle(previousLesson) : "");
-      if (oldDescription) lines.push(`Было: <s>${escapeHtml(oldDescription)}</s>`);
+      const oldDescription = previousLesson ? formatLessonNotificationTitle(previousLesson) : "";
+      if (oldDescription) lines.push(`Было: <s>${oldDescription}</s>`);
       if (payload?.cancelled || lesson?.cancelled) {
         lines.push("Стало: ❌ пара отменена");
       } else if (lesson) {
-        lines.push(`Стало: ${formatLessonTitle(lesson)}`);
-        if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
+        lines.push(`Стало: ${formatLessonNotificationTitle(lesson)}`);
       } else {
         lines.push("Стало: ❌ изменение отменено");
       }
