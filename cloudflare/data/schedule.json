@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-14T10:36:28.613646Z",
+  "generated_at": "2026-09-14T16:32:53.406540Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -3811,7 +3811,7 @@
         },
         "3": {
           "subject": "МДК 01.03",
-          "room": "202",
+          "room": "",
           "teacher": "Емельянова Т.Г.",
           "changed": false,
           "cancelled": false,
@@ -4593,7 +4593,7 @@
         },
         "4": {
           "subject": "МДК 01.03",
-          "room": "202",
+          "room": "",
           "teacher": "Емельянова Т.Г.",
           "changed": false,
           "cancelled": false,
@@ -4601,7 +4601,7 @@
         },
         "5": {
           "subject": "МДК 02.04",
-          "room": "202",
+          "room": "",
           "teacher": "Емельянова Т.Г.",
           "changed": false,
           "cancelled": false,
@@ -4619,7 +4619,7 @@
         },
         "4": {
           "subject": "МДК 01.03",
-          "room": "202",
+          "room": "",
           "teacher": "Емельянова Т.Г.",
           "changed": false,
           "cancelled": false,
@@ -4627,7 +4627,7 @@
         },
         "5": {
           "subject": "МДК 02.04",
-          "room": "202",
+          "room": "",
           "teacher": "Емельянова Т.Г.",
           "changed": false,
           "cancelled": false,
@@ -11321,6 +11321,46 @@
             "change_from": ""
           },
           "old_description": "Литература (Новосельцева Л.А.)"
+        }
+      },
+      "тг1-24/2": {
+        "3": {
+          "cancelled": true,
+          "old_description": "МДК 01.03 (Емельянова Т.Г.)"
+        }
+      },
+      "тг1-24/1": {
+        "4": {
+          "lesson": {
+            "subject": "Менеджмент",
+            "room": "8",
+            "teacher": "Головина Ю.В.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "МДК 01.03 (Емельянова Т.Г.)"
+        },
+        "5": {
+          "cancelled": true,
+          "old_description": "МДК 02.04 (Емельянова Т.Г.)"
+        }
+      },
+      "тг1-24/3": {
+        "4": {
+          "lesson": {
+            "subject": "Менеджмент",
+            "room": "8",
+            "teacher": "Головина Ю.В.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "МДК 01.03 (Емельянова Т.Г.)"
+        },
+        "5": {
+          "cancelled": true,
+          "old_description": "МДК 02.04 (Емельянова Т.Г.)"
         }
       }
     }
