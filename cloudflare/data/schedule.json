@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-16T10:07:17.443646Z",
+  "generated_at": "2026-09-16T14:56:09.338925Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -7121,7 +7121,7 @@
       "пк1-26/3": {
         "1": {
           "subject": "Русский язык",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -7155,7 +7155,7 @@
         },
         "2": {
           "subject": "Литература",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -8443,7 +8443,7 @@
         },
         "4": {
           "subject": "Русский язык",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -8599,7 +8599,7 @@
         },
         "4": {
           "subject": "Товароведение",
-          "room": "26",
+          "room": "210/2",
           "teacher": "Савинова Н.А.",
           "changed": false,
           "cancelled": false,
@@ -11152,11 +11152,22 @@
         }
       },
       "пк1-25/1": {
+        "2": {
+          "lesson": {
+            "subject": "Обществознание",
+            "room": "210/2",
+            "teacher": "Горобец Т.Ю.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Литература (Новосельцева Л.А.)"
+        },
         "3": {
           "lesson": {
-            "subject": "Литература",
+            "subject": "Математика",
             "room": "210/2",
-            "teacher": "Новсельцева Л.А.",
+            "teacher": "Головина И.А.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
@@ -11447,6 +11458,32 @@
         "3": {
           "cancelled": true,
           "old_description": "Ин.яз в ПД (Бланкина А.К.)"
+        }
+      },
+      "пкд1-26/2": {
+        "4": {
+          "lesson": {
+            "subject": "Химия",
+            "room": "26",
+            "teacher": "Прокопов Е.В.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Русский язык (Новосельцева Л.А.)"
+        }
+      },
+      "пк1-26/3": {
+        "1": {
+          "lesson": {
+            "subject": "Охрана труда",
+            "room": "210/2",
+            "teacher": "Иншакова Е.В.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Русский язык (Новосельцева Л.А.)"
         }
       }
     }
