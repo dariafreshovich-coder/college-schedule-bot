@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23T07:42:57.988227Z",
+  "generated_at": "2026-09-23T17:50:44.379491Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -7271,7 +7271,7 @@
       "ст1-26/1": {
         "1": {
           "subject": "Сервис.деятельн.",
-          "room": "",
+          "room": "29",
           "teacher": "Чернякова А.А.",
           "changed": false,
           "cancelled": false,
@@ -7335,7 +7335,7 @@
       "ст1-25/2": {
         "1": {
           "subject": "МДК 05.01",
-          "room": "37",
+          "room": "дист",
           "teacher": "Сведенцев А.В.",
           "changed": false,
           "cancelled": false,
@@ -7343,7 +7343,7 @@
         },
         "2": {
           "subject": "Литература",
-          "room": "27",
+          "room": "дист",
           "teacher": "Дегтярева В.В.",
           "changed": false,
           "cancelled": false,
@@ -7353,7 +7353,7 @@
       "ст1-25/3": {
         "1": {
           "subject": "Ин.яз в ПД",
-          "room": "",
+          "room": "дист",
           "teacher": "Ковтун Е.Е.",
           "changed": false,
           "cancelled": false,
@@ -7361,7 +7361,7 @@
         },
         "2": {
           "subject": "МДК 05.01",
-          "room": "37",
+          "room": "дист",
           "teacher": "Сведенцев А.В.",
           "changed": false,
           "cancelled": false,
@@ -7423,7 +7423,7 @@
         },
         "2": {
           "subject": "Тех.оснащение",
-          "room": "20",
+          "room": "27",
           "teacher": "Бирюков В.Е.",
           "changed": false,
           "cancelled": false,
@@ -7441,7 +7441,7 @@
       "пкд1-26/4": {
         "1": {
           "subject": "Русский язык",
-          "room": "",
+          "room": "405",
           "teacher": "Коновалова О.В.",
           "changed": false,
           "cancelled": false,
@@ -11204,52 +11204,52 @@
     "сб": {}
   },
   "changes": {
-    "2026-09-23": {
-      "ст1-26/1": {
+    "2026-09-24": {
+      "пк-23/к": {
         "3": {
           "lesson": {
-            "subject": "География",
-            "room": "305/2",
-            "teacher": "Куковинец М.С.",
+            "subject": "снчтие",
+            "room": "",
+            "teacher": "",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Этика дел.общ. (Чернякова А.А.)"
+          "old_description": "ПОПД (КалмыковаИ.А.)"
         }
       },
       "ст1-26/2": {
         "2": {
           "lesson": {
-            "subject": "История",
-            "room": "402",
-            "teacher": "Сухарев Н.А.",
+            "subject": "Математика",
+            "room": "403",
+            "teacher": "Головина И.А.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Сервисная деят. (Чернякова А.А.)"
+          "old_description": "Этика дел.общения (Чернякова А.А.)"
         }
       },
       "ст1-26/3": {
-        "1": {
+        "3": {
           "lesson": {
-            "subject": "Математика",
-            "room": "107",
-            "teacher": "Ермалюк К.Е.",
+            "subject": "Информатика",
+            "room": "35",
+            "teacher": "Синкина А.Ю.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Сервисная деят. (Чернякова А.А.)"
+          "old_description": "МДК 01.01 (Чернякова А.А.)"
         }
       },
-      "ст1-26/5": {
+      "ст1-26/4": {
         "1": {
           "lesson": {
             "subject": "Обществознание",
-            "room": "405",
-            "teacher": "Токачев А.Е.",
+            "room": "26",
+            "teacher": "Сибирякова Т.С.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
@@ -11257,64 +11257,49 @@
           "old_description": "Информатика (Харитонова С.В.)"
         }
       },
-      "ст1-25/2": {
+      "пкд1-24/6": {
         "1": {
-          "lesson": {
-            "subject": "Литература",
-            "room": "106",
-            "teacher": "Дегтярева В.В.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "Ин.яз в ПД (КовтунЕ.Е.)"
-        }
-      },
-      "пкд1-24/4": {
-        "3": {
           "lesson": {
             "subject": "Ин.яз в ПД",
-            "room": "27",
-            "teacher": "Бланкина А.К.",
+            "room": "10",
+            "teacher": "Алымова Н.Н.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "МДК 08.01 (Белорукова С.И.)"
-        }
-      },
-      "пд1-25/1": {
-        "1": {
+          "old_description": "Курсовая работа (Воронова Н.В.)"
+        },
+        "2": {
           "lesson": {
-            "subject": "Физкультура",
-            "room": "С.зал",
-            "teacher": "Кабриль В.В.",
+            "subject": "МДК 05.01",
+            "room": "405/2",
+            "teacher": "Шведова Н.В.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Конституционное право (Горобец Т.Ю.)"
+          "old_description": "МДК 02.01 (Воронова Н.В.)"
         }
       },
-      "пд1-25/2": {
+      "м1-26": {
         "3": {
           "lesson": {
-            "subject": "Физкультура",
-            "room": "С.зал",
-            "teacher": "Кабриль В.В.",
+            "subject": "Литература",
+            "room": "210/2",
+            "teacher": "Новосельцева Л.А.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Конституционное право (Горобец Т.Ю.)"
+          "old_description": "Иностранный язык (Ковтун Е.Е.)"
         }
       },
       "тг1-26/3": {
         "2": {
           "lesson": {
-            "subject": "Литература",
-            "room": "210",
-            "teacher": "Коновалова О.В.",
+            "subject": "Математика",
+            "room": "406",
+            "teacher": "Ашпина О.А.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
@@ -11323,65 +11308,29 @@
         }
       },
       "тг1-24/2": {
-        "3": {
-          "lesson": {
-            "subject": "Менеджмент",
-            "room": "8",
-            "teacher": "Головина Ю.В.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "МДК 02.04 (Емельянова Т.Г.)"
-        }
-      },
-      "б1-26/1": {
         "1": {
           "lesson": {
-            "subject": "География",
-            "room": "404",
-            "teacher": "Колесникова Т.В.",
+            "subject": "МДК 02.04",
+            "room": "402/2",
+            "teacher": "Емельянова Т.Г.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Осн.бух.учета (Саттарова В.Р.)"
+          "old_description": "МДК 04.01 (Головина Ю.В.)"
         }
       },
-      "з1-23/1": {
+      "пкд1-23/3": {
         "3": {
-          "cancelled": true,
-          "old_description": "ОБП (Калмыкова И.А.)"
-        }
-      },
-      "з1-23/2": {
-        "3": {
-          "cancelled": true,
-          "old_description": "ОБП (Калмыкова И.А.)"
-        }
-      },
-      "тдк1-24/2": {
-        "4": {
           "lesson": {
-            "subject": "Физкультура",
-            "room": "С.зал",
-            "teacher": "Васильченко М.В.",
+            "subject": "История",
+            "room": "303",
+            "teacher": "Веселова Т.Б.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Курсовая работа (Дмитриева Н.В.)"
-        },
-        "5": {
-          "lesson": {
-            "subject": "МДК 02.01",
-            "room": "28",
-            "teacher": "Михеева Е.А.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "МДК 01.01 (Дмитриева Н.В.)"
+          "old_description": "БЖД (Бакаев Д.А.)"
         }
       }
     }
