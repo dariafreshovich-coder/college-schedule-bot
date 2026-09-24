@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T06:43:41.112234Z",
+  "generated_at": "2026-09-24T12:12:47.596205Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -9757,7 +9757,7 @@
       "пд1-25/2": {
         "1": {
           "subject": "Уголовное право",
-          "room": "304",
+          "room": "",
           "teacher": "Лагасюк Л.Л.",
           "changed": false,
           "cancelled": false,
@@ -9783,7 +9783,7 @@
         },
         "2": {
           "subject": "Криминология",
-          "room": "37/1",
+          "room": "",
           "teacher": "Лагасюк Л.Л.",
           "changed": false,
           "cancelled": false,
@@ -10531,7 +10531,7 @@
       "пк1-24/3": {
         "3": {
           "subject": "Нац.кухня",
-          "room": "33",
+          "room": "35",
           "teacher": "Панина Н.Б.",
           "changed": false,
           "cancelled": false,
@@ -10851,7 +10851,7 @@
         },
         "5": {
           "subject": "Трудовое право",
-          "room": "401",
+          "room": "",
           "teacher": "Лагасюк Л.Л.",
           "changed": false,
           "cancelled": false,
@@ -10869,7 +10869,7 @@
         },
         "4": {
           "subject": "Трудовое право",
-          "room": "304",
+          "room": "",
           "teacher": "Лагасюк Л.Л.",
           "changed": false,
           "cancelled": false,
@@ -10913,7 +10913,7 @@
       "пд1-23/2": {
         "3": {
           "subject": "Трудовое право",
-          "room": "36",
+          "room": "",
           "teacher": "Лагасюк Л.Л.",
           "changed": false,
           "cancelled": false,
@@ -11180,133 +11180,102 @@
     "сб": {}
   },
   "changes": {
-    "2026-09-24": {
-      "пк-23/к": {
-        "3": {
-          "lesson": {
-            "subject": "снчтие",
-            "room": "",
-            "teacher": "",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "ПОПД (КалмыковаИ.А.)"
-        }
-      },
-      "ст1-26/2": {
-        "2": {
-          "lesson": {
-            "subject": "Математика",
-            "room": "403",
-            "teacher": "Головина И.А.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "Этика дел.общения (Чернякова А.А.)"
-        }
-      },
-      "ст1-26/3": {
-        "3": {
-          "lesson": {
-            "subject": "Информатика",
-            "room": "35",
-            "teacher": "Синкина А.Ю.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "МДК 01.01 (Чернякова А.А.)"
-        }
-      },
-      "ст1-26/4": {
-        "1": {
-          "lesson": {
-            "subject": "Обществознание",
-            "room": "26",
-            "teacher": "Сибирякова Т.С.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "Информатика (Харитонова С.В.)"
-        }
-      },
+    "2026-09-25": {
       "пкд1-24/6": {
         "1": {
           "lesson": {
-            "subject": "Ин.яз в ПД",
-            "room": "10",
-            "teacher": "Алымова Н.Н.",
+            "subject": "МДК 02.01",
+            "room": "11",
+            "teacher": "Воронова Н.В.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Курсовая работа (Воронова Н.В.)"
-        },
-        "2": {
-          "lesson": {
-            "subject": "МДК 05.01",
-            "room": "405/2",
-            "teacher": "Шведова Н.В.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "МДК 02.01 (Воронова Н.В.)"
+          "old_description": "Инф. В ПД (Харитонова С.В.)"
         }
       },
-      "м1-26": {
+      "м1-23": {
         "3": {
           "lesson": {
-            "subject": "Литература",
-            "room": "210/2",
-            "teacher": "Новосельцева Л.А.",
+            "subject": "МДК 02.03",
+            "room": "22",
+            "teacher": "Бирюков В.Е.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Иностранный язык (Ковтун Е.Е.)"
+          "old_description": "Осн.экономики (Калмыкова И.А.)"
         }
       },
-      "тг1-26/3": {
+      "тг2-25": {
         "2": {
           "lesson": {
-            "subject": "Математика",
-            "room": "406",
-            "teacher": "Ашпина О.А.",
+            "subject": "БЖД",
+            "room": "402/2",
+            "teacher": "Коптяева Я.Ю.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Информатика (Харитонова С.В.)"
+          "old_description": "МДК 01.03 (Емельянова Т.Г.)"
         }
       },
-      "тг1-24/2": {
+      "пд1-25/2": {
         "1": {
           "lesson": {
-            "subject": "МДК 02.04",
-            "room": "402/2",
-            "teacher": "Емельянова Т.Г.",
+            "subject": "Конституц.право",
+            "room": "304",
+            "teacher": "Горобец Т.Ю.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "МДК 04.01 (Головина Ю.В.)"
+          "old_description": "Уголовное право (Лагасюк Л.Л.)"
         }
       },
-      "пкд1-23/3": {
-        "3": {
+      "пд1-25/3": {
+        "2": {
           "lesson": {
-            "subject": "История",
+            "subject": "История России",
             "room": "303",
             "teacher": "Веселова Т.Б.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "БЖД (Бакаев Д.А.)"
+          "old_description": "Кримонология (Лагасюк Л.Л.)"
+        }
+      },
+      "пд1-23/2": {
+        "3": {
+          "lesson": {
+            "subject": "Судебно-медицинская экспертиза",
+            "room": "36",
+            "teacher": "Жарикова А.Б.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Трудовое право (Лагасюк Л.Л.)"
+        }
+      },
+      "пд1-23/3": {
+        "4": {
+          "lesson": {
+            "subject": "Судебно-медицинская экспертиза",
+            "room": "401",
+            "teacher": "Жарикова А.Б.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Трудовое право (Лагасюк Л.Л.)"
+        }
+      },
+      "пд2-24": {
+        "5": {
+          "cancelled": true,
+          "old_description": "Трудовое право (Лагасюк Л.Л.)"
         }
       }
     }
