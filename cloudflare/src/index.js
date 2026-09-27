@@ -618,10 +618,6 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
         lines.push("");
         continue;
       }
-      if (entry.type === "important") {
-        appendImportantLessonToSchedule(lines, entry.lesson, entry.time);
-        continue;
-      }
       appendLessonToSchedule(lines, entry.pair, entry.lesson, entry.time);
     }
   }
@@ -649,28 +645,6 @@ function appendLessonToSchedule(lines, pair, lesson, timeText = "") {
     if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
   } else {
     lines.push(`<b>${pair}-я пара${time}: ${escapeHtml(lesson.subject || "Занятие")}</b>`);
-    if (lesson.teacher) lines.push(`👨‍🏫 ${escapeHtml(lesson.teacher)}`);
-    if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
-  }
-  lines.push("");
-}
-
-function appendImportantLessonToSchedule(lines, lesson, timeText = "") {
-  const time = timeText ? ` · ${timeText}` : "";
-  if (lesson.cancelled) {
-    lines.push(`<b>Уроки о важном${time} — отмена</b>`);
-    if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
-    lines.push("");
-    return;
-  }
-
-  if (lesson.changed) {
-    lines.push(`<b>Уроки о важном${time}</b>`);
-    if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
-    lines.push(`Стало: ${formatLessonTitle(lesson)}`);
-    if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
-  } else {
-    lines.push(`<b>Уроки о важном${time}: ${escapeHtml(lesson.subject || "Уроки о важном")}</b>`);
     if (lesson.teacher) lines.push(`👨‍🏫 ${escapeHtml(lesson.teacher)}`);
     if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
   }
@@ -734,7 +708,8 @@ function buildScheduleEntries(lessons, group, weekday, importantLessonIsSecondPa
 
   if (secondImportantPair) {
     entries.push({
-      type: "important",
+      type: "lesson",
+      pair: secondImportantPair,
       lesson: lessons[secondImportantPair],
       time: "16:15–16:45",
       start: timeToMinutes("16:15"),
