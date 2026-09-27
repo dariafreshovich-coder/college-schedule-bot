@@ -18,47 +18,58 @@ let userColumnsReady = false;
 const BELL_SCHEDULES = {
   regular: {
     1: "08:30–10:00",
-    2: "10:40–12:10",
+    2: "10:10–12:10",
     3: "12:25–13:55",
-    4: "14:25–15:55",
-    5: "16:05–17:35",
+    4: "14:05–16:05",
+    5: "16:10–17:30",
   },
   monday: {
-    1: "08:30–09:40",
-    2: "11:00–12:10",
-    3: "12:25–13:35",
-    4: "14:05–15:15",
-    5: "16:05–17:15",
+    1: "08:30–09:50",
+    2: "10:40–12:30",
+    3: "12:45–14:05",
+    4: "14:15–16:05",
+    5: "16:50–17:50",
   },
   mondayImportantPair: {
-    1: "08:30–09:40",
-    2: "09:50–10:20",
-    3: "11:00–12:10",
-    4: "12:25–13:35",
-    5: "14:05–15:15",
-    6: "16:05–17:15",
+    1: "08:30–09:50",
+    2: "10:00–10:30",
+    3: "10:40–12:30",
+    4: "12:45–14:05",
+    5: "14:15–16:05",
+    6: "16:50–17:50",
   },
 };
 
 const BELL_EXTRA_RULES = {
   regular: [
-    { afterPair: 1, beforePair: 2, start: "10:00", end: "10:40", text: "🍽 Обед · 10:00–10:40" },
+    { pair: 2, beforePair: 3, lunchShift: 1, start: "10:10", end: "10:40", text: "🍽 Обед · 10:10–10:40" },
+    { pair: 2, beforePair: 3, lunchShift: 2, start: "10:40", end: "11:10", text: "🍽 Обед · 10:40–11:10" },
     { afterPair: 2, beforePair: 3, start: "12:10", end: "12:25", text: "🧹 Уборка кабинетов" },
-    { afterPair: 3, beforePair: 4, start: "13:55", end: "14:25", text: "🍽 Обед · 13:55–14:25" },
-    { afterPair: 5, start: "17:35", end: "17:45", text: "🧹 Уборка кабинетов" },
+    { pair: 4, beforePair: 5, lunchShift: 1, start: "14:05", end: "14:35", text: "🍽 Обед · 14:05–14:35" },
+    { pair: 4, beforePair: 5, lunchShift: 2, start: "14:35", end: "15:05", text: "🍽 Обед · 14:35–15:05" },
+    { afterPair: 5, start: "17:30", end: "17:40", text: "🧹 Уборка кабинетов" },
   ],
   monday: [
-    { afterPair: 1, beforePair: 2, start: "09:40", end: "11:00", text: "🍽 Обед · 10:20–11:00" },
-    { afterPair: 2, beforePair: 3, start: "12:10", end: "12:25", text: "🧹 Уборка кабинетов" },
-    { afterPair: 3, beforePair: 4, start: "13:35", end: "14:05", text: "🍽 Обед · 13:35–14:05" },
-    { afterPair: 5, start: "17:15", end: "17:25", text: "🧹 Уборка кабинетов" },
+    { pair: 2, beforePair: 3, lunchShift: 1, start: "10:40", end: "11:10", text: "🍽 Обед · 10:40–11:10" },
+    { pair: 2, beforePair: 3, lunchShift: 2, start: "11:10", end: "11:40", text: "🍽 Обед · 11:10–11:40" },
+    { afterPair: 2, beforePair: 3, start: "12:30", end: "12:45", text: "🧹 Уборка кабинетов" },
+    { pair: 4, beforePair: 5, lunchShift: 1, start: "14:15", end: "14:45", text: "🍽 Обед · 14:15–14:45" },
+    { pair: 4, beforePair: 5, lunchShift: 2, start: "14:45", end: "15:15", text: "🍽 Обед · 14:45–15:15" },
+    { afterPair: 5, start: "17:50", end: "18:00", text: "🧹 Уборка кабинетов" },
   ],
   mondayImportantPair: [
-    { afterPair: 2, beforePair: 3, start: "10:20", end: "11:00", text: "🍽 Обед · 10:20–11:00" },
-    { afterPair: 2, beforePair: 3, start: "11:00", end: "11:05", text: "🧹 Уборка кабинетов" },
-    { afterPair: 4, beforePair: 5, start: "13:35", end: "14:05", text: "🍽 Обед · 13:35–14:05" },
-    { afterPair: 6, start: "17:15", end: "17:25", text: "🧹 Уборка кабинетов" },
+    { pair: 3, beforePair: 4, lunchShift: 1, start: "10:40", end: "11:10", text: "🍽 Обед · 10:40–11:10" },
+    { pair: 3, beforePair: 4, lunchShift: 2, start: "11:10", end: "11:40", text: "🍽 Обед · 11:10–11:40" },
+    { afterPair: 3, beforePair: 4, start: "12:30", end: "12:45", text: "🧹 Уборка кабинетов" },
+    { pair: 5, beforePair: 6, lunchShift: 1, start: "14:15", end: "14:45", text: "🍽 Обед · 14:15–14:45" },
+    { pair: 5, beforePair: 6, lunchShift: 2, start: "14:45", end: "15:15", text: "🍽 Обед · 14:45–15:15" },
+    { afterPair: 6, start: "17:50", end: "18:00", text: "🧹 Уборка кабинетов" },
   ],
+};
+
+const LUNCH_GROUP_PREFIXES = {
+  1: ["тд", "тг", "м", "пкд"],
+  2: ["б", "ст", "пд", "з"],
 };
 
 export default {
@@ -590,13 +601,13 @@ function getLessons(data, group, selected, timezone) {
 
 function formatSchedule(data, group, selected, timezone, checkedAt = null) {
   const { lessons, selected: targetDate } = getLessons(data, group, selected, timezone);
-  const importantLessonIsSecondPair = targetDate.weekday === 1 && /важн/i.test(lessons[2]?.subject || "");
+  const importantLessonIsSecondPair = targetDate.weekday === 1 && isImportantLesson(lessons[2]);
   const lines = [
     `📚 <b>${escapeHtml(group)}</b>`,
     `🗓 ${targetDate.display}, ${DAY_NAMES[targetDate.weekday]}`,
     "",
   ];
-  const entries = buildScheduleEntries(lessons, targetDate.weekday, importantLessonIsSecondPair);
+  const entries = buildScheduleEntries(lessons, group, targetDate.weekday, importantLessonIsSecondPair);
 
   if (!entries.length) {
     lines.push("📭 На этот день занятий нет.");
@@ -605,6 +616,10 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
       if (entry.type === "extra") {
         lines.push(`<i>${escapeHtml(entry.text)}</i>`);
         lines.push("");
+        continue;
+      }
+      if (entry.type === "important") {
+        appendImportantLessonToSchedule(lines, entry.lesson, entry.time);
         continue;
       }
       appendLessonToSchedule(lines, entry.pair, entry.lesson, entry.time);
@@ -640,9 +655,50 @@ function appendLessonToSchedule(lines, pair, lesson, timeText = "") {
   lines.push("");
 }
 
+function appendImportantLessonToSchedule(lines, lesson, timeText = "") {
+  const time = timeText ? ` · ${timeText}` : "";
+  if (lesson.cancelled) {
+    lines.push(`<b>Уроки о важном${time} — отмена</b>`);
+    if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
+    lines.push("");
+    return;
+  }
+
+  if (lesson.changed) {
+    lines.push(`<b>Уроки о важном${time}</b>`);
+    if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
+    lines.push(`Стало: ${formatLessonTitle(lesson)}`);
+    if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
+  } else {
+    lines.push(`<b>Уроки о важном${time}: ${escapeHtml(lesson.subject || "Уроки о важном")}</b>`);
+    if (lesson.teacher) lines.push(`👨‍🏫 ${escapeHtml(lesson.teacher)}`);
+    if (lesson.room) lines.push(`📍 ${escapeHtml(lesson.room)}`);
+  }
+  lines.push("");
+}
+
+function isImportantLesson(lesson) {
+  return /важн/i.test(String(lesson?.subject || ""));
+}
+
+function secondImportantPairForMonday(lessons) {
+  return Object.keys(lessons)
+    .map(Number)
+    .filter((pair) => Number.isFinite(pair) && pair > 2 && isImportantLesson(lessons[pair]))
+    .sort((left, right) => left - right)[0] || null;
+}
+
 function bellTimesForWeekday(weekday, importantLessonIsSecondPair = false) {
   if (weekday !== 1) return BELL_SCHEDULES.regular;
   return importantLessonIsSecondPair ? BELL_SCHEDULES.mondayImportantPair : BELL_SCHEDULES.monday;
+}
+
+function lunchShiftForGroup(group) {
+  const key = searchKey(group);
+  for (const shift of [1, 2]) {
+    if (LUNCH_GROUP_PREFIXES[shift].some((prefix) => key.startsWith(prefix))) return shift;
+  }
+  return null;
 }
 
 function extraRulesForWeekday(weekday, importantLessonIsSecondPair = false) {
@@ -650,14 +706,18 @@ function extraRulesForWeekday(weekday, importantLessonIsSecondPair = false) {
   return importantLessonIsSecondPair ? BELL_EXTRA_RULES.mondayImportantPair : BELL_EXTRA_RULES.monday;
 }
 
-function buildScheduleEntries(lessons, weekday, importantLessonIsSecondPair = false) {
+function buildScheduleEntries(lessons, group, weekday, importantLessonIsSecondPair = false) {
   const bellTimes = bellTimesForWeekday(weekday, importantLessonIsSecondPair);
+  const lunchShift = lunchShiftForGroup(group);
   const entries = [];
-  const pairNumbers = Object.keys(lessons)
+  const secondImportantPair = weekday === 1 ? secondImportantPairForMonday(lessons) : null;
+  const allPairNumbers = Object.keys(lessons)
     .map(Number)
     .filter(Number.isFinite)
     .sort((a, b) => a - b);
-  const existingPairs = new Set(pairNumbers);
+  const pairNumbers = allPairNumbers.filter((pair) => pair !== secondImportantPair);
+  const existingPairs = new Set(allPairNumbers);
+  const existingNormalPairs = new Set(pairNumbers);
 
   for (const pair of pairNumbers) {
     const timeText = bellTimes[pair] || "";
@@ -672,8 +732,20 @@ function buildScheduleEntries(lessons, weekday, importantLessonIsSecondPair = fa
     });
   }
 
+  if (secondImportantPair) {
+    entries.push({
+      type: "important",
+      lesson: lessons[secondImportantPair],
+      time: "16:15–16:45",
+      start: timeToMinutes("16:15"),
+      end: timeToMinutes("16:45"),
+    });
+  }
+
   for (const rule of extraRulesForWeekday(weekday, importantLessonIsSecondPair)) {
-    if (!existingPairs.has(rule.afterPair)) continue;
+    if (rule.lunchShift && rule.lunchShift !== lunchShift) continue;
+    if (rule.pair && !existingNormalPairs.has(rule.pair)) continue;
+    if (rule.afterPair && !existingNormalPairs.has(rule.afterPair)) continue;
     if (rule.beforePair && !existingPairs.has(rule.beforePair)) continue;
     entries.push({
       type: "extra",
@@ -685,7 +757,7 @@ function buildScheduleEntries(lessons, weekday, importantLessonIsSecondPair = fa
 
   return entries.sort((left, right) => (
     left.start - right.start ||
-    (left.type === "extra" ? 0 : 1) - (right.type === "extra" ? 0 : 1) ||
+    (left.type === "lesson" ? 0 : 1) - (right.type === "lesson" ? 0 : 1) ||
     (left.pair || 0) - (right.pair || 0)
   ));
 }
