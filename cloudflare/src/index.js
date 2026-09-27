@@ -618,7 +618,7 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
         lines.push("");
         continue;
       }
-      appendLessonToSchedule(lines, entry.pair, entry.lesson, entry.time);
+      appendLessonToSchedule(lines, entry.pair, entry.lesson, entry.time, entry.continuation);
     }
   }
 
@@ -629,8 +629,13 @@ function formatSchedule(data, group, selected, timezone, checkedAt = null) {
   return lines.join("\n").trim();
 }
 
-function appendLessonToSchedule(lines, pair, lesson, timeText = "") {
+function appendLessonToSchedule(lines, pair, lesson, timeText = "", continuation = false) {
   const time = timeText ? ` · ${timeText}` : "";
+  if (continuation) {
+    lines.push(`<b>↪ Продолжение ${pair}-й пары${time}</b>`);
+    lines.push("");
+    return;
+  }
   if (lesson.cancelled) {
     lines.push(`<b>${pair}-я пара${time} — отмена</b>`);
     if (lesson.change_from) lines.push(`Было: <s>${escapeHtml(lesson.change_from)}</s>`);
@@ -693,17 +698,67 @@ function buildScheduleEntries(lessons, group, weekday, importantLessonIsSecondPa
   const existingPairs = new Set(allPairNumbers);
   const existingNormalPairs = new Set(pairNumbers);
 
+  const weekdayRules = extraRulesForWeekday(weekday, importantLessonIsSecondPair);
   for (const pair of pairNumbers) {
     const timeText = bellTimes[pair] || "";
     const range = parseTimeRange(timeText);
+    const lunchRule = lunchShift
+      ? weekdayRules.find((rule) => (
+          rule.pair === pair &&
+          rule.lunchShift === lunchShift &&
+          (!rule.beforePair || existingPairs.has(rule.beforePair))
+        ))
+      : null;
+
+    if (!range || !lunchRule) {
+      entries.push({
+        type: "lesson",
+        pair,
+        lesson: lessons[pair],
+        time: timeText,
+        start: range?.start ?? Number.POSITIVE_INFINITY,
+        end: range?.end ?? Number.POSITIVE_INFINITY,
+      });
+      continue;
+    }
+
+    const lunchStart = timeToMinutes(lunchRule.start);
+    const lunchEnd = timeToMinutes(lunchRule.end);
     entries.push({
-      type: "lesson",
-      pair,
-      lesson: lessons[pair],
-      time: timeText,
-      start: range?.start ?? Number.POSITIVE_INFINITY,
-      end: range?.end ?? Number.POSITIVE_INFINITY,
+      type: "extra",
+      text: lunchRule.text,
+      start: lunchStart,
+      end: lunchEnd,
     });
+
+    if (lunchStart === range.start) {
+      entries.push({
+        type: "lesson",
+        pair,
+        lesson: lessons[pair],
+        time: formatTimeRange(lunchEnd, range.end),
+        start: lunchEnd,
+        end: range.end,
+      });
+    } else {
+      entries.push({
+        type: "lesson",
+        pair,
+        lesson: lessons[pair],
+        time: formatTimeRange(range.start, lunchStart),
+        start: range.start,
+        end: lunchStart,
+      });
+      entries.push({
+        type: "lesson",
+        pair,
+        lesson: lessons[pair],
+        time: formatTimeRange(lunchEnd, range.end),
+        continuation: true,
+        start: lunchEnd,
+        end: range.end,
+      });
+    }
   }
 
   if (secondImportantPair) {
@@ -717,8 +772,8 @@ function buildScheduleEntries(lessons, group, weekday, importantLessonIsSecondPa
     });
   }
 
-  for (const rule of extraRulesForWeekday(weekday, importantLessonIsSecondPair)) {
-    if (rule.lunchShift && rule.lunchShift !== lunchShift) continue;
+  for (const rule of weekdayRules) {
+    if (rule.lunchShift) continue;
     if (rule.pair && !existingNormalPairs.has(rule.pair)) continue;
     if (rule.afterPair && !existingNormalPairs.has(rule.afterPair)) continue;
     if (rule.beforePair && !existingPairs.has(rule.beforePair)) continue;
@@ -749,6 +804,17 @@ function parseTimeRange(value) {
 function timeToMinutes(value) {
   const match = /^(\d{1,2}):(\d{2})$/.exec(String(value || ""));
   return match ? Number(match[1]) * 60 + Number(match[2]) : Number.POSITIVE_INFINITY;
+}
+
+function minutesToClock(value) {
+  if (!Number.isFinite(value)) return "";
+  const hours = Math.floor(value / 60);
+  const minutes = value % 60;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+function formatTimeRange(start, end) {
+  return `${minutesToClock(start)}–${minutesToClock(end)}`;
 }
 
 function weekdayFromIso(value) {
