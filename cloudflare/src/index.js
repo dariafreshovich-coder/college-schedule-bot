@@ -42,26 +42,26 @@ const BELL_SCHEDULES = {
 
 const BELL_EXTRA_RULES = {
   regular: [
-    { pair: 2, afterPair: 1, beforePair: 3, lunchShift: 1, start: "10:10", end: "10:40", text: "🍽 Обед · 10:10–10:40" },
+    { pair: 2, afterPair: 1, lunchShift: 1, start: "10:10", end: "10:40", text: "🍽 Обед · 10:10–10:40" },
     { pair: 2, beforePair: 3, lunchShift: 2, start: "10:40", end: "11:10", text: "🍽 Обед · 10:40–11:10" },
     { afterPair: 2, beforePair: 3, start: "12:10", end: "12:25", text: "🧹 Уборка кабинетов" },
-    { pair: 4, afterPair: 3, beforePair: 5, lunchShift: 1, start: "14:05", end: "14:35", text: "🍽 Обед · 14:05–14:35" },
+    { pair: 4, afterPair: 3, lunchShift: 1, start: "14:05", end: "14:35", text: "🍽 Обед · 14:05–14:35" },
     { pair: 4, beforePair: 5, lunchShift: 2, start: "14:35", end: "15:05", text: "🍽 Обед · 14:35–15:05" },
     { afterPair: 5, start: "17:30", end: "17:40", text: "🧹 Уборка кабинетов" },
   ],
   monday: [
-    { pair: 2, afterPair: 1, beforePair: 3, lunchShift: 1, start: "10:40", end: "11:10", text: "🍽 Обед · 10:40–11:10" },
+    { pair: 2, afterPair: 1, lunchShift: 1, start: "10:40", end: "11:10", text: "🍽 Обед · 10:40–11:10" },
     { pair: 2, beforePair: 3, lunchShift: 2, start: "11:10", end: "11:40", text: "🍽 Обед · 11:10–11:40" },
     { afterPair: 2, beforePair: 3, start: "12:30", end: "12:45", text: "🧹 Уборка кабинетов" },
-    { pair: 4, afterPair: 3, beforePair: 5, lunchShift: 1, start: "14:15", end: "14:45", text: "🍽 Обед · 14:15–14:45" },
+    { pair: 4, afterPair: 3, lunchShift: 1, start: "14:15", end: "14:45", text: "🍽 Обед · 14:15–14:45" },
     { pair: 4, beforePair: 5, lunchShift: 2, start: "14:45", end: "15:15", text: "🍽 Обед · 14:45–15:15" },
     { afterPair: 5, start: "17:50", end: "18:00", text: "🧹 Уборка кабинетов" },
   ],
   mondayImportantPair: [
-    { pair: 3, afterPair: 2, beforePair: 4, lunchShift: 1, start: "10:40", end: "11:10", text: "🍽 Обед · 10:40–11:10" },
+    { pair: 3, afterPair: 2, lunchShift: 1, start: "10:40", end: "11:10", text: "🍽 Обед · 10:40–11:10" },
     { pair: 3, beforePair: 4, lunchShift: 2, start: "11:10", end: "11:40", text: "🍽 Обед · 11:10–11:40" },
     { afterPair: 3, beforePair: 4, start: "12:30", end: "12:45", text: "🧹 Уборка кабинетов" },
-    { pair: 5, afterPair: 4, beforePair: 6, lunchShift: 1, start: "14:15", end: "14:45", text: "🍽 Обед · 14:15–14:45" },
+    { pair: 5, afterPair: 4, lunchShift: 1, start: "14:15", end: "14:45", text: "🍽 Обед · 14:15–14:45" },
     { pair: 5, beforePair: 6, lunchShift: 2, start: "14:45", end: "15:15", text: "🍽 Обед · 14:45–15:15" },
     { afterPair: 6, start: "17:50", end: "18:00", text: "🧹 Уборка кабинетов" },
   ],
