@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-29T07:04:42.896776Z",
+  "generated_at": "2026-09-29T14:01:27.933658Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -2869,7 +2869,7 @@
         },
         "3": {
           "subject": "История",
-          "room": "",
+          "room": "305",
           "teacher": "Сибирякова Т.С",
           "changed": false,
           "cancelled": false,
@@ -3900,6 +3900,16 @@
           "change_from": ""
         }
       },
+      "спк-23/1": {
+        "1": {
+          "subject": "Практика",
+          "room": "",
+          "teacher": "",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        }
+      },
       "ст1-26/5": {
         "2": {
           "subject": "ДПО",
@@ -4887,7 +4897,7 @@
       "пк1-26/1": {
         "1": {
           "subject": "Русский язык",
-          "room": "",
+          "room": "210",
           "teacher": "Усольцева А.В.",
           "changed": false,
           "cancelled": false,
@@ -4895,7 +4905,7 @@
         },
         "2": {
           "subject": "Охрана труда",
-          "room": "29/1",
+          "room": "",
           "teacher": "Иншакова Е.В.",
           "changed": false,
           "cancelled": false,
@@ -4905,7 +4915,7 @@
       "пк1-26/2": {
         "1": {
           "subject": "Русский язык",
-          "room": "",
+          "room": "10",
           "teacher": "Коновалова О.В.",
           "changed": false,
           "cancelled": false,
@@ -4913,7 +4923,7 @@
         },
         "2": {
           "subject": "История",
-          "room": "303",
+          "room": "305",
           "teacher": "Сибирякова Т.С",
           "changed": false,
           "cancelled": false,
@@ -4921,7 +4931,7 @@
         },
         "3": {
           "subject": "Осн.товароведения",
-          "room": "26",
+          "room": "27",
           "teacher": "Савинова Н.А.",
           "changed": false,
           "cancelled": false,
@@ -4931,7 +4941,7 @@
       "пк1-26/3": {
         "1": {
           "subject": "Химия",
-          "room": "",
+          "room": "27",
           "teacher": "Чижов А.А.",
           "changed": false,
           "cancelled": false,
@@ -4939,7 +4949,7 @@
         },
         "2": {
           "subject": "Орг.обслуживания",
-          "room": "уч.р",
+          "room": "",
           "teacher": "Кудрявцев А.П.",
           "changed": false,
           "cancelled": false,
@@ -4947,7 +4957,7 @@
         },
         "3": {
           "subject": "Охрана труда",
-          "room": "22",
+          "room": "уч.р",
           "teacher": "Иншакова Е.В.",
           "changed": false,
           "cancelled": false,
@@ -5007,7 +5017,7 @@
       "пк1-23/2": {
         "1": {
           "subject": "МДК 04.02 лаб.р.",
-          "room": "",
+          "room": "МКД",
           "teacher": "Воронова Н.В.",
           "changed": false,
           "cancelled": false,
@@ -5015,7 +5025,7 @@
         },
         "2": {
           "subject": "МДК 04.02 лаб.р.",
-          "room": "",
+          "room": "МКД",
           "teacher": "Воронова Н.В.",
           "changed": false,
           "cancelled": false,
@@ -5023,7 +5033,7 @@
         },
         "3": {
           "subject": "МДК 04.02 лаб.р.",
-          "room": "",
+          "room": "МКД",
           "teacher": "Воронова Н.В.",
           "changed": false,
           "cancelled": false,
@@ -5033,7 +5043,7 @@
       "пк-23/к": {
         "1": {
           "subject": "МДК 04.02 лаб.р.",
-          "room": "",
+          "room": "МКД",
           "teacher": "Воронова Н.В.",
           "changed": false,
           "cancelled": false,
@@ -5041,7 +5051,7 @@
         },
         "2": {
           "subject": "МДК 04.02 лаб.р.",
-          "room": "",
+          "room": "МКД",
           "teacher": "Воронова Н.В.",
           "changed": false,
           "cancelled": false,
@@ -5049,7 +5059,7 @@
         },
         "3": {
           "subject": "МДК 04.02 лаб.р.",
-          "room": "",
+          "room": "МКД",
           "teacher": "Воронова Н.В.",
           "changed": false,
           "cancelled": false,
@@ -5067,7 +5077,7 @@
         },
         "2": {
           "subject": "Обществознание",
-          "room": "301",
+          "room": "305/2",
           "teacher": "Куковинец М.С.",
           "changed": false,
           "cancelled": false,
@@ -5085,7 +5095,7 @@
       "ст1-26/2": {
         "1": {
           "subject": "Математика",
-          "room": "",
+          "room": "403",
           "teacher": "Головина И.А.",
           "changed": false,
           "cancelled": false,
@@ -5103,7 +5113,7 @@
       "ст1-26/3": {
         "1": {
           "subject": "МДК 01.01",
-          "room": "35",
+          "room": "201",
           "teacher": "Чернякова А.А.",
           "changed": false,
           "cancelled": false,
@@ -5111,7 +5121,7 @@
         },
         "2": {
           "subject": "Информатика",
-          "room": "",
+          "room": "35",
           "teacher": "Синкина А.Ю.",
           "changed": false,
           "cancelled": false,
@@ -5119,7 +5129,7 @@
         },
         "3": {
           "subject": "ДПО",
-          "room": "",
+          "room": "уч.б",
           "teacher": "Вяткина А.И.",
           "changed": false,
           "cancelled": false,
@@ -5191,7 +5201,7 @@
         },
         "2": {
           "subject": "МДК 02.01",
-          "room": "33",
+          "room": "",
           "teacher": "Крестина И.И.",
           "changed": false,
           "cancelled": false,
@@ -5199,7 +5209,7 @@
         },
         "3": {
           "subject": "МДК 02.01",
-          "room": "33",
+          "room": "дист",
           "teacher": "Крестина И.И.",
           "changed": false,
           "cancelled": false,
@@ -5217,7 +5227,7 @@
         },
         "2": {
           "subject": "МДК 02.01",
-          "room": "33",
+          "room": "",
           "teacher": "Крестина И.И.",
           "changed": false,
           "cancelled": false,
@@ -5225,7 +5235,7 @@
         },
         "3": {
           "subject": "МДК 02.01",
-          "room": "33",
+          "room": "дист",
           "teacher": "Крестина И.И.",
           "changed": false,
           "cancelled": false,
@@ -5235,7 +5245,7 @@
       "пкд1-26/2": {
         "1": {
           "subject": "Орг.хранения",
-          "room": "14",
+          "room": "11",
           "teacher": "Панина Н.Б.",
           "changed": false,
           "cancelled": false,
@@ -5243,7 +5253,7 @@
         },
         "2": {
           "subject": "Тех.оснащение",
-          "room": "32",
+          "room": "22",
           "teacher": "Бирюков В.Е.",
           "changed": false,
           "cancelled": false,
@@ -5251,7 +5261,7 @@
         },
         "3": {
           "subject": "ДПО",
-          "room": "",
+          "room": "лаб",
           "teacher": "Карявцева Л.В.",
           "changed": false,
           "cancelled": false,
@@ -5259,7 +5269,7 @@
         },
         "4": {
           "subject": "ДПО",
-          "room": "",
+          "room": "лаб",
           "teacher": "Карявцева Л.В.",
           "changed": false,
           "cancelled": false,
@@ -5269,7 +5279,7 @@
       "пкд1-26/3": {
         "1": {
           "subject": "Математика",
-          "room": "",
+          "room": "107",
           "teacher": "Ермалюк К.Е.",
           "changed": false,
           "cancelled": false,
@@ -5277,7 +5287,7 @@
         },
         "2": {
           "subject": "Орг.хранения",
-          "room": "14",
+          "room": "11",
           "teacher": "Панина Н.Б.",
           "changed": false,
           "cancelled": false,
@@ -5285,7 +5295,7 @@
         },
         "3": {
           "subject": "Русский язык",
-          "room": "210/2",
+          "room": "107",
           "teacher": "Коновалова О.В.",
           "changed": false,
           "cancelled": false,
@@ -5295,7 +5305,7 @@
       "пкд1-25/2": {
         "1": {
           "subject": "МДК 07.01",
-          "room": "",
+          "room": "405/2",
           "teacher": "Соловьева Н.Г.",
           "changed": false,
           "cancelled": false,
@@ -5303,7 +5313,7 @@
         },
         "2": {
           "subject": "Литература",
-          "room": "",
+          "room": "210/2",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -5311,7 +5321,7 @@
         },
         "3": {
           "subject": "Обществознание",
-          "room": "",
+          "room": "305/2",
           "teacher": "Куковинец М.С.",
           "changed": false,
           "cancelled": false,
@@ -5329,7 +5339,7 @@
         },
         "2": {
           "subject": "МДК 07.01",
-          "room": "210",
+          "room": "405/2",
           "teacher": "Соловьева Н.Г.",
           "changed": false,
           "cancelled": false,
@@ -5355,7 +5365,7 @@
       "пкд1-24/2": {
         "1": {
           "subject": "МДК 08.01 лаб.р",
-          "room": "",
+          "room": "14",
           "teacher": "Белорукова С.И.",
           "changed": false,
           "cancelled": false,
@@ -5363,7 +5373,7 @@
         },
         "2": {
           "subject": "МДК 08.01 лаб.р",
-          "room": "",
+          "room": "14",
           "teacher": "Белорукова С.И.",
           "changed": false,
           "cancelled": false,
@@ -5371,7 +5381,7 @@
         },
         "3": {
           "subject": "МДК 08.01 лаб.р",
-          "room": "",
+          "room": "14",
           "teacher": "Белорукова С.И.",
           "changed": false,
           "cancelled": false,
@@ -5397,7 +5407,7 @@
         },
         "3": {
           "subject": "МДК 08.01",
-          "room": "405",
+          "room": "",
           "teacher": "Белорукова С.И.",
           "changed": false,
           "cancelled": false,
@@ -5405,7 +5415,7 @@
         },
         "4": {
           "subject": "МДК 02.02",
-          "room": "27",
+          "room": "35",
           "teacher": "Панина Н.Б.",
           "changed": false,
           "cancelled": false,
@@ -5413,7 +5423,7 @@
         },
         "5": {
           "subject": "МДК 02.02",
-          "room": "27",
+          "room": "35",
           "teacher": "Панина Н.Б.",
           "changed": false,
           "cancelled": false,
@@ -5433,7 +5443,7 @@
       "пд1-26/2": {
         "1": {
           "subject": "История",
-          "room": "",
+          "room": "402",
           "teacher": "Сухарев Н.А.",
           "changed": false,
           "cancelled": false,
@@ -5441,7 +5451,7 @@
         },
         "2": {
           "subject": "Русский язык",
-          "room": "",
+          "room": "210",
           "teacher": "Усольцева А.В.",
           "changed": false,
           "cancelled": false,
@@ -5449,7 +5459,7 @@
         },
         "3": {
           "subject": "Информатика",
-          "room": "",
+          "room": "34",
           "teacher": "Харитонова С.В.",
           "changed": false,
           "cancelled": false,
@@ -5459,7 +5469,7 @@
       "пд1-26/3": {
         "1": {
           "subject": "Физкультура",
-          "room": "",
+          "room": "с.зал",
           "teacher": "Саукайтис И.К.",
           "changed": false,
           "cancelled": false,
@@ -5467,7 +5477,7 @@
         },
         "2": {
           "subject": "Биология",
-          "room": "",
+          "room": "301",
           "teacher": "Гальцева Н.В.",
           "changed": false,
           "cancelled": false,
@@ -5475,7 +5485,7 @@
         },
         "3": {
           "subject": "История",
-          "room": "",
+          "room": "404",
           "teacher": "Брылев Д.А.",
           "changed": false,
           "cancelled": false,
@@ -5485,7 +5495,7 @@
       "пд1-26/4": {
         "1": {
           "subject": "Информатика",
-          "room": "",
+          "room": "35",
           "teacher": "Синкина А.Ю.",
           "changed": false,
           "cancelled": false,
@@ -5493,7 +5503,7 @@
         },
         "2": {
           "subject": "Обществознание",
-          "room": "",
+          "room": "402",
           "teacher": "Сухарев Н.А.",
           "changed": false,
           "cancelled": false,
@@ -5503,7 +5513,7 @@
       "пд1-26/5": {
         "1": {
           "subject": "История",
-          "room": "",
+          "room": "406",
           "teacher": "Толкачев А.Е.",
           "changed": false,
           "cancelled": false,
@@ -5511,7 +5521,7 @@
         },
         "2": {
           "subject": "Иностранный язык",
-          "room": "",
+          "room": "406",
           "teacher": "Бланкина А.К.",
           "changed": false,
           "cancelled": false,
@@ -5521,7 +5531,7 @@
       "пд1-25/1": {
         "1": {
           "subject": "ТГП",
-          "room": "",
+          "room": "304",
           "teacher": "Горобец Т.Ю.",
           "changed": false,
           "cancelled": false,
@@ -5529,7 +5539,7 @@
         },
         "2": {
           "subject": "Уголовное право",
-          "room": "",
+          "room": "401",
           "teacher": "Жарикова А.Б.",
           "changed": false,
           "cancelled": false,
@@ -5539,7 +5549,7 @@
       "пд1-25/2": {
         "1": {
           "subject": "МДК 03.01",
-          "room": "",
+          "room": "401",
           "teacher": "Жарикова А.Б.",
           "changed": false,
           "cancelled": false,
@@ -5547,7 +5557,7 @@
         },
         "2": {
           "subject": "Уголовное право",
-          "room": "",
+          "room": "29",
           "teacher": "Лагасюк Л.Л.",
           "changed": false,
           "cancelled": false,
@@ -5555,7 +5565,7 @@
         },
         "3": {
           "subject": "ТГП",
-          "room": "",
+          "room": "304",
           "teacher": "Горобец Т.Ю.",
           "changed": false,
           "cancelled": false,
@@ -5565,7 +5575,7 @@
       "пд1-24/1": {
         "1": {
           "subject": "МДК 01.01",
-          "room": "36",
+          "room": "306",
           "teacher": "Паксеев Н.И.",
           "changed": false,
           "cancelled": false,
@@ -5573,7 +5583,7 @@
         },
         "2": {
           "subject": "МДК 01.04",
-          "room": "37",
+          "room": "",
           "teacher": "Сведенцев А.В.",
           "changed": false,
           "cancelled": false,
@@ -5581,7 +5591,7 @@
         },
         "3": {
           "subject": "НВП",
-          "room": "",
+          "room": "а.зал",
           "teacher": "Тактумашев А.В.",
           "changed": false,
           "cancelled": false,
@@ -5591,7 +5601,7 @@
       "пд1-24/2": {
         "1": {
           "subject": "НВП",
-          "room": "",
+          "room": "а.зал",
           "teacher": "Тактумашев А.В.",
           "changed": false,
           "cancelled": false,
@@ -5599,7 +5609,7 @@
         },
         "2": {
           "subject": "НВП",
-          "room": "",
+          "room": "а.зал",
           "teacher": "Тактумашев А.В.",
           "changed": false,
           "cancelled": false,
@@ -5615,7 +5625,7 @@
         },
         "4": {
           "subject": "МДК 01.02",
-          "room": "401",
+          "room": "301",
           "teacher": "Саукайтис И.К.",
           "changed": false,
           "cancelled": false,
@@ -5633,7 +5643,7 @@
       "пд2-24": {
         "1": {
           "subject": "Трудовое право",
-          "room": "37/1",
+          "room": "29",
           "teacher": "Лагасюк Л.Л.",
           "changed": false,
           "cancelled": false,
@@ -5659,7 +5669,7 @@
       "м1-26": {
         "1": {
           "subject": "История",
-          "room": "22",
+          "room": "дист",
           "teacher": "Сибирякова Т.С.",
           "changed": false,
           "cancelled": false,
@@ -5667,7 +5677,7 @@
         },
         "2": {
           "subject": "Математика",
-          "room": "",
+          "room": "дист",
           "teacher": "Головина И.А.",
           "changed": false,
           "cancelled": false,
@@ -5687,7 +5697,7 @@
       "тг1-26/1": {
         "1": {
           "subject": "Информатика",
-          "room": "",
+          "room": "211",
           "teacher": "Аргунова Д.С.",
           "changed": false,
           "cancelled": false,
@@ -5695,7 +5705,7 @@
         },
         "2": {
           "subject": "История",
-          "room": "",
+          "room": "405",
           "teacher": "Толкачев А.Е.",
           "changed": false,
           "cancelled": false,
@@ -5703,7 +5713,7 @@
         },
         "3": {
           "subject": "МДК 03.01",
-          "room": "",
+          "room": "уч.к",
           "teacher": "Гаврилова К.Н.",
           "changed": false,
           "cancelled": false,
@@ -5713,7 +5723,7 @@
       "тг1-26/2": {
         "1": {
           "subject": "Обществознание",
-          "room": "",
+          "room": "303",
           "teacher": "Веселова Т.Б.",
           "changed": false,
           "cancelled": false,
@@ -5721,7 +5731,7 @@
         },
         "2": {
           "subject": "МДК 03.01",
-          "room": "",
+          "room": "уч.к",
           "teacher": "Гаврилова К.Н.",
           "changed": false,
           "cancelled": false,
@@ -5729,7 +5739,7 @@
         },
         "3": {
           "subject": "Литература",
-          "room": "",
+          "room": "210/2",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -5737,7 +5747,7 @@
         },
         "4": {
           "subject": "ДПО",
-          "room": "",
+          "room": "уч.б",
           "teacher": "Вяткина А.И.",
           "changed": false,
           "cancelled": false,
@@ -5747,7 +5757,7 @@
       "тг1-26/3": {
         "1": {
           "subject": "МДК 03.01",
-          "room": "",
+          "room": "уч.к",
           "teacher": "Гаврилова К.Н.",
           "changed": false,
           "cancelled": false,
@@ -5755,7 +5765,7 @@
         },
         "2": {
           "subject": "Информатика",
-          "room": "",
+          "room": "34",
           "teacher": "Харитонова С.В.",
           "changed": false,
           "cancelled": false,
@@ -5763,7 +5773,7 @@
         },
         "3": {
           "subject": "История",
-          "room": "",
+          "room": "405",
           "teacher": "Толкачев А.Е.",
           "changed": false,
           "cancelled": false,
@@ -5803,7 +5813,7 @@
       "тг2-25": {
         "1": {
           "subject": "МДК 02.04",
-          "room": "",
+          "room": "202",
           "teacher": "Емельянова Т.Г.",
           "changed": false,
           "cancelled": false,
@@ -5811,7 +5821,7 @@
         },
         "2": {
           "subject": "Предпр.деятельн.",
-          "room": "29",
+          "room": "",
           "teacher": "Михееева Е.А.",
           "changed": false,
           "cancelled": false,
@@ -5829,7 +5839,7 @@
       "тдк1-26/1": {
         "1": {
           "subject": "Русский язык",
-          "room": "",
+          "room": "210/2",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -5847,7 +5857,7 @@
       "тдк1-26/2": {
         "1": {
           "subject": "Обществознание",
-          "room": "29",
+          "room": "8",
           "teacher": "Бланкина А.К.",
           "changed": false,
           "cancelled": false,
@@ -5863,7 +5873,7 @@
         },
         "3": {
           "subject": "МДК 05.04",
-          "room": "",
+          "room": "28",
           "teacher": "Райко И.О.",
           "changed": false,
           "cancelled": false,
@@ -5911,7 +5921,7 @@
         },
         "2": {
           "subject": "Физкультура",
-          "room": "с.зал",
+          "room": "",
           "teacher": "Саукайтис И.К.",
           "changed": false,
           "cancelled": false,
@@ -5919,7 +5929,7 @@
         },
         "3": {
           "subject": "Налоги",
-          "room": "32",
+          "room": "22",
           "teacher": "Аргунова Д.С.",
           "changed": false,
           "cancelled": false,
@@ -5959,7 +5969,7 @@
       "б1-24/2": {
         "1": {
           "subject": "МДК 04.02",
-          "room": "32",
+          "room": "302",
           "teacher": "Ковальчук Л.А.",
           "changed": false,
           "cancelled": false,
@@ -5990,10 +6000,20 @@
           "change_from": ""
         }
       },
+      "спк-23/1": {
+        "1": {
+          "subject": "Практика",
+          "room": "",
+          "teacher": "",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        }
+      },
       "пк1-24/3": {
         "2": {
           "subject": "Физкультура",
-          "room": "",
+          "room": "с.зал",
           "teacher": "Пелих С.В.",
           "changed": false,
           "cancelled": false,
@@ -6001,7 +6021,7 @@
         },
         "3": {
           "subject": "Физика",
-          "room": "107",
+          "room": "402/2",
           "teacher": "Боровая В.В.",
           "changed": false,
           "cancelled": false,
@@ -6019,7 +6039,7 @@
       "ст1-26/4": {
         "2": {
           "subject": "ДПО",
-          "room": "",
+          "room": "уч.б",
           "teacher": "Вяткина А.И.",
           "changed": false,
           "cancelled": false,
@@ -6027,7 +6047,7 @@
         },
         "3": {
           "subject": "История",
-          "room": "8",
+          "room": "305",
           "teacher": "Сибирякова Т.С.",
           "changed": false,
           "cancelled": false,
@@ -6053,7 +6073,7 @@
       "ст1-25/4": {
         "2": {
           "subject": "Ин.яз в ПД",
-          "room": "",
+          "room": "211",
           "teacher": "Ковтун Е.Е.",
           "changed": false,
           "cancelled": false,
@@ -6061,7 +6081,7 @@
         },
         "3": {
           "subject": "МДК 05.01",
-          "room": "37",
+          "room": "",
           "teacher": "Сведенцев А.В.",
           "changed": false,
           "cancelled": false,
@@ -6069,7 +6089,7 @@
         },
         "4": {
           "subject": "Литература",
-          "room": "210",
+          "room": "27",
           "teacher": "Коновалова О.В.",
           "changed": false,
           "cancelled": false,
@@ -6079,7 +6099,7 @@
       "пкд1-26/1": {
         "2": {
           "subject": "История",
-          "room": "",
+          "room": "304",
           "teacher": "Брылев Д.А.",
           "changed": false,
           "cancelled": false,
@@ -6105,7 +6125,7 @@
       "пд1-25/3": {
         "2": {
           "subject": "Уголовное право",
-          "room": "",
+          "room": "37/1",
           "teacher": "Григус В.В.",
           "changed": false,
           "cancelled": false,
@@ -6113,7 +6133,7 @@
         },
         "3": {
           "subject": "МДК 03.01",
-          "room": "",
+          "room": "401",
           "teacher": "Жарикова А.Б.",
           "changed": false,
           "cancelled": false,
@@ -6121,7 +6141,7 @@
         },
         "4": {
           "subject": "ТГП",
-          "room": "",
+          "room": "304",
           "teacher": "Горобец Т.Ю.",
           "changed": false,
           "cancelled": false,
@@ -6131,7 +6151,7 @@
       "пд1-24/3": {
         "2": {
           "subject": "МДК 01.06",
-          "room": "34",
+          "room": "306",
           "teacher": "Паксеев Н.И.",
           "changed": false,
           "cancelled": false,
@@ -6139,7 +6159,7 @@
         },
         "3": {
           "subject": "МДК 01.05",
-          "room": "36",
+          "room": "37/1",
           "teacher": "Григус В.В.",
           "changed": false,
           "cancelled": false,
@@ -6157,7 +6177,7 @@
       "тг1-26/4": {
         "2": {
           "subject": "Сервис.деятельн.",
-          "room": "",
+          "room": "29/1",
           "teacher": "Феклистова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -6165,7 +6185,7 @@
         },
         "3": {
           "subject": "Физкультура",
-          "room": "",
+          "room": "с.зал",
           "teacher": "Саукайтис И.К.",
           "changed": false,
           "cancelled": false,
@@ -6173,7 +6193,7 @@
         },
         "4": {
           "subject": "История",
-          "room": "",
+          "room": "305",
           "teacher": "Толкачев А.Е.",
           "changed": false,
           "cancelled": false,
@@ -6183,7 +6203,7 @@
       "тг1-24/2": {
         "2": {
           "subject": "МДК 01.03",
-          "room": "211",
+          "room": "202",
           "teacher": "Емельянова Т.Г.",
           "changed": false,
           "cancelled": false,
@@ -6217,7 +6237,7 @@
         },
         "3": {
           "subject": "МДК 05.02",
-          "room": "106",
+          "room": "37",
           "teacher": "Дмитриева Н.В.",
           "changed": false,
           "cancelled": false,
@@ -6235,7 +6255,7 @@
       "пк1-23/1": {
         "3": {
           "subject": "МДК 05.01",
-          "room": "11",
+          "room": "32",
           "teacher": "Шведова Н.В.",
           "changed": false,
           "cancelled": false,
@@ -6243,7 +6263,7 @@
         },
         "4": {
           "subject": "МДК 04.02",
-          "room": "32",
+          "room": "11",
           "teacher": "Воронова Н.В.",
           "changed": false,
           "cancelled": false,
@@ -6261,7 +6281,7 @@
       "пкд1-26/4": {
         "3": {
           "subject": "Орг.хранения",
-          "room": "",
+          "room": "11",
           "teacher": "Кондрашкова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -6287,7 +6307,7 @@
       "пкд1-25/1": {
         "3": {
           "subject": "Химия",
-          "room": "",
+          "room": "106",
           "teacher": "Фомичев М.Н.",
           "changed": false,
           "cancelled": false,
@@ -6295,7 +6315,7 @@
         },
         "4": {
           "subject": "Литература",
-          "room": "",
+          "room": "210",
           "teacher": "Усольцева А.В.",
           "changed": false,
           "cancelled": false,
@@ -6303,7 +6323,7 @@
         },
         "5": {
           "subject": "МДК 07.01",
-          "room": "",
+          "room": "405/2",
           "teacher": "Соловьева Н.Г.",
           "changed": false,
           "cancelled": false,
@@ -6313,7 +6333,7 @@
       "пкд1-25/3": {
         "3": {
           "subject": "МДК 07.01",
-          "room": "",
+          "room": "405/2",
           "teacher": "Соловьева Н.Г.",
           "changed": false,
           "cancelled": false,
@@ -6321,7 +6341,7 @@
         },
         "4": {
           "subject": "МДК 07.01",
-          "room": "",
+          "room": "405/2",
           "teacher": "Соловьева Н.Г.",
           "changed": false,
           "cancelled": false,
@@ -6331,7 +6351,7 @@
       "пкд1-24/1": {
         "3": {
           "subject": "МДК 08.01 лаб.р",
-          "room": "",
+          "room": "14",
           "teacher": "Белорукова С.И.",
           "changed": false,
           "cancelled": false,
@@ -6339,7 +6359,7 @@
         },
         "4": {
           "subject": "МДК 08.01 лаб.р",
-          "room": "",
+          "room": "14",
           "teacher": "Белорукова С.И.",
           "changed": false,
           "cancelled": false,
@@ -6347,7 +6367,7 @@
         },
         "5": {
           "subject": "МДК 08.01 лаб.р",
-          "room": "",
+          "room": "14",
           "teacher": "Белорукова С.И.",
           "changed": false,
           "cancelled": false,
@@ -6365,7 +6385,7 @@
         },
         "4": {
           "subject": "Физкультура",
-          "room": "",
+          "room": "с.зал",
           "teacher": "Плюснина С.Н.",
           "changed": false,
           "cancelled": false,
@@ -6373,7 +6393,7 @@
         },
         "5": {
           "subject": "МДК 02.02",
-          "room": "",
+          "room": "11",
           "teacher": "Воронова Н.В.",
           "changed": false,
           "cancelled": false,
@@ -6391,7 +6411,7 @@
         },
         "4": {
           "subject": "МДК 03.01",
-          "room": "8",
+          "room": "32",
           "teacher": "Кондрашкова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -6409,7 +6429,7 @@
       "т1-26": {
         "3": {
           "subject": "Математика",
-          "room": "403",
+          "room": "",
           "teacher": "Головина И.А.",
           "changed": false,
           "cancelled": false,
@@ -6417,7 +6437,7 @@
         },
         "4": {
           "subject": "Русский язык",
-          "room": "",
+          "room": "210/2",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -6425,7 +6445,7 @@
         },
         "5": {
           "subject": "ОБЗР",
-          "room": "37/1",
+          "room": "",
           "teacher": "Бакаев Д.А.",
           "changed": false,
           "cancelled": false,
@@ -6443,7 +6463,7 @@
         },
         "4": {
           "subject": "Физкультура",
-          "room": "",
+          "room": "с.зал",
           "teacher": "Кошкарева Н.В.",
           "changed": false,
           "cancelled": false,
@@ -6451,7 +6471,7 @@
         },
         "5": {
           "subject": "Химия",
-          "room": "",
+          "room": "26",
           "teacher": "Прокопов Е.В.",
           "changed": false,
           "cancelled": false,
@@ -6461,7 +6481,7 @@
       "пд2-26": {
         "3": {
           "subject": "Криминология",
-          "room": "37/1",
+          "room": "29",
           "teacher": "Лагасюк Л.Л.",
           "changed": false,
           "cancelled": false,
@@ -6469,7 +6489,7 @@
         },
         "4": {
           "subject": "Уголовное право",
-          "room": "36",
+          "room": "37/1",
           "teacher": "Григус В.В.",
           "changed": false,
           "cancelled": false,
@@ -6495,7 +6515,7 @@
         },
         "4": {
           "subject": "Семейное право",
-          "room": "404",
+          "room": "302",
           "teacher": "Лагасюк Л.Л.",
           "changed": false,
           "cancelled": false,
@@ -6513,7 +6533,7 @@
       "пд1-23/1": {
         "3": {
           "subject": "Ин.яз в ПД",
-          "room": "34",
+          "room": "20",
           "teacher": "Ковтун Е.Е.",
           "changed": false,
           "cancelled": false,
@@ -6529,7 +6549,7 @@
         },
         "5": {
           "subject": "Семейное право",
-          "room": "36",
+          "room": "37/1",
           "teacher": "Григус В.В.",
           "changed": false,
           "cancelled": false,
@@ -6539,7 +6559,7 @@
       "м1-23": {
         "3": {
           "subject": "МДК 02.02",
-          "room": "20",
+          "room": "202/2",
           "teacher": "Моисеев В.В.",
           "changed": false,
           "cancelled": false,
@@ -6565,7 +6585,7 @@
       "тдк1-24/2": {
         "3": {
           "subject": "МДК 02.02",
-          "room": "29",
+          "room": "дист",
           "teacher": "Михеева Е.А.",
           "changed": false,
           "cancelled": false,
@@ -6591,7 +6611,7 @@
       "тдт1-24": {
         "3": {
           "subject": "ДПО",
-          "room": "",
+          "room": "8",
           "teacher": "Головина Ю.В.",
           "changed": false,
           "cancelled": false,
@@ -6599,7 +6619,7 @@
         },
         "4": {
           "subject": "Курсовая работа",
-          "room": "35",
+          "room": "34",
           "teacher": "Дмитриева Н.В.",
           "changed": false,
           "cancelled": false,
@@ -6607,7 +6627,7 @@
         },
         "5": {
           "subject": "Ин.яз в ПД",
-          "room": "301",
+          "room": "27",
           "teacher": "Бланкина А.К.",
           "changed": false,
           "cancelled": false,
@@ -6617,7 +6637,7 @@
       "б1-26/2": {
         "3": {
           "subject": "Осн.бух.учета",
-          "room": "35",
+          "room": "33",
           "teacher": "Малтых Е.С.",
           "changed": false,
           "cancelled": false,
@@ -6625,7 +6645,7 @@
         },
         "4": {
           "subject": "География",
-          "room": "305",
+          "room": "уч.р",
           "teacher": "Колесникова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -6721,7 +6741,7 @@
       "пк1-24/2": {
         "4": {
           "subject": "История",
-          "room": "",
+          "room": "402",
           "teacher": "Сухарев Н.А.",
           "changed": false,
           "cancelled": false,
@@ -6729,7 +6749,7 @@
         },
         "5": {
           "subject": "География",
-          "room": "",
+          "room": "301",
           "teacher": "Колесникова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -6757,7 +6777,7 @@
       "ст1-24/1": {
         "4": {
           "subject": "Ин.яз в ПД",
-          "room": "34",
+          "room": "402/2",
           "teacher": "Ковтун Е.Е.",
           "changed": false,
           "cancelled": false,
@@ -6783,7 +6803,7 @@
         },
         "5": {
           "subject": "Тех.оснащение",
-          "room": "26",
+          "room": "107",
           "teacher": "Бирюков В.Е.",
           "changed": false,
           "cancelled": false,
@@ -6793,7 +6813,7 @@
       "пкд1-23/1": {
         "4": {
           "subject": "МДК 06.01",
-          "room": "",
+          "room": "405",
           "teacher": "Рогова И.Ю.",
           "changed": false,
           "cancelled": false,
@@ -6801,7 +6821,7 @@
         },
         "5": {
           "subject": "МДК 03.01",
-          "room": "",
+          "room": "32",
           "teacher": "Кондрашкова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -6811,7 +6831,7 @@
       "пкд1-23/2": {
         "4": {
           "subject": "МДК 06.01",
-          "room": "405/2",
+          "room": "405",
           "teacher": "Рогова И.Ю.",
           "changed": false,
           "cancelled": false,
@@ -6819,7 +6839,7 @@
         },
         "5": {
           "subject": "МДК 03.01",
-          "room": "8",
+          "room": "32",
           "teacher": "Кондрашкова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -6829,7 +6849,7 @@
       "тп1-23": {
         "4": {
           "subject": "БЖД",
-          "room": "302",
+          "room": "29/1",
           "teacher": "Иншакова Е.В.",
           "changed": false,
           "cancelled": false,
@@ -6837,7 +6857,7 @@
         },
         "5": {
           "subject": "Ин.яз в ПД",
-          "room": "202/2",
+          "room": "34",
           "teacher": "Ковтун Е.Е.",
           "changed": false,
           "cancelled": false,
@@ -6847,7 +6867,7 @@
       "пд1-26/1": {
         "4": {
           "subject": "Математика",
-          "room": "",
+          "room": "404",
           "teacher": "Жарикова Е.О.",
           "changed": false,
           "cancelled": false,
@@ -6855,7 +6875,7 @@
         },
         "5": {
           "subject": "Биология",
-          "room": "",
+          "room": "106",
           "teacher": "Фомичев М.Н.",
           "changed": false,
           "cancelled": false,
@@ -6865,7 +6885,7 @@
       "пд1-25/4": {
         "4": {
           "subject": "Уголовное право",
-          "room": "",
+          "room": "401",
           "teacher": "Жарикова А.Б.",
           "changed": false,
           "cancelled": false,
@@ -6873,7 +6893,7 @@
         },
         "5": {
           "subject": "МДК 03.01",
-          "room": "",
+          "room": "401",
           "teacher": "Жарикова А.Б.",
           "changed": false,
           "cancelled": false,
@@ -6891,7 +6911,7 @@
         },
         "5": {
           "subject": "Трудовое право",
-          "room": "404",
+          "room": "302",
           "teacher": "Лагасюк Л.Л.",
           "changed": false,
           "cancelled": false,
@@ -6919,7 +6939,7 @@
       "тг2-26": {
         "4": {
           "subject": "МДК 02.02",
-          "room": "",
+          "room": "уч.к",
           "teacher": "Кабриль Т.Б.",
           "changed": false,
           "cancelled": false,
@@ -6927,7 +6947,7 @@
         },
         "5": {
           "subject": "Психология общ.",
-          "room": "",
+          "room": "8",
           "teacher": "Головина Ю.В.",
           "changed": false,
           "cancelled": false,
@@ -6973,7 +6993,7 @@
       "тдк1-24/1": {
         "4": {
           "subject": "Ин.яз в ПД",
-          "room": "301",
+          "room": "22",
           "teacher": "Бланкина А.К.",
           "changed": false,
           "cancelled": false,
@@ -8029,6 +8049,16 @@
           "subject": "МДК 06.01",
           "room": "34",
           "teacher": "Саттарова В.Р",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        }
+      },
+      "спк-23/1": {
+        "1": {
+          "subject": "Практика",
+          "room": "",
+          "teacher": "",
           "changed": false,
           "cancelled": false,
           "change_from": ""
@@ -10200,6 +10230,16 @@
           "change_from": ""
         }
       },
+      "спк-23/1": {
+        "1": {
+          "subject": "Практика",
+          "room": "",
+          "teacher": "",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        }
+      },
       "ст1-26/5": {
         "2": {
           "subject": "Физкультура",
@@ -11092,52 +11132,52 @@
     "сб": {}
   },
   "changes": {
-    "2026-09-29": {
+    "2026-09-30": {
       "пк1-26/3": {
-        "1": {
+        "2": {
           "lesson": {
-            "subject": "Русский язык",
-            "room": "210/2",
-            "teacher": "Новоседьцева Л.А.",
+            "subject": "Химия",
+            "room": "27",
+            "teacher": "Чижов А.А.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Физика (Ильящук Н.А.)"
+          "old_description": "Орг.обслуживания (Кудрявцев А.П.)"
         }
       },
-      "ст1-26/3": {
-        "1": {
+      "ст1-25/4": {
+        "3": {
           "lesson": {
-            "subject": "АСУ",
-            "room": "33",
-            "teacher": "Крестина И.И.",
+            "subject": "Математика",
+            "room": "403",
+            "teacher": "Головина И.А.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "История (Брылев Д.А.)"
+          "old_description": "МДК 05.01 (Сведенцев А.В.)"
         }
       },
-      "м1-25": {
+      "ст1-24/2": {
+        "2": {
+          "lesson": {
+            "subject": "МДК 04.01",
+            "room": "Уч.р",
+            "teacher": "Иншакова Е.В.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "МДК 02.01 (Крестина И.И.)"
+        }
+      },
+      "пкд1-26/4": {
         "5": {
           "lesson": {
-            "subject": "Электортехника",
-            "room": "22",
-            "teacher": "Моисеев В.В.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "САПР в ПД (Журавлев Н.О.)"
-        }
-      },
-      "м1-26": {
-        "5": {
-          "lesson": {
-            "subject": "История",
-            "room": "210",
-            "teacher": "Сибирякова Т.С.",
+            "subject": "Тех.оснащение",
+            "room": "405",
+            "teacher": "Рогова И.Ю.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
@@ -11145,12 +11185,62 @@
           "old_description": "ОБЗР (Коптяева Я.Ю.)"
         }
       },
+      "пкд1-24/4": {
+        "3": {
+          "lesson": {
+            "subject": "МДК 02.02",
+            "room": "35",
+            "teacher": "Панина Н.Б.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "МДК 08.01 (Белорукова С.И.)"
+        }
+      },
+      "т1-26": {
+        "3": {
+          "lesson": {
+            "subject": "Химия",
+            "room": "26",
+            "teacher": "Прокопов Е.В.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Математика (Головина И.А.)"
+        },
+        "5": {
+          "lesson": {
+            "subject": "Русский язык",
+            "room": "210/2",
+            "teacher": "Новосельцева Л.А.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "ОБЗР (БакаевД.А.)"
+        }
+      },
+      "пд1-24/1": {
+        "2": {
+          "lesson": {
+            "subject": "МДК 01.02",
+            "room": "37",
+            "teacher": "Саукайтис И.К.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "МДК 01.04 (Сведенцев А.В.)"
+        }
+      },
       "м1-23": {
         "4": {
           "lesson": {
-            "subject": "МДК 02.01",
-            "room": "402/2",
-            "teacher": "Бирюков В.Е.",
+            "subject": "Осн.экономики",
+            "room": "211",
+            "teacher": "Калмыкова И.А.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
@@ -11158,56 +11248,43 @@
           "old_description": "БЖД (Коптяева Я.Ю.)"
         }
       },
-      "пд1-24/3": {
-        "5": {
+      "тг2-25": {
+        "2": {
           "lesson": {
-            "subject": "МДК 01.05",
-            "room": "33",
-            "teacher": "Григус В.В.",
+            "subject": "МДК 01.03",
+            "room": "202",
+            "teacher": "Емельянова Т.Г.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Ин.яз в ПД (Ковтун Е.Е.)"
+          "old_description": "Предпр.деятельность (Михеева Е.А.)"
         }
       },
-      "тг1-24/1": {
-        "4": {
+      "пк1-26/1": {
+        "2": {
           "lesson": {
-            "subject": "ОБП",
-            "room": "211",
-            "teacher": "Калмыкова И.А.",
+            "subject": "Химия",
+            "room": "106",
+            "teacher": "Фомичев М.Н.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "МДК 01.03 (Емельянова Т.Г.)"
+          "old_description": "Охрана труда (Иншакова Е.В.)"
         }
       },
-      "тг1-24/3": {
-        "4": {
+      "б1-26/1": {
+        "2": {
           "lesson": {
-            "subject": "ОБП",
-            "room": "211",
-            "teacher": "Калмыкова И.А.",
+            "subject": "Математика",
+            "room": "302",
+            "teacher": "Ковальчук Л.А.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "МДК 01.03 (Емельянова Т.Г.)"
-        }
-      },
-      "тг2-26": {
-        "4": {
-          "lesson": {
-            "subject": "МДК 02.02",
-            "room": "29/1",
-            "teacher": "Кабриль Т.Б.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "ОБП (Калмыкова И.А.)"
+          "old_description": "Физкультура (Саукайтис И.К.)"
         }
       }
     }
