@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-29T01:22:11.116413Z",
+  "generated_at": "2026-09-29T07:04:42.896776Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -4687,7 +4687,7 @@
       "пкд1-23/1": {
         "4": {
           "subject": "МДК 03.01",
-          "room": "37/1",
+          "room": "уч.р",
           "teacher": "Кондрашкова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -4695,7 +4695,7 @@
         },
         "5": {
           "subject": "МДК 03.01",
-          "room": "37/1",
+          "room": "уч.р",
           "teacher": "Кондрашкова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -4705,7 +4705,7 @@
       "пкд1-23/2": {
         "4": {
           "subject": "МДК 03.01",
-          "room": "37/1",
+          "room": "уч.р",
           "teacher": "Кондрашкова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -4713,7 +4713,7 @@
         },
         "5": {
           "subject": "МДК 03.01",
-          "room": "37/1",
+          "room": "уч.р",
           "teacher": "Кондрашкова Т.В.",
           "changed": false,
           "cancelled": false,
