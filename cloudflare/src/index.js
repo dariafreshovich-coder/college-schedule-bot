@@ -29,6 +29,7 @@ const BELL_SCHEDULES = {
     3: "12:45–14:05",
     4: "14:15–16:05",
     5: "16:50–17:50",
+    6: "16:50–17:50",
   },
   mondayImportantPair: {
     1: "08:30–09:50",
@@ -56,6 +57,7 @@ const BELL_EXTRA_RULES = {
     { pair: 4, afterPair: 3, lunchShift: 1, start: "14:15", end: "14:45", text: "🍽 Обед · 14:15–14:45" },
     { pair: 4, beforePair: 5, lunchShift: 2, start: "14:45", end: "15:15", text: "🍽 Обед · 14:45–15:15" },
     { afterPair: 5, start: "17:50", end: "18:00", text: "🧹 Уборка кабинетов" },
+    { afterPair: 6, start: "17:50", end: "18:00", text: "🧹 Уборка кабинетов" },
   ],
   mondayImportantPair: [
     { pair: 3, afterPair: 2, lunchShift: 1, start: "10:40", end: "11:10", text: "🍽 Обед · 10:40–11:10" },
