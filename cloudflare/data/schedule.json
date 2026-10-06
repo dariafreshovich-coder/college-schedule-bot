@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-06T08:55:20.010725Z",
+  "generated_at": "2026-10-06T15:31:41.155983Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -5183,7 +5183,7 @@
       "пкд1-26/2": {
         "1": {
           "subject": "Орг.хранения",
-          "room": "106",
+          "room": "",
           "teacher": "Панина Н.Б.",
           "changed": false,
           "cancelled": false,
@@ -5517,7 +5517,7 @@
       "пд2-24": {
         "1": {
           "subject": "Трудовое право",
-          "room": "37/1",
+          "room": "36",
           "teacher": "Лагасюк Л.Л.",
           "changed": false,
           "cancelled": false,
@@ -5973,7 +5973,7 @@
       "пд1-25/3": {
         "2": {
           "subject": "Уголовное право",
-          "room": "36",
+          "room": "34",
           "teacher": "Григус В.В.",
           "changed": false,
           "cancelled": false,
@@ -10948,8 +10948,14 @@
     "сб": {}
   },
   "changes": {
-    "2026-10-06": {
-      "ст1-25/3": {
+    "2026-10-07": {
+      "ст1-26/1": {
+        "1": {
+          "cancelled": true,
+          "old_description": "АСУ (Крестина И.И.)"
+        }
+      },
+      "ст1-24/2": {
         "2": {
           "lesson": {
             "subject": "МДК 05.01",
@@ -10959,33 +10965,59 @@
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Страхование (Крестина И.И.)"
+          "old_description": "Курсовая работа (Крестина И.И.)"
         }
       },
-      "пд1-26/1": {
+      "ст1-24/3": {
         "2": {
           "lesson": {
-            "subject": "Математика",
-            "room": "406",
-            "teacher": "Жарикова Е.О.",
+            "subject": "МДК 05.01",
+            "room": "37",
+            "teacher": "Сведенцев А.В.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Обществознание (Брылев Д.А.)"
+          "old_description": "Курсовая работа (Крестина И.И.)"
+        }
+      },
+      "пкд1-26/4": {
+        "3": {
+          "lesson": {
+            "subject": "Математика",
+            "room": "404",
+            "teacher": "Верхотурова А.В.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Орг.хранения (Кондрашкова Т.В.)"
+        }
+      },
+      "пкд1-26/3": {
+        "2": {
+          "lesson": {
+            "subject": "Химия",
+            "room": "27",
+            "teacher": "Чижов А.А.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Орг.хранения (Панина Н.Б.)"
         }
       },
       "пкд1-26/2": {
-        "2": {
+        "1": {
           "lesson": {
-            "subject": "Тех.оснащение",
-            "room": "27",
-            "teacher": "Бирюков В.Е.",
+            "subject": "ОБЗР",
+            "room": "37/1",
+            "teacher": "Бакаев Д.А.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "Математика (ЖариковаЕ.О.)"
+          "old_description": "Орг.хранения (Панина Н.Б.)"
         }
       }
     }
