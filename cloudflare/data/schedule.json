@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-08T02:46:36.412809Z",
+  "generated_at": "2026-10-08T09:38:33.530102Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -515,32 +515,6 @@
           "subject": "Математика",
           "room": "403",
           "teacher": "Головина И.А.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        }
-      },
-      "ст1-24/3": {
-        "1": {
-          "subject": "МДК 02.01",
-          "room": "33",
-          "teacher": "Крестина И.И.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        },
-        "2": {
-          "subject": "Разговоры о важном",
-          "room": "36",
-          "teacher": "Стуканский Н.А.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        },
-        "3": {
-          "subject": "МДК 04.01",
-          "room": "32",
-          "teacher": "Иншакова Е.В.",
           "changed": false,
           "cancelled": false,
           "change_from": ""
@@ -1546,6 +1520,32 @@
           "change_from": ""
         }
       },
+      "ст1-24/3": {
+        "2": {
+          "subject": "Разговоры о важном",
+          "room": "36",
+          "teacher": "Стуканский Н.А.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        },
+        "3": {
+          "subject": "МДК 04.01",
+          "room": "32",
+          "teacher": "Иншакова Е.В.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        },
+        "4": {
+          "subject": "МДК 02.01",
+          "room": "33",
+          "teacher": "Крестина И.И.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        }
+      },
       "пкд1-25/2": {
         "2": {
           "subject": "Разговоры о важном",
@@ -1802,7 +1802,7 @@
           "change_from": ""
         },
         "4": {
-          "subject": "МДК 05.01",
+          "subject": "МДК 05.03",
           "room": "301",
           "teacher": "Савинова Н.А.",
           "changed": false,
@@ -10015,7 +10015,7 @@
       "тп1-23": {
         "2": {
           "subject": "БЖД",
-          "room": "34",
+          "room": "уч.р",
           "teacher": "Иншакова Е.В.",
           "changed": false,
           "cancelled": false,
@@ -10948,102 +10948,37 @@
     "сб": {}
   },
   "changes": {
-    "2026-10-08": {
-      "ст1-26/4": {
+    "2026-10-09": {
+      "пд1-26/5": {
         "2": {
           "lesson": {
-            "subject": "История",
-            "room": "304",
-            "teacher": "Сибирякова Т.С.",
+            "subject": "Математика",
+            "room": "302",
+            "teacher": "Ковальчук Л.А.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "АСУ (Крестина И.И.)"
+          "old_description": "Информатика (Журавлев Н.О.)"
         }
       },
-      "ст1-24/1": {
+      "пкд1-26/4": {
         "1": {
           "lesson": {
-            "subject": "МДК 04.01",
-            "room": "32",
-            "teacher": "Иншакова Е.В.",
+            "subject": "Математика",
+            "room": "404",
+            "teacher": "Верхотурова А.В.",
             "changed": false,
             "cancelled": false,
             "change_from": ""
           },
-          "old_description": "МДК 02.01 (Крестина И.И.)"
+          "old_description": "Орг.хранения (Кондрашкова Т.В.)"
         }
       },
-      "пкд1-25/1": {
-        "1": {
-          "lesson": {
-            "subject": "Ин.яз в ПД",
-            "room": "10",
-            "teacher": "Алымова Н.Н.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "Обществознание (Горобец Т.Ю.)"
-        }
-      },
-      "пд1-25/1": {
-        "2": {
-          "lesson": {
-            "subject": "Ин.яз в ПД",
-            "room": "36",
-            "teacher": "Ковтун Е.Е.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "ТГП (Горобец Т.Ю.)"
-        }
-      },
-      "пд1-25/3": {
+      "ст1-25/4": {
         "3": {
           "cancelled": true,
-          "old_description": "ТГП (Горобец Т.Ю.)"
-        }
-      },
-      "пд1-25/4": {
-        "4": {
-          "lesson": {
-            "subject": "Криминология",
-            "room": "406",
-            "teacher": "Лагасюк Л.Л.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "ТГП (Горобец Т.Ю.)"
-        }
-      },
-      "тдк1-24/1": {
-        "5": {
-          "lesson": {
-            "subject": "МДК 01.01",
-            "room": "28",
-            "teacher": "Дмитриева Н.В.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "ПОПД (Горобец Т.Ю.)"
-        }
-      },
-      "пк1-26/1": {
-        "2": {
-          "lesson": {
-            "subject": "Химия",
-            "room": "106",
-            "teacher": "Фомичев М.Н.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "История (Сибирякова Т.С.)"
+          "old_description": "Психология (Кондрашкова Т.В.)"
         }
       }
     }
