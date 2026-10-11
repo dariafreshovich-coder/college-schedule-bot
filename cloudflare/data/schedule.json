@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-11T07:24:26.032016Z",
+  "generated_at": "2026-10-11T14:14:34.148593Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -489,7 +489,7 @@
       "пкд1-26/2": {
         "1": {
           "subject": "Русский язык",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -883,7 +883,7 @@
         },
         "4": {
           "subject": "Литература",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -1093,7 +1093,7 @@
         },
         "3": {
           "subject": "Литература",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -1651,7 +1651,7 @@
         },
         "5": {
           "subject": "Разговоры о важном",
-          "room": "210/2",
+          "room": "а.зал",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -1915,7 +1915,7 @@
         },
         "6": {
           "subject": "Литература",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -10731,5 +10731,60 @@
     },
     "сб": {}
   },
-  "changes": {}
+  "changes": {
+    "2026-10-12": {
+      "пк1-24/3": {
+        "5": {
+          "lesson": {
+            "subject": "История",
+            "room": "210/2",
+            "teacher": "Сибирякова Т.С.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Литература (Новосельцева Л.А.)"
+        }
+      },
+      "пкд1-26/2": {
+        "1": {
+          "lesson": {
+            "subject": "Орг.хранения",
+            "room": "210/2",
+            "teacher": "Панина Н.Б.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Русский язык (Новосельцева Л.А.)"
+        }
+      },
+      "пд1-26/4": {
+        "3": {
+          "lesson": {
+            "subject": "История",
+            "room": "210/2",
+            "teacher": "Брылев Д.А.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Литература (Новосельцева Л.А.)"
+        }
+      },
+      "тг1-26/2": {
+        "2": {
+          "lesson": {
+            "subject": "Сервисная деятельность",
+            "room": "29/1",
+            "teacher": "Феклистова Т.В.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Литература (Новосельцева Л.А.)"
+        }
+      }
+    }
+  }
 }
