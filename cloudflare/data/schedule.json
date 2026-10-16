@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T10:43:42.562473Z",
+  "generated_at": "2026-10-16T15:00:34.052160Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -1199,14 +1199,6 @@
           "subject": "История",
           "room": "405",
           "teacher": "Толкачев А.Е.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        },
-        "4": {
-          "subject": "Иностранный язык",
-          "room": "202",
-          "teacher": "Емельянова Т.Г.",
           "changed": false,
           "cancelled": false,
           "change_from": ""
@@ -5828,6 +5820,32 @@
           "change_from": ""
         }
       },
+      "тг1-26/4": {
+        "2": {
+          "subject": "Иностранный язык",
+          "room": "",
+          "teacher": "Емельянова Т.Г.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        },
+        "3": {
+          "subject": "Физкультура",
+          "room": "с.зал",
+          "teacher": "Саукайтис И.К.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        },
+        "4": {
+          "subject": "История",
+          "room": "405",
+          "teacher": "Толкачев А.Е.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        }
+      },
       "тдк1-26/1": {
         "2": {
           "subject": "Математика",
@@ -6317,24 +6335,6 @@
           "subject": "Литература",
           "room": "",
           "teacher": "Усольцева А.В.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        }
-      },
-      "тг1-26/4": {
-        "3": {
-          "subject": "Физкультура",
-          "room": "с.зал",
-          "teacher": "Саукайтис И.К.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        },
-        "4": {
-          "subject": "История",
-          "room": "405",
-          "teacher": "Толкачев А.Е.",
           "changed": false,
           "cancelled": false,
           "change_from": ""
