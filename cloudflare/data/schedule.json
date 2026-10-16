@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T01:17:07.112614Z",
+  "generated_at": "2026-10-16T05:58:56.042296Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -489,7 +489,7 @@
       "пкд1-26/2": {
         "1": {
           "subject": "Русский язык",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -883,7 +883,7 @@
         },
         "4": {
           "subject": "Литература",
-          "room": "210/2",
+          "room": "",
           "teacher": "Новосельцева Л.А.",
           "changed": false,
           "cancelled": false,
@@ -9495,7 +9495,7 @@
         },
         "2": {
           "subject": "Сервис.деятельн.",
-          "room": "29/1",
+          "room": "",
           "teacher": "Феклистова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -9603,7 +9603,7 @@
         },
         "2": {
           "subject": "Обществознание",
-          "room": "405",
+          "room": "29/1",
           "teacher": "Толкачев А.Е.",
           "changed": false,
           "cancelled": false,
@@ -10117,7 +10117,7 @@
         },
         "4": {
           "subject": "МДК 02.02",
-          "room": "202",
+          "room": "29/1",
           "teacher": "Кабриль Т.Б.",
           "changed": false,
           "cancelled": false,
@@ -10679,7 +10679,7 @@
       "тг1-26/2": {
         "4": {
           "subject": "Сервис.деятельн.",
-          "room": "29/1",
+          "room": "",
           "teacher": "Феклистова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -10864,6 +10864,32 @@
             "change_from": ""
           },
           "old_description": "МДК 05.04 (Райко И.О.)"
+        }
+      },
+      "тг1-26/4": {
+        "2": {
+          "lesson": {
+            "subject": "Математика",
+            "room": "406",
+            "teacher": "Ашпина О.А.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Сервисная деятельность (Феклистова Т.В.)"
+        }
+      },
+      "тг1-26/2": {
+        "4": {
+          "lesson": {
+            "subject": "Иностранный язык",
+            "room": "202",
+            "teacher": "Емельянова Т.Г.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Сервисная деятельность (Феклистова Т.В.)"
         }
       }
     }
