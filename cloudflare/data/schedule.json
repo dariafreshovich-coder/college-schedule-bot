@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-19T01:10:24.692358Z",
+  "generated_at": "2026-10-19T06:08:14.863892Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -1202,6 +1202,14 @@
           "changed": false,
           "cancelled": false,
           "change_from": ""
+        },
+        "4": {
+          "subject": "Иностранный язык",
+          "room": "202",
+          "teacher": "Емельянова Т.Г.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
         }
       },
       "тг2-26": {
@@ -1603,7 +1611,7 @@
         },
         "3": {
           "subject": "Химия",
-          "room": "27",
+          "room": "",
           "teacher": "Чижов А.А.",
           "changed": false,
           "cancelled": false,
@@ -1619,7 +1627,7 @@
         },
         "5": {
           "subject": "ОБЗР",
-          "room": "",
+          "room": "37/1",
           "teacher": "Бакаев Д.А.",
           "changed": false,
           "cancelled": false,
@@ -2961,42 +2969,6 @@
           "subject": "МДК 05.01",
           "room": "37",
           "teacher": "Сведенцев А.В.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        }
-      },
-      "ст1-24/2": {
-        "1": {
-          "subject": "Ин.яз в ПД",
-          "room": "",
-          "teacher": "Ковтун Е.Е.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        },
-        "2": {
-          "subject": "МДК 04.01",
-          "room": "",
-          "teacher": "Иншакова Е.В.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        }
-      },
-      "ст1-24/3": {
-        "1": {
-          "subject": "Ин.яз в ПД",
-          "room": "",
-          "teacher": "Ковтун Е.Е.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        },
-        "2": {
-          "subject": "МДК 04.01",
-          "room": "",
-          "teacher": "Иншакова Е.В.",
           "changed": false,
           "cancelled": false,
           "change_from": ""
@@ -4510,6 +4482,42 @@
           "change_from": ""
         }
       },
+      "ст1-24/2": {
+        "4": {
+          "subject": "Ин.яз в ПД",
+          "room": "",
+          "teacher": "Ковтун Е.Е.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        },
+        "5": {
+          "subject": "МДК 04.01",
+          "room": "",
+          "teacher": "Иншакова Е.В.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        }
+      },
+      "ст1-24/3": {
+        "4": {
+          "subject": "Ин.яз в ПД",
+          "room": "",
+          "teacher": "Ковтун Е.Е.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        },
+        "5": {
+          "subject": "МДК 04.01",
+          "room": "",
+          "teacher": "Иншакова Е.В.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        }
+      },
       "пкд1-24/2": {
         "4": {
           "subject": "МДК 02.02",
@@ -5820,32 +5828,6 @@
           "change_from": ""
         }
       },
-      "тг1-26/4": {
-        "2": {
-          "subject": "Иностранный язык",
-          "room": "",
-          "teacher": "Емельянова Т.Г.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        },
-        "3": {
-          "subject": "Физкультура",
-          "room": "с.зал",
-          "teacher": "Саукайтис И.К.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        },
-        "4": {
-          "subject": "История",
-          "room": "405",
-          "teacher": "Толкачев А.Е.",
-          "changed": false,
-          "cancelled": false,
-          "change_from": ""
-        }
-      },
       "тдк1-26/1": {
         "2": {
           "subject": "Математика",
@@ -6335,6 +6317,24 @@
           "subject": "Литература",
           "room": "",
           "teacher": "Усольцева А.В.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        }
+      },
+      "тг1-26/4": {
+        "3": {
+          "subject": "Физкультура",
+          "room": "с.зал",
+          "teacher": "Саукайтис И.К.",
+          "changed": false,
+          "cancelled": false,
+          "change_from": ""
+        },
+        "4": {
+          "subject": "История",
+          "room": "405",
+          "teacher": "Толкачев А.Е.",
           "changed": false,
           "cancelled": false,
           "change_from": ""
