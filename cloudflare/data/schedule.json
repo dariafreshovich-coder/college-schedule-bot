@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T05:33:22.502102Z",
+  "generated_at": "2026-10-22T10:37:21.573567Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -10572,47 +10572,6 @@
     "сб": {}
   },
   "changes": {
-    "2026-10-22": {
-      "тг1-26/3": {
-        "2": {
-          "lesson": {
-            "subject": "МДК 03.01",
-            "room": "Уч.к",
-            "teacher": "Гаврилова К.Н.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "Сервисная деятельность (Феклистова Т.Г.)"
-        }
-      },
-      "тг2-25": {
-        "3": {
-          "lesson": {
-            "subject": "МДК 02.04",
-            "room": "202",
-            "teacher": "Емельянова Т.Г.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "МДК 02.01 (Феклистова Т.Г.)"
-        }
-      },
-      "ст1-25/3": {
-        "1": {
-          "lesson": {
-            "subject": "МДК 05.01",
-            "room": "37",
-            "teacher": "Сведенцев А.В.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "Ин.яз в ПД (Ковтун Е.Е.)"
-        }
-      }
-    },
     "2026-10-23": {
       "тг1-26/2": {
         "4": {
