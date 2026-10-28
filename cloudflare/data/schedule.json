@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-28T07:39:38.861118Z",
+  "generated_at": "2026-10-28T14:29:01.112252Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -2936,7 +2936,7 @@
         "3": {
           "subject": "Литература",
           "room": "дист",
-          "teacher": "Новосельцева Л.А.",
+          "teacher": "Дегтярева В.В.",
           "changed": false,
           "cancelled": false,
           "change_from": ""
@@ -4922,7 +4922,7 @@
         "3": {
           "subject": "Обществознание",
           "room": "дист",
-          "teacher": "Куковинец М.С.",
+          "teacher": "Дегтярева В.В.",
           "changed": false,
           "cancelled": false,
           "change_from": ""
@@ -10291,36 +10291,5 @@
     },
     "сб": {}
   },
-  "changes": {
-    "2026-10-26": {
-      "тг2-26": {
-        "3": {
-          "lesson": {
-            "subject": "МДК 01.03",
-            "room": "Дист.",
-            "teacher": "Гаврилова К.Н.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "Сервисная деятельность (Феклистова Т.Г.)"
-        }
-      }
-    },
-    "2026-10-27": {
-      "тг1-26/1": {
-        "2": {
-          "lesson": {
-            "subject": "Литература",
-            "room": "Дист.",
-            "teacher": "Усольцева А.В.",
-            "changed": false,
-            "cancelled": false,
-            "change_from": ""
-          },
-          "old_description": "Сервисная деятельность (Феклистова Т.Г.)"
-        }
-      }
-    }
-  }
+  "changes": {}
 }
