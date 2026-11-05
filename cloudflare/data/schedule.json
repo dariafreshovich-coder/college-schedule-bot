@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T01:41:50.828848Z",
+  "generated_at": "2026-11-05T08:30:33.864832Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -9098,7 +9098,7 @@
           "change_from": ""
         },
         "4": {
-          "subject": "МДК 02.01",
+          "subject": "МДК 02.02",
           "room": "дист",
           "teacher": "Михеева Е.А.",
           "changed": false,
