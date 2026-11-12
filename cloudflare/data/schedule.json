@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T23:42:12.725812Z",
+  "generated_at": "2026-11-12T04:14:18.734819Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -6677,7 +6677,7 @@
         },
         "3": {
           "subject": "Осн.товароведения",
-          "room": "405",
+          "room": "27",
           "teacher": "Савинова Н.А.",
           "changed": false,
           "cancelled": false,
@@ -6947,7 +6947,7 @@
         },
         "3": {
           "subject": "Орг.хранения",
-          "room": "32",
+          "room": "",
           "teacher": "Панина Н.Б.",
           "changed": false,
           "cancelled": false,
@@ -7851,7 +7851,7 @@
       "тг1-25/3": {
         "2": {
           "subject": "Химия",
-          "room": "27",
+          "room": "",
           "teacher": "Чижов А.А.",
           "changed": false,
           "cancelled": false,
@@ -7893,7 +7893,7 @@
         },
         "4": {
           "subject": "Химия",
-          "room": "27",
+          "room": "",
           "teacher": "Чижов А.А.",
           "changed": false,
           "cancelled": false,
@@ -8059,7 +8059,7 @@
       "пкд1-26/3": {
         "3": {
           "subject": "Химия",
-          "room": "27",
+          "room": "",
           "teacher": "Чижов А.А.",
           "changed": false,
           "cancelled": false,
@@ -10616,6 +10616,58 @@
             "change_from": ""
           },
           "old_description": "МДК 02.01 (Шведова Н.В.)"
+        }
+      },
+      "тг1-25/3": {
+        "2": {
+          "lesson": {
+            "subject": "ИКТ",
+            "room": "27",
+            "teacher": "Синкина А.Ю.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Химия (Чижов Д.А.)"
+        }
+      },
+      "пкд1-26/3": {
+        "3": {
+          "lesson": {
+            "subject": "Тех.оснащение",
+            "room": "405",
+            "teacher": "Рогова И.Ю.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Химия (Чижов Д.А.)"
+        }
+      },
+      "пкд1-26/1": {
+        "3": {
+          "lesson": {
+            "subject": "История",
+            "room": "36",
+            "teacher": "Брылев Д.А.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Орг.хранения (Панина Н.Б.)"
+        }
+      },
+      "тг1-25/4": {
+        "4": {
+          "lesson": {
+            "subject": "Ин.яз в ПД",
+            "room": "202",
+            "teacher": "Емельянова Т.Г.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Химия (Чижов Д.А.)"
         }
       }
     }
