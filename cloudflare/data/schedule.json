@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T03:33:25.206955Z",
+  "generated_at": "2026-11-15T11:28:28.592276Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -1499,7 +1499,7 @@
         },
         "3": {
           "subject": "Иностранный язык",
-          "room": "302",
+          "room": "30",
           "teacher": "Бланкина А.К.",
           "changed": false,
           "cancelled": false,
@@ -1517,7 +1517,7 @@
       "б1-25/1": {
         "1": {
           "subject": "МДК 01.02",
-          "room": "30",
+          "room": "",
           "teacher": "Саттарова В.Р",
           "changed": false,
           "cancelled": false,
@@ -1525,7 +1525,7 @@
         },
         "2": {
           "subject": "Разговоры о важном",
-          "room": "30",
+          "room": "а.зал",
           "teacher": "Саттарова В.Р",
           "changed": false,
           "cancelled": false,
@@ -1533,7 +1533,7 @@
         },
         "3": {
           "subject": "МДК 01.01",
-          "room": "30",
+          "room": "",
           "teacher": "Саттарова В.Р",
           "changed": false,
           "cancelled": false,
@@ -2393,7 +2393,7 @@
       "б1-25/3": {
         "3": {
           "subject": "МДК 01.02",
-          "room": "30",
+          "room": "",
           "teacher": "Малтых Е.С.",
           "changed": false,
           "cancelled": false,
@@ -10602,6 +10602,43 @@
             "change_from": ""
           },
           "old_description": "Физкультура (Саукайтис И.К.)"
+        }
+      },
+      "б1-25/1": {
+        "1": {
+          "lesson": {
+            "subject": "Физкультура",
+            "room": "С.зал",
+            "teacher": "Васильченко М.В.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "МДК 01.02 (Саттарова В.Р.)"
+        },
+        "2": {
+          "lesson": {
+            "subject": "Статистика",
+            "room": "302",
+            "teacher": "Ковальчук Л.А.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "МДК 01.01 (Саттарова В.Р.)"
+        }
+      },
+      "б1-25/3": {
+        "3": {
+          "lesson": {
+            "subject": "Статистика",
+            "room": "302",
+            "teacher": "Ковальчук Л.А.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "МДК 01.02 (Малтых Е.С.)"
         }
       }
     }
