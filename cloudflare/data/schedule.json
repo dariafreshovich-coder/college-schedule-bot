@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19T00:22:58.676589Z",
+  "generated_at": "2026-11-19T07:41:21.871797Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -7857,7 +7857,7 @@
         },
         "3": {
           "subject": "История",
-          "room": "405",
+          "room": "302",
           "teacher": "Толкачев А.Е.",
           "changed": false,
           "cancelled": false,
@@ -8092,9 +8092,9 @@
       },
       "пкд1-26/3": {
         "3": {
-          "subject": "Химия",
-          "room": "27",
-          "teacher": "Чижов А.А.",
+          "subject": "Тех.оснащение",
+          "room": "405",
+          "teacher": "Рогова И.Ю.",
           "changed": false,
           "cancelled": false,
           "change_from": ""
