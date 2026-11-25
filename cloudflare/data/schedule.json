@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T18:17:12.119574Z",
+  "generated_at": "2026-11-25T02:38:39.280436Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -4883,7 +4883,7 @@
       "ст1-25/2": {
         "1": {
           "subject": "Психология",
-          "room": "301",
+          "room": "",
           "teacher": "Кондрашкова Т.В.",
           "changed": false,
           "cancelled": false,
@@ -6471,7 +6471,7 @@
       "пкд1-25/3": {
         "4": {
           "subject": "Химия",
-          "room": "27",
+          "room": "",
           "teacher": "Чижов А.А.",
           "changed": false,
           "cancelled": false,
@@ -6615,7 +6615,7 @@
       "тдк1-24/1": {
         "4": {
           "subject": "Ин.яз в ПД",
-          "room": "10",
+          "room": "107",
           "teacher": "Бланкина А.К.",
           "changed": false,
           "cancelled": false,
@@ -10586,6 +10586,32 @@
             "change_from": ""
           },
           "old_description": "Орг.хранения (Кондрашкова Т.В.)"
+        }
+      },
+      "ст1-25/2": {
+        "1": {
+          "lesson": {
+            "subject": "Страхование",
+            "room": "35",
+            "teacher": "Крестина И.И.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Психология (Кондрашкова Т.В.)"
+        }
+      },
+      "пкд1-25/3": {
+        "4": {
+          "lesson": {
+            "subject": "Ин.яз в пд",
+            "room": "10",
+            "teacher": "Алымова Н.Н.",
+            "changed": false,
+            "cancelled": false,
+            "change_from": ""
+          },
+          "old_description": "Химия (Чижов А.А.)"
         }
       }
     }
