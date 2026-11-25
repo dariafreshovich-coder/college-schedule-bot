@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T11:41:48.243097Z",
+  "generated_at": "2026-11-25T20:39:01.733381Z",
   "source": "Cloud Mail",
   "groups": [
     "ПК1-26/1",
@@ -7049,7 +7049,7 @@
       "пкд1-24/2": {
         "1": {
           "subject": "МДК 02.02 лаб.р",
-          "room": "14",
+          "room": "дист",
           "teacher": "Панина Н.Б.",
           "changed": false,
           "cancelled": false,
@@ -7057,7 +7057,7 @@
         },
         "2": {
           "subject": "МДК 02.02 лаб.р",
-          "room": "14",
+          "room": "дист",
           "teacher": "Панина Н.Б.",
           "changed": false,
           "cancelled": false,
@@ -7065,7 +7065,7 @@
         },
         "3": {
           "subject": "МДК 02.02 лаб.р",
-          "room": "14",
+          "room": "дист",
           "teacher": "Панина Н.Б.",
           "changed": false,
           "cancelled": false,
@@ -7105,7 +7105,7 @@
       "тп1-24": {
         "1": {
           "subject": "МДК 02.01 лаб.р",
-          "room": "к",
+          "room": "14",
           "teacher": "Шведова Н.В.",
           "changed": false,
           "cancelled": false,
@@ -7113,7 +7113,7 @@
         },
         "2": {
           "subject": "МДК 02.01 лаб.р",
-          "room": "",
+          "room": "14",
           "teacher": "Шведова Н.В.",
           "changed": false,
           "cancelled": false,
@@ -7121,7 +7121,7 @@
         },
         "3": {
           "subject": "МДК 02.01 лаб.р",
-          "room": "",
+          "room": "14",
           "teacher": "Шведова Н.В.",
           "changed": false,
           "cancelled": false,
